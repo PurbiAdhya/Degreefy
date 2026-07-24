@@ -8,51 +8,60 @@
   <title>Degreefy | Spring Hill College Degree Planner</title>
   <style>
     :root {
-      --bg: #f7f6fb;
+      --bg: #f6f4fb;
       --panel: #ffffff;
-      --ink: #1f2937;
-      --muted: #667085;
-      --line: #d8d7e8;
-      --purple: #5f4bb6;
-      --purple-dark: #463b83;
-      --purple-soft: #ebe7ff;
-      --fall: #ffe6cc;
-      --spring: #dff4e7;
-      --summer: #fff2b8;
-      --green: #237a57;
-      --red: #b42318;
-      --shadow: 0 10px 28px rgba(45, 39, 84, 0.08);
-      --radius: 16px;
-      --floating-offset: 86px;
+      --ink: #2f2a45;
+      --muted: #6f6885;
+      --line: #e7e2ef;
+      --purple: #6d5bd0;
+      --purple-dark: #51439b;
+      --purple-soft: #f4f1fe;
+      --fall: #fbf2dc;
+      --spring: #edf6ef;
+      --summer: #fff7dd;
+      --green: #5f8d73;
+      --red: #b95a5a;
+      --gold: #c7a54d;
+      --gold-soft: #fbf6e7;
+      --sage-soft: #eef5f0;
+      --shadow: 0 10px 28px rgba(61, 48, 104, 0.06);
+      --radius: 18px;
+      --floating-offset: 92px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--ink);
-      line-height: 1.4;
+      line-height: 1.5;
+      font-weight: 400;
+      letter-spacing: -0.01em;
     }
 
+    strong { font-weight: 600; }
+
     header {
-      background: linear-gradient(135deg, #4f467f, #6757c8 62%, #7b68d8);
-      color: white;
-      padding: 26px 28px 20px;
-      border-bottom: 4px solid #d7ccff;
+      background: rgba(255,255,255,0.92);
+      color: var(--ink);
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
     }
 
     header h1 {
-      margin: 0 0 7px;
-      font-size: clamp(28px, 4vw, 42px);
+      margin: 0 0 4px;
+      font-size: clamp(28px, 4vw, 40px);
       letter-spacing: -0.04em;
+      font-weight: 560;
     }
 
     header p {
       margin: 0;
-      color: #f4f1ff;
-      font-size: 15px;
+      color: var(--muted);
+      font-size: 16px;
     }
 
     .app {
@@ -84,10 +93,10 @@
       gap: 12px;
     }
 
-    h2, h3, h4 { color: var(--purple-dark); }
-    h2 { margin: 0 0 10px; font-size: 20px; }
-    h3 { margin: 12px 0 8px; font-size: 15px; }
-    h4 { margin: 12px 0 8px; font-size: 14px; }
+    h2, h3, h4 { color: var(--purple-dark); font-weight: 520; }
+    h2 { margin: 0 0 10px; font-size: 22px; }
+    h3 { margin: 12px 0 8px; font-size: 16px; }
+    h4 { margin: 12px 0 8px; font-size: 15px; }
 
     label {
       display: flex;
@@ -101,24 +110,24 @@
 
     select, input[type="search"] {
       width: 100%;
-      padding: 10px 11px;
+      padding: 12px 14px;
       border: 1px solid var(--line);
-      border-radius: 10px;
+      border-radius: 14px;
       background: white;
       color: var(--ink);
-      font-size: 14px;
+      font-size: 15px;
     }
 
-    .small { color: var(--muted); font-size: 12px; }
+    .small { color: var(--muted); font-size: 14px; line-height: 1.45; }
 
     .note {
-      background: var(--purple-soft);
-      border-left: 4px solid var(--purple);
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: #344054;
-      font-size: 13px;
-      margin: 10px 0 0;
+      background: #faf8ff;
+      border: 1px solid #e6dff8;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: var(--ink);
+      font-size: 14px;
+      margin: 12px 0 0;
     }
 
     .toolbar {
@@ -132,16 +141,19 @@
       border: 1px solid var(--line);
       background: white;
       color: var(--purple-dark);
-      padding: 9px 11px;
-      border-radius: 10px;
+      padding: 11px 14px;
+      border-radius: 14px;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 500;
+      font-size: 15px;
+      transition: background .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease;
     }
 
     button.primary {
       background: var(--purple);
       color: white;
       border-color: var(--purple);
+      box-shadow: 0 6px 14px rgba(109, 91, 208, 0.18);
     }
 
     button:hover { filter: brightness(0.98); }
@@ -240,9 +252,10 @@
 
     .success, .warning {
       margin: 0 16px 16px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 700;
+      padding: 13px 15px;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 15px;
     }
 
     .success {
@@ -717,106 +730,111 @@
 
     /* Degreefy guided experience */
     :root {
-      --degreefy-navy: #29244f;
-      --degreefy-gold: #f2c94c;
-      --degreefy-teal: #2f7f78;
+      --degreefy-navy: #312a52;
+      --degreefy-gold: #c7a54d;
+      --degreefy-teal: #5f8d73;
     }
 
-    body.wizard-open { background: linear-gradient(180deg, #f0edff 0, var(--bg) 360px); }
+    body.wizard-open { background: linear-gradient(180deg, #faf8ff 0, var(--bg) 300px); }
     body.wizard-open .header-actions { display: none; }
     header.degreefy-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 18px;
-      padding: 18px 28px;
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 110;
     }
-    .brand-lockup { display: flex; align-items: center; gap: 13px; }
+    .brand-lockup { display: flex; align-items: center; gap: 14px; }
     .brand-mark {
-      width: 48px; height: 48px; border-radius: 15px;
+      width: 44px; height: 44px; border-radius: 14px;
       display: grid; place-items: center;
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.28);
-      font-size: 24px; font-weight: 900; letter-spacing: -.08em;
+      background: var(--purple-soft);
+      border: 1px solid #ddd5fb;
+      color: var(--purple-dark);
+      font-size: 21px; font-weight: 600; letter-spacing: -.04em;
+      box-shadow: 0 1px 2px rgba(61, 48, 104, 0.06);
     }
-    .brand-copy h1 { font-size: clamp(27px, 4vw, 38px); margin: 0; }
-    .brand-copy p { margin-top: 2px; }
+    .brand-copy h1 { font-size: clamp(27px, 4vw, 38px); margin: 0; font-weight: 560; }
+    .brand-copy p { margin-top: 2px; color: var(--muted); }
     .header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-    .header-actions button { background: rgba(255,255,255,.12); color: white; border-color: rgba(255,255,255,.35); }
+    .header-actions button { background: white; color: var(--ink); border-color: var(--line); }
 
-    .wizard-shell { max-width: 1040px; margin: 30px auto 54px; padding: 0 18px; }
+    .wizard-shell { max-width: 980px; margin: 24px auto 40px; padding: 0 18px; }
     .wizard-card { overflow: hidden; }
     .wizard-top {
-      padding: 22px 24px 18px;
+      padding: 26px 28px 16px;
       border-bottom: 1px solid var(--line);
-      background: linear-gradient(135deg, #fff, #faf9ff);
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
     }
-    .wizard-eyebrow { color: var(--purple); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
-    .wizard-top h2 { font-size: clamp(24px, 4vw, 34px); margin: 5px 0 4px; letter-spacing: -.03em; }
-    .wizard-progress { display: grid; grid-template-columns: repeat(var(--step-count, 7), 1fr); gap: 7px; margin-top: 18px; }
-    .wizard-progress span { height: 6px; border-radius: 999px; background: #e4e0f2; }
+    .wizard-eyebrow { color: var(--muted); font-weight: 500; font-size: 14px; letter-spacing: 0; }
+    .wizard-top h2 { font-size: clamp(26px, 4vw, 34px); margin: 6px 0 4px; letter-spacing: -.03em; font-weight: 540; line-height: 1.2; }
+    .wizard-progress { display: grid; grid-template-columns: repeat(var(--step-count, 7), 1fr); gap: 8px; margin-top: 18px; }
+    .wizard-progress span { height: 7px; border-radius: 999px; background: #ece7f7; }
     .wizard-progress span.active { background: var(--purple); }
     .wizard-progress span.done { background: var(--degreefy-teal); }
-    .wizard-content { padding: 24px; min-height: 360px; }
-    .wizard-content h3 { font-size: 22px; margin: 0 0 7px; }
-    .wizard-subtitle { color: var(--muted); margin: 0 0 20px; max-width: 720px; }
-    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+    .wizard-content { padding: 28px; min-height: 360px; }
+    .wizard-content h3 { font-size: 24px; margin: 0 0 8px; font-weight: 520; }
+    .wizard-subtitle { color: var(--muted); margin: 0 0 22px; max-width: 760px; font-size: 15px; }
+    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
     .choice-card {
       display: block; position: relative; cursor: pointer;
-      border: 1px solid var(--line); border-radius: 15px; padding: 17px;
-      background: white; min-height: 112px; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+      background: white; min-height: 112px; transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
     }
-    .choice-card:hover { transform: translateY(-2px); border-color: #bcb3e7; box-shadow: var(--shadow); }
-    .choice-card.selected { border: 2px solid var(--purple); background: var(--purple-soft); padding: 16px; }
+    .choice-card:hover { transform: translateY(-1px); border-color: #cfc4f3; box-shadow: 0 8px 20px rgba(61, 48, 104, 0.06); }
+    .choice-card.selected { border: 1.5px solid var(--purple); background: #faf8ff; padding: 20px; box-shadow: 0 0 0 4px rgba(109, 91, 208, 0.08); }
     .choice-card input { position: absolute; opacity: 0; pointer-events: none; }
-    .choice-icon { font-size: 25px; display: block; margin-bottom: 8px; }
-    .choice-title { font-weight: 850; font-size: 16px; color: var(--degreefy-navy); }
-    .choice-description { color: var(--muted); font-size: 12.5px; margin-top: 5px; }
-    .wizard-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-    .field-label { display: grid; gap: 6px; font-weight: 750; color: var(--degreefy-navy); }
+    .choice-icon { display: none; }
+    .choice-title { display: block; font-weight: 520; font-size: 18px; color: var(--degreefy-navy); margin-bottom: 6px; }
+    .choice-description { color: var(--muted); font-size: 15px; margin-top: 0; line-height: 1.45; }
+    .wizard-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .field-label { display: grid; gap: 8px; font-weight: 500; color: var(--degreefy-navy); font-size: 15px; }
     .field-label select, .field-label input { font-weight: 400; }
-    .program-area { margin-top: 18px; }
-    .program-area h4 { font-size: 15px; margin-bottom: 8px; }
-    .program-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 9px; }
+    .program-area { margin-top: 20px; }
+    .program-area h4 { font-size: 16px; margin-bottom: 10px; font-weight: 520; }
+    .program-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
     .program-chip {
-      display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 11px 12px;
-      border: 1px solid var(--line); border-radius: 12px; background: white;
+      display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 14px 15px;
+      border: 1px solid var(--line); border-radius: 16px; background: white;
     }
-    .program-chip:has(input:checked) { border-color: var(--purple); background: var(--purple-soft); }
-    .program-chip strong { color: var(--degreefy-navy); }
-    .source-box { margin-top: 22px; border: 1px dashed #b9b1dc; border-radius: 14px; padding: 13px; background: #fbfaff; }
-    .source-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; }
-    .data-status { margin-top: 8px; font-size: 12px; color: var(--muted); }
-    .data-status.good { color: var(--green); font-weight: 700; }
+    .program-chip:has(input:checked) { border-color: var(--purple); background: #faf8ff; box-shadow: 0 0 0 3px rgba(109, 91, 208, 0.06); }
+    .program-chip strong { color: var(--degreefy-navy); font-weight: 520; }
+    .source-box { margin-top: 24px; border: 1px solid var(--line); border-radius: 16px; padding: 16px; background: #fcfbff; }
+    .source-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+    .data-status { margin-top: 10px; font-size: 14px; color: var(--muted); }
+    .data-status.good { color: var(--green); font-weight: 500; }
     .data-status.bad { color: var(--red); }
-    .history-list { display: grid; gap: 9px; }
+    .history-list { display: grid; gap: 10px; }
     .history-row {
-      display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(190px, .8fr) auto;
-      gap: 10px; align-items: center; padding: 11px 12px;
-      border: 1px solid #e5e2f0; border-radius: 12px; background: white;
+      display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(210px, .85fr) auto;
+      gap: 12px; align-items: center; padding: 14px 15px;
+      border: 1px solid #e7e2ef; border-radius: 16px; background: white;
     }
-    .history-row.completed { background: #f2fbf6; border-color: #b8dfc8; }
-    .history-main strong { display: block; font-size: 13.5px; }
-    .history-main span { color: var(--muted); font-size: 12px; }
-    .history-check { display: flex; align-items: center; gap: 6px; margin: 0; white-space: nowrap; font-size: 12px; font-weight: 750; }
-    .wizard-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 11px; margin: 16px 0 22px; }
-    .wizard-summary-card { background: var(--purple-soft); border: 1px solid #dcd6ff; border-radius: 14px; padding: 14px; }
-    .wizard-summary-card strong { display: block; color: var(--purple-dark); font-size: 18px; }
+    .history-row.completed { background: var(--sage-soft); border-color: #cfe0d3; }
+    .history-main strong { display: block; font-size: 15px; font-weight: 520; }
+    .history-main span { color: var(--muted); font-size: 14px; }
+    .history-check { display: flex; align-items: center; gap: 8px; margin: 0; white-space: nowrap; font-size: 14px; font-weight: 500; }
+    .wizard-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 18px 0 22px; }
+    .wizard-summary-card { background: #faf8ff; border: 1px solid #e2daf8; border-radius: 16px; padding: 16px; }
+    .wizard-summary-card strong { display: block; color: var(--purple-dark); font-size: 20px; font-weight: 520; }
     .ready-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
     .ready-actions button { min-height: 54px; }
-    .wizard-error { margin-top: 10px; color: var(--red); font-size: 13px; font-weight: 700; }
-    .wizard-nav { display: flex; justify-content: space-between; gap: 10px; padding: 16px 24px 22px; border-top: 1px solid var(--line); }
+    .wizard-error { margin-top: 12px; color: var(--red); font-size: 14px; font-weight: 500; }
+    .wizard-nav { display: flex; justify-content: space-between; gap: 10px; padding: 18px 28px 24px; border-top: 1px solid var(--line); background: #fff; }
     .wizard-nav .right { display: flex; gap: 8px; }
     .planner-shell.hidden, .wizard-shell.hidden { display: none !important; }
     .legacy-controls { display: none !important; }
-    .profile-bar { padding: 12px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
-    .profile-summary { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
-    .profile-pill { border: 1px solid #dcd6ff; background: var(--purple-soft); color: var(--purple-dark); border-radius: 999px; padding: 5px 9px; font-size: 12px; font-weight: 750; }
+    .profile-bar { padding: 14px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .profile-summary { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .profile-pill { border: 1px solid #e0d8f7; background: var(--purple-soft); color: var(--purple-dark); border-radius: 999px; padding: 7px 11px; font-size: 13.5px; font-weight: 500; }
     .profile-actions { display: flex; gap: 7px; flex-wrap: wrap; }
-    .current-pill { display: inline-block; margin-top: 4px; border-radius: 999px; padding: 3px 6px; font-size: 10px; font-weight: 800; color: #14532d; background: #e7f8ef; border: 1px solid #addfc1; }
-    .plan-source-controls { display: grid; gap: 4px; margin-top: 6px; }
-    .plan-source-select { width: 100%; font-size: 10.5px; padding: 5px 6px; border-radius: 7px; }
-    .approval-check { display: flex; gap: 5px; align-items: center; margin: 0; font-size: 10.5px; color: #7a3e00; }
+    .current-pill { display: inline-block; margin-top: 6px; border-radius: 999px; padding: 4px 8px; font-size: 12px; font-weight: 500; color: #2f5d45; background: var(--sage-soft); border: 1px solid #cfe0d3; }
+    .plan-source-controls { display: grid; gap: 6px; margin-top: 8px; }
+    .plan-source-select { width: 100%; font-size: 13px; padding: 8px 9px; border-radius: 10px; }
+    .approval-check { display: flex; gap: 6px; align-items: center; margin: 0; font-size: 13px; color: #7a5b19; }
     .print-source { display: none; }
 
     @media (max-width: 720px) {
@@ -844,21 +862,655 @@
       body.print-plan .requirements, body.print-plan .courses-panel, body.print-plan .offerings-panel { display: none !important; }
     }
 
+
+    /* Focused planner workspace */
+    .planner-shell {
+      width: min(100%, 1680px);
+      padding: 22px 24px 40px;
+      gap: 16px;
+    }
+
+    .planner-toolbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 4px 2px 8px;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .plan-title-block { min-width: 0; }
+    .plan-kicker,
+    .panel-kicker {
+      display: block;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+    .plan-title-block h2 {
+      margin: 0 0 5px;
+      color: var(--ink);
+      font-size: clamp(27px, 3vw, 36px);
+      font-weight: 520;
+      letter-spacing: -.035em;
+    }
+    .profile-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 12px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .profile-summary .profile-pill {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 0;
+      font-size: 15px;
+      font-weight: 400;
+    }
+    .profile-summary .profile-pill + .profile-pill::before {
+      content: "·";
+      margin-right: 12px;
+      color: #aaa3ba;
+    }
+    .plan-primary-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 9px;
+    }
+    .plan-primary-actions button { min-height: 44px; }
+
+    .compact-summary.summary {
+      position: static;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      padding: 0;
+      border: 1px solid var(--line);
+      box-shadow: none;
+      overflow: hidden;
+    }
+    .compact-summary .stat {
+      background: white;
+      border: 0;
+      border-radius: 0;
+      padding: 14px 18px;
+      min-height: 82px;
+    }
+    .compact-summary .stat + .stat { border-left: 1px solid var(--line); }
+    .compact-summary .stat strong {
+      display: inline;
+      margin-right: 7px;
+      font-size: 22px;
+      font-weight: 520;
+      color: var(--purple-dark);
+    }
+    .compact-summary .stat span { font-size: 14px; color: var(--muted); }
+    .compact-summary .progress-track { margin-top: 10px; height: 5px; border: 0; }
+
+    .planning-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 330px) minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .remaining-courses-panel {
+      position: sticky;
+      top: 92px;
+      max-height: calc(100vh - 112px);
+      overflow: auto;
+      padding: 18px;
+      scrollbar-width: thin;
+    }
+    .panel-heading-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .panel-heading-row h2,
+    .planner-head h2,
+    .drawer-header h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 520;
+    }
+    .remaining-count {
+      background: var(--gold-soft);
+      border: 1px solid #eadcae;
+      color: #786126;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .panel-intro,
+    .planner-guidance {
+      margin: 7px 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .course-view-toggle,
+    .drawer-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      padding: 4px;
+      gap: 4px;
+      background: #f5f2fa;
+      border-radius: 14px;
+      margin-bottom: 12px;
+    }
+    .course-view-toggle button,
+    .drawer-tabs button {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 9px 10px;
+      color: var(--muted);
+    }
+    .course-view-toggle button.active,
+    .drawer-tabs button.active {
+      background: white;
+      color: var(--purple-dark);
+      box-shadow: 0 1px 5px rgba(61,48,104,.09);
+    }
+    .bank-tools { margin-bottom: 14px; }
+    .course-filter-details {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .course-filter-details summary {
+      cursor: pointer;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 14px;
+      list-style: none;
+    }
+    .course-filter-details summary::-webkit-details-marker { display: none; }
+    .course-filter-details summary::after { content: "+"; float: right; color: var(--purple); }
+    .course-filter-details[open] summary::after { content: "–"; }
+    .course-filter-details .filter-buttons { padding: 0 10px 10px; }
+    .hidden-control { display: none !important; }
+
+    .courses-panel .course-card {
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border-color: var(--line);
+      gap: 10px;
+    }
+    .courses-panel .course-card > input { display: none; }
+    .courses-panel .course-card:hover {
+      background: #faf8ff;
+      border-color: #d8cff4;
+      box-shadow: 0 5px 14px rgba(61,48,104,.05);
+    }
+    .course-title { font-size: 14px; font-weight: 520; line-height: 1.35; }
+    .credit-pill { font-weight: 500; background: var(--purple-soft); }
+    .badge, .filter-button, .credits { font-weight: 500; }
+    .bank-section { margin-top: 14px; padding-top: 14px; }
+    .bank-section-title h3 { font-size: 15px; color: var(--muted); font-weight: 500; }
+
+    .planner-wrap {
+      min-width: 0;
+      padding: 0 0 18px;
+      overflow: hidden;
+    }
+    .planner-head {
+      position: static;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin: 0;
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid var(--line);
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: white;
+    }
+    .planner-secondary-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .planner-secondary-actions button { font-size: 14px; padding: 9px 11px; }
+    .term-legend { margin-top: 10px; }
+    .legend-chip { font-size: 13px; }
+    .semester-grid {
+      grid-template-columns: repeat(3, minmax(250px, 1fr));
+      gap: 12px;
+      padding: 18px;
+    }
+    .semester { min-height: 225px; border-color: var(--line); }
+    .semester-header { padding: 12px 13px; }
+    .semester-header strong,
+    .planned-course strong { font-weight: 520; }
+    .drop-zone { min-height: 166px; }
+    .planned-course { border-radius: 13px; padding: 10px; }
+
+    .top-warning { position: static; box-shadow: none; margin: 0; }
+    .success, .warning { margin-left: 0; margin-right: 0; }
+
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(35, 29, 55, .24);
+      z-index: 180;
+      opacity: 1;
+      transition: opacity .18s ease;
+    }
+    .planner-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 190;
+      width: min(520px, 94vw);
+      height: 100vh;
+      overflow: auto;
+      background: white;
+      border-left: 1px solid var(--line);
+      box-shadow: -18px 0 50px rgba(47,42,69,.16);
+      transform: translateX(102%);
+      transition: transform .22s ease;
+      padding-bottom: 28px;
+    }
+    .planner-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      padding: 20px;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .drawer-tabs { margin: 16px 20px 0; }
+    .drawer-panel { padding: 4px 20px 20px; }
+    .drawer-section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 0 9px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 4px;
+    }
+    .drawer-section-heading h3 { margin: 0; color: var(--ink); font-size: 18px; font-weight: 520; }
+    .drawer-section-heading .filter-button { padding: 7px 10px; }
+    .planner-drawer .requirements,
+    .planner-drawer .offerings-panel {
+      padding: 0;
+      overflow: visible;
+    }
+    .planner-drawer .requirements > h2,
+    .planner-drawer .offerings-panel > h2 { position: static; }
+    .planner-drawer .course-card { padding: 10px 2px; }
+    .planner-drawer .offering-table { font-size: 13px; }
+    .planner-drawer .offering-table th { position: sticky; top: 92px; }
+    body.drawer-open { overflow: hidden; }
+
+    .legacy-controls { display: none !important; }
+
+    @media (max-width: 1320px) {
+      .semester-grid { grid-template-columns: repeat(2, minmax(250px, 1fr)); }
+    }
+
+    @media (max-width: 1080px) {
+      .planner-toolbar { align-items: flex-start; flex-direction: column; }
+      .plan-primary-actions { justify-content: flex-start; }
+      .planning-layout { grid-template-columns: 1fr; }
+      .remaining-courses-panel { position: static; max-height: none; }
+      .planner-head { flex-direction: column; }
+      .planner-secondary-actions { justify-content: flex-start; }
+    }
+
+    @media (max-width: 720px) {
+      .planner-shell { padding: 16px 12px 30px; }
+      .compact-summary.summary { grid-template-columns: 1fr; }
+      .compact-summary .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+      .plan-primary-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+      .plan-primary-actions .primary { grid-column: 1 / -1; }
+      .planner-secondary-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
+      .semester-grid { grid-template-columns: 1fr; padding: 12px; }
+      .planner-head { padding: 18px; }
+    }
+
+    @media print {
+      body.print-plan .planner-toolbar,
+      body.print-plan .compact-summary,
+      body.print-plan .remaining-courses-panel,
+      body.print-plan .planner-secondary-actions,
+      body.print-plan .planner-drawer,
+      body.print-plan .drawer-overlay { display: none !important; }
+      body.print-plan .planning-layout { display: block !important; }
+      body.print-plan .planner-wrap { display: block !important; }
+
+      body.print-checklist .planner-drawer {
+        display: block !important;
+        position: static !important;
+        transform: none !important;
+        width: auto !important;
+        height: auto !important;
+        box-shadow: none !important;
+        border: 0 !important;
+      }
+      body.print-checklist .drawer-header,
+      body.print-checklist .drawer-tabs,
+      body.print-checklist #drawerAvailabilityPanel,
+      body.print-checklist .drawer-overlay { display: none !important; }
+      body.print-checklist #drawerRequirementsPanel { display: block !important; }
+    }
+
+    .wizard-final {
+      min-height: 330px;
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .wizard-final h3 { font-size: 28px; margin-bottom: 8px; }
+    .wizard-final .wizard-subtitle { max-width: 650px; margin-left: auto; margin-right: auto; }
+    .final-plan-button { min-width: 240px; min-height: 52px; margin-top: 8px; }
+
+    .degreefy-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      z-index: 260;
+      transform: translate(-50%, 18px);
+      opacity: 0;
+      pointer-events: none;
+      background: #312a52;
+      color: white;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 14px;
+      box-shadow: 0 12px 32px rgba(35,29,55,.22);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .degreefy-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    .plan-start-prompt {
+      margin: 18px 18px 0;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      border: 1px solid #dfd7f5;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #faf8ff 0%, #f8fbf8 100%);
+    }
+    .plan-start-prompt h3 {
+      margin: 0 0 5px;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 520;
+    }
+    .plan-start-prompt p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 720px;
+    }
+    .plan-start-prompt button { min-width: 140px; }
+    .course-bank-start { line-height: 1.5; padding: 22px 14px; }
+
+    @media (max-width: 720px) {
+      .plan-start-prompt { align-items: flex-start; flex-direction: column; margin: 12px 12px 0; }
+      .plan-start-prompt button { width: 100%; }
+    }
+
+
+    /* Upcoming-semester planner */
+    .semester-planner-shell {
+      width: min(1540px, calc(100% - 28px));
+      margin: 18px auto 42px;
+      display: grid;
+      gap: 14px;
+    }
+    .semester-planner-shell.hidden { display: none !important; }
+    .semester-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 20px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .semester-toolbar h2 { margin: 3px 0 7px; font-size: 27px; color: var(--ink); }
+    .semester-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .semester-status-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 16px;
+      border: 1px solid #e5def7;
+      border-radius: 16px;
+      background: #fbfaff;
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .semester-status-strip.warning-state { border-color: #ead9ab; background: var(--gold-soft); }
+    .semester-planning-layout {
+      display: grid;
+      grid-template-columns: minmax(290px, .82fr) minmax(620px, 1.75fr) minmax(350px, .95fr);
+      gap: 14px;
+      align-items: start;
+    }
+    .semester-catalog-panel,
+    .weekly-schedule-panel,
+    .semester-selection-panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .semester-catalog-panel,
+    .semester-selection-panel {
+      position: sticky;
+      top: 92px;
+      max-height: calc(100vh - 112px);
+      overflow: auto;
+    }
+    .semester-panel-head {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      padding: 17px 18px 13px;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .semester-panel-head h2,
+    .semester-panel-head h3 { margin: 3px 0 4px; color: var(--ink); }
+    .semester-panel-body { padding: 14px 16px 18px; }
+    .semester-catalog-tools { display: grid; gap: 10px; margin-bottom: 12px; }
+    .semester-view-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .semester-view-toggle button.active { background: var(--purple-soft); border-color: #d8cdf7; color: var(--purple-dark); }
+    .semester-section-list { display: grid; gap: 9px; }
+    .semester-section-card {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 12px;
+      background: white;
+      cursor: grab;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+    }
+    .semester-section-card:hover { border-color: #cec3f1; box-shadow: 0 7px 18px rgba(61,48,104,.06); transform: translateY(-1px); }
+    .semester-section-card.conflict-preview { border-color: #e5b5b5; background: #fffafa; }
+    .section-card-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+    .section-card-code { color: var(--purple-dark); font-size: 15px; font-weight: 560; }
+    .section-card-title { margin-top: 3px; color: var(--ink); font-size: 14px; line-height: 1.35; }
+    .section-card-meta { margin-top: 8px; display: grid; gap: 3px; color: var(--muted); font-size: 13px; }
+    .section-card-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+    .section-card-actions button { padding: 7px 11px; font-size: 13px; }
+    .weekly-schedule-panel { overflow: hidden; }
+    .weekly-panel-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .weekly-panel-toolbar h2 { margin: 3px 0 4px; color: var(--ink); }
+    .weekly-panel-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .weekly-schedule-wrap { padding: 12px 14px 18px; overflow-x: auto; }
+    .weekly-day-heads {
+      min-width: 720px;
+      display: grid;
+      grid-template-columns: 62px repeat(5, 1fr);
+      gap: 0;
+      margin-bottom: 5px;
+    }
+    .weekly-day-heads span { text-align: center; color: var(--muted); font-size: 13px; padding: 5px; }
+    .weekly-board {
+      --schedule-height: 784px;
+      min-width: 720px;
+      display: grid;
+      grid-template-columns: 62px repeat(5, 1fr);
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+    }
+    .weekly-time-rail { position: relative; height: var(--schedule-height); background: #faf9fc; border-right: 1px solid var(--line); }
+    .weekly-time-label { position: absolute; right: 8px; transform: translateY(-7px); color: var(--muted); font-size: 11px; }
+    .weekly-day-column {
+      position: relative;
+      height: var(--schedule-height);
+      border-right: 1px solid var(--line);
+      background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #f0edf5 28px);
+    }
+    .weekly-day-column:last-child { border-right: 0; }
+    .weekly-block {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      min-height: 24px;
+      border-radius: 9px;
+      padding: 5px 6px;
+      overflow: hidden;
+      border: 1px solid #cfc4f3;
+      background: #eeeafd;
+      color: #3d3278;
+      font-size: 11px;
+      line-height: 1.25;
+      z-index: 2;
+    }
+    .weekly-block.routine { border-color: #c8d9cc; background: var(--sage-soft); color: #355a43; z-index: 1; }
+    .weekly-block.conflict { border-color: #db8e8e; background: #fff0f0; color: #8b3434; z-index: 3; }
+    .weekly-block strong { display: block; font-size: 11.5px; font-weight: 560; }
+    .weekly-empty-message { padding: 30px 18px; text-align: center; color: var(--muted); }
+    .semester-selection-summary { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .semester-credit-total { color: var(--purple-dark); font-size: 25px; font-weight: 540; }
+    .semester-conflict-list { display: grid; gap: 7px; margin-bottom: 12px; }
+    .semester-conflict-item { padding: 9px 10px; border: 1px solid #e4b2b2; background: #fff7f7; color: #8c3838; border-radius: 12px; font-size: 13px; }
+    .semester-advising-warning { padding: 9px 10px; border: 1px solid #ead9ab; background: var(--gold-soft); color: #71591e; border-radius: 12px; font-size: 13px; }
+    .semester-final-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .semester-final-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+    .semester-final-table td { vertical-align: top; padding: 10px 6px; border-bottom: 1px solid #eeeaf3; }
+    .semester-final-table select { min-width: 112px; padding: 7px 8px; font-size: 13px; border-radius: 10px; }
+    .semester-course-cell { display: grid; gap: 3px; }
+    .semester-course-cell strong { color: var(--ink); font-weight: 550; }
+    .semester-remove-button { border: 0; padding: 0; background: transparent; color: var(--red); text-align: left; font-size: 12px; box-shadow: none; }
+    .semester-table-empty { color: var(--muted); padding: 22px 4px; text-align: center; }
+    .routine-builder { display: grid; gap: 14px; }
+    .routine-entry-form {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.2fr) minmax(220px, 1.5fr) 120px 120px auto;
+      gap: 10px;
+      align-items: end;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fcfbff;
+    }
+    .routine-entry-form label { display: grid; gap: 6px; margin: 0; color: var(--ink); font-size: 14px; }
+    .routine-day-options { display: flex; flex-wrap: wrap; gap: 5px; }
+    .routine-day-options label { display: flex; align-items: center; gap: 4px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 10px; background: white; }
+    .routine-list { display: grid; gap: 8px; }
+    .routine-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 11px 13px; border: 1px solid #d9e5dc; background: var(--sage-soft); border-radius: 13px; }
+    .routine-row button { padding: 6px 9px; font-size: 12px; }
+    .routine-empty { color: var(--muted); padding: 14px 2px; }
+    .routine-dialog { width: min(900px, calc(100vw - 30px)); border: 0; border-radius: 20px; padding: 0; box-shadow: 0 24px 70px rgba(35,29,55,.25); }
+    .routine-dialog::backdrop { background: rgba(35,29,55,.34); }
+    .routine-dialog-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .routine-dialog-head h2 { margin: 0; color: var(--ink); }
+    .routine-dialog-body { padding: 18px 20px 22px; }
+    .planning-scope-note { margin-top: 14px; padding: 13px 14px; border-radius: 14px; background: var(--gold-soft); border: 1px solid #ead9ab; color: #6c5620; }
+
+    @media (max-width: 1250px) {
+      .semester-planning-layout { grid-template-columns: minmax(280px, .85fr) minmax(580px, 1.7fr); }
+      .semester-selection-panel { grid-column: 1 / -1; position: static; max-height: none; }
+    }
+    @media (max-width: 900px) {
+      .semester-toolbar { align-items: flex-start; flex-direction: column; }
+      .semester-toolbar-actions { justify-content: flex-start; }
+      .semester-planning-layout { grid-template-columns: 1fr; }
+      .semester-catalog-panel, .semester-selection-panel { position: static; max-height: none; }
+      .routine-entry-form { grid-template-columns: 1fr 1fr; }
+      .routine-entry-form .routine-label-field, .routine-entry-form .routine-days-field { grid-column: 1 / -1; }
+    }
+    @media (max-width: 620px) {
+      .semester-planner-shell { width: calc(100% - 18px); margin-top: 10px; }
+      .semester-toolbar-actions { display: grid; width: 100%; grid-template-columns: 1fr 1fr; }
+      .semester-toolbar-actions .primary { grid-column: 1 / -1; }
+      .routine-entry-form { grid-template-columns: 1fr; }
+      .routine-entry-form .routine-label-field, .routine-entry-form .routine-days-field { grid-column: auto; }
+    }
+
+    @media print {
+      body.print-semester header,
+      body.print-semester .semester-toolbar-actions,
+      body.print-semester .semester-status-strip,
+      body.print-semester .semester-catalog-panel,
+      body.print-semester .weekly-panel-actions,
+      body.print-semester .routine-dialog { display: none !important; }
+      body.print-semester .semester-planner-shell { width: 100%; margin: 0; display: block; }
+      body.print-semester .semester-toolbar { border: 0; box-shadow: none; padding: 0 0 10px; }
+      body.print-semester .semester-planning-layout { display: grid; grid-template-columns: 1.55fr .9fr; }
+      body.print-semester .weekly-schedule-panel,
+      body.print-semester .semester-selection-panel { box-shadow: none; position: static; max-height: none; break-inside: avoid; }
+      body.print-semester .weekly-schedule-wrap { overflow: visible; }
+      body.print-semester .weekly-board, body.print-semester .weekly-day-heads { min-width: 0; }
+    }
+
   </style>
 </head>
 <body>
   <header class="degreefy-header">
     <div class="brand-lockup">
-      <div class="brand-mark" aria-hidden="true">D✓</div>
+      <div class="brand-mark" aria-hidden="true">D</div>
       <div class="brand-copy">
         <h1>Degreefy</h1>
-        <p>A guided Spring Hill College degree-planning journey.</p>
+        <p>A clear path for building a Spring Hill College degree plan.</p>
       </div>
-    </div>
-    <div class="header-actions">
-      <button type="button" id="headerEditSetupBtn">Edit setup</button>
-      <button type="button" id="headerPrintChecklistBtn">Print checklist</button>
-      <button type="button" id="headerPrintPlanBtn">Print plan</button>
     </div>
   </header>
 
@@ -866,7 +1518,7 @@
     <div class="panel wizard-card">
       <div class="wizard-top">
         <div class="wizard-eyebrow" id="wizardEyebrow">Step 1</div>
-        <h2 id="wizardHeading">Let’s build a degree journey</h2>
+        <h2 id="wizardHeading">Set up the planner</h2>
         <div class="small" id="wizardStepLabel"></div>
         <div class="wizard-progress" id="wizardProgress"></div>
       </div>
@@ -882,152 +1534,235 @@
   </section>
 
   <div class="app planner-shell hidden" id="plannerApp">
-    <section class="panel profile-bar" aria-label="Planning profile">
-      <div class="profile-summary" id="profileSummary"></div>
-      <div class="profile-actions">
-        <button type="button" id="profileEditSetupBtn">Edit setup</button>
-        <button type="button" id="profilePrintChecklistBtn">Print checklist</button>
-        <button type="button" class="primary" id="profilePrintPlanBtn">Print plan</button>
+    <section class="planner-toolbar profile-bar" aria-label="Degree plan controls">
+      <div class="plan-title-block">
+        <span class="plan-kicker">Your degree plan</span>
+        <h2 id="planPageTitle">Plan through Spring 2030</h2>
+        <div class="profile-summary" id="profileSummary"></div>
       </div>
-    </section>
-    <section class="panel controls legacy-controls" aria-label="Legacy degree planner setup">
-      <div class="setup-grid">
-        <div>
-          <h2>Programs</h2>
-          <div class="program-columns">
-            <div>
-              <h3>Majors</h3>
-              <div id="majorControls"></div>
-            </div>
-            <div>
-              <h3>Minors</h3>
-              <div id="minorControls"></div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2>Graduation</h2>
-          <label style="display:block; margin-bottom:10px;">
-            <span class="small">Graduating semester</span>
-            <select id="gradSelect"></select>
-          </label>
-          <div class="note">Planning starts in <strong>Fall 2026</strong>.</div>
-        </div>
-
-        <div>
-          <h2>Math Placement</h2>
-          <label style="display:block; margin-bottom:10px;">
-            <span class="small">Placement result</span>
-            <select id="mathPlacementSelect">
-              <option value="">Select result</option>
-              <option value="MTH 100">MTH 100</option>
-              <option value="MTH 111">MTH 111</option>
-              <option value="MTH 121">MTH 121</option>
-            </select>
-          </label>
-          <div class="small">Placement into MTH 111 or MTH 121 satisfies lower math prerequisites for planning, but does not add earned credits.</div>
-        </div>
-
-        <div>
-          <h2>Save / Share</h2>
-          <div class="small">Students should confirm plans with their advisor.</div>
-          <div class="toolbar">
-            <button class="primary" id="printBtn">Print plan</button>
-            <button id="exportBtn">Export JSON</button>
-            <button id="resetBtn">Reset</button>
-          </div>
-        </div>
+      <div class="plan-primary-actions">
+        <button type="button" class="primary" id="populateBtn">Plan for me</button>
+        <button type="button" id="printBtn">Print / PDF</button>
+        <button type="button" id="sharePlanBtn">Share with advisor</button>
+        <button type="button" id="profileEditSetupBtn">Change setup</button>
       </div>
     </section>
 
-    <main class="main">
-      <section class="panel summary" aria-label="Degree planning summary">
-        <div class="stat"><strong id="programLeft">0</strong><span>program courses left</span><div class="progress-track"><div class="progress-fill" id="programProgress"></div></div></div>
-        <div class="stat"><strong id="coreLeft">0</strong><span>core courses left</span><div class="progress-track"><div class="progress-fill" id="coreProgress"></div></div></div>
-        <div class="stat"><strong id="creditsLeft">120</strong><span>credits left to 120</span><div class="progress-track"><div class="progress-fill" id="creditProgress"></div></div></div>
-      </section>
-      <div id="plannerWarnings" class="warning top-warning hidden"></div>
-      <div id="successMessage" class="success hidden">Your degree planning is a success. Please review it with your advisor.</div>
-      <div id="overlapMessage" class="warning hidden"></div>
+    <section class="compact-summary summary" aria-label="Degree planning summary">
+      <div class="stat"><strong id="programLeft">0</strong><span>program requirements remaining</span><div class="progress-track"><div class="progress-fill" id="programProgress"></div></div></div>
+      <div class="stat"><strong id="coreLeft">0</strong><span>core requirements remaining</span><div class="progress-track"><div class="progress-fill" id="coreProgress"></div></div></div>
+      <div class="stat"><strong id="creditsLeft">120</strong><span>credits remaining to 120</span><div class="progress-track"><div class="progress-fill" id="creditProgress"></div></div></div>
+    </section>
 
-      <section class="workspace">
-        <div class="side-stack checklist-side">
-          <aside class="panel requirements core-requirements">
-            <h2>Checklist: Core</h2>
-            <div id="corePanel">
-              <div class="small" style="margin-bottom:10px;">Core requirements are satisfied by completed, checked, or planned eligible courses.</div>
-              <div class="checklist-tools core-only-tool">
-                <button type="button" id="coreUncheckedOnly" class="filter-button" aria-pressed="false">Show unchecked only</button>
-              </div>
-              <div class="course-list" id="coreList"></div>
-            </div>
-          </aside>
+    <div id="plannerWarnings" class="warning top-warning hidden"></div>
+    <div id="successMessage" class="success hidden">The requirements are planned. Review the result with the student’s advisor.</div>
+    <div id="overlapMessage" class="warning hidden"></div>
 
-          <aside class="panel requirements program-requirements">
-            <h2>Checklist: Program</h2>
-            <div class="checklist-tools program-only-tool">
-              <button type="button" id="programUncheckedOnly" class="filter-button" aria-pressed="false">Show unchecked only</button>
-            </div>
-            <div id="programPanel">
-              <div class="small" id="programHelp">Choose at least one major or minor.</div>
-              <div class="section-title first"><h3>Required Courses</h3><span class="badge" id="requiredBadge">0</span></div>
-              <div class="course-list" id="requiredList"></div>
-              <div class="section-title"><h3>Electives / Choices</h3><span class="badge" id="electiveBadge">0</span></div>
-              <div class="small" style="margin-bottom:6px;">Drop an eligible course here, check it manually, or place an eligible course in the planner.</div>
-              <div class="course-list" id="electiveList"></div>
-            </div>
-          </aside>
+    <main class="planning-layout">
+      <aside class="panel courses-panel remaining-courses-panel">
+        <div class="panel-heading-row">
+          <div>
+            <span class="panel-kicker">Drag from here</span>
+            <h2>Courses to place</h2>
+          </div>
+          <span class="remaining-count" id="remainingCourseCount"></span>
         </div>
+        <p class="panel-intro">Completed courses are hidden. Courses disappear from this list after they are placed in a semester.</p>
+        <div class="course-view-toggle" role="group" aria-label="Course list view">
+          <button type="button" class="active" id="courseViewRequiredBtn">Unplaced</button>
+          <button type="button" id="courseViewAllBtn">All courses</button>
+        </div>
+        <div class="bank-tools">
+          <input type="search" id="courseSearch" placeholder="Search courses" />
+          <details class="course-filter-details">
+            <summary>Filter by subject</summary>
+            <div class="filter-buttons" id="courseFilterButtons" aria-label="Course filters"></div>
+          </details>
+          <label class="hidden-control">
+            <input type="checkbox" id="hideCompletedCourses" checked />
+            <span>Hide completed and planned courses</span>
+          </label>
+        </div>
+        <div class="bank-list" id="courseBank"></div>
+      </aside>
 
-        <section class="panel planner-wrap">
-          <div class="planner-head">
-            <div>
-              <h2>Planner</h2>
-              <div class="small">Drag course cards into semesters. Credits update automatically.</div>
-              <div class="term-legend" aria-label="Semester color legend">
-                <span class="legend-chip legend-fall">Fall</span>
-                <span class="legend-chip legend-spring">Spring</span>
-                <span class="legend-chip legend-summer">Summer</span>
-              </div>
-            </div>
-            <div class="planner-actions">
-              <button class="primary" id="populateBtn">Populate all unchecked</button>
-              <button id="clearPlanBtn">Clear scheduled courses</button>
-              <div class="small"><strong>Tip:</strong> Auto-populate uses Fall/Spring only, avoids Summer, prioritizes prerequisites/gateway courses, and tries to keep Fall/Spring semesters at 12–18 credits.</div>
+      <section class="panel planner-wrap">
+        <div class="planner-head">
+          <div>
+            <h2>Semester plan</h2>
+            <p class="planner-guidance">Drag a course into a semester, then move it whenever the plan needs to change.</p>
+            <div class="term-legend" aria-label="Semester color legend">
+              <span class="legend-chip legend-fall">Fall</span>
+              <span class="legend-chip legend-spring">Spring</span>
+              <span class="legend-chip legend-summer">Summer</span>
             </div>
           </div>
-          <div class="semester-grid" id="semesterGrid"></div>
-          <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
-        </section>
-
-        <div class="side-stack course-side">
-          <aside class="panel courses-panel">
-            <h2>Courses</h2>
-            <div class="small" style="margin-bottom:10px;">Drag these course cards into the planner or onto a matching choice requirement. Course data is loaded from the configured GitHub CSV folder. Confirm registration details in BadgerWeb.</div>
-            <div class="bank-tools">
-              <input type="search" id="courseSearch" placeholder="Filter courses" />
-              <div class="filter-buttons" id="courseFilterButtons" aria-label="Course filters"></div>
-              <label>
-                <input type="checkbox" id="hideCompletedCourses" />
-                <span>Hide completed/planned courses</span>
-              </label>
-            </div>
-            <div class="bank-list" id="courseBank"></div>
-          </aside>
-
-          <aside class="panel offerings-panel">
-            <h2>Course Availability</h2>
-            <div class="small" style="margin-bottom:10px;">Current-semester courses and projected typical offerings are loaded from CSV. An <strong>!</strong> appears when a Spring Hill course is planned outside its typical term. Confirm final availability in BadgerWeb.</div>
-            <table class="offering-table" aria-label="Typical course offerings">
-              <thead><tr><th>Area</th><th id="currentOfferingHeading">Current</th><th>Typical Fall</th><th>Typical Spring</th><th>Typical Summer</th></tr></thead>
-              <tbody id="offeringRows"></tbody>
-            </table>
-          </aside>
+          <div class="planner-secondary-actions">
+            <button type="button" id="drawerRequirementsBtn">Remaining requirements</button>
+            <button type="button" id="drawerAvailabilityBtn">Course availability</button>
+            <button type="button" id="toggleSummerBtn">Show summer terms</button>
+            <button type="button" id="clearPlanBtn">Clear plan</button>
+          </div>
         </div>
+        <div class="plan-start-prompt" id="planStartPrompt">
+          <div>
+            <span class="panel-kicker">A helpful first draft</span>
+            <h3>Let Degreefy arrange the remaining courses.</h3>
+            <p>It will follow prerequisites, typical course offerings, and semester credit limits. You can move every course afterward.</p>
+          </div>
+          <button type="button" class="primary" id="planForMeInlineBtn">Plan for me</button>
+        </div>
+        <div class="semester-grid" id="semesterGrid"></div>
+        <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
       </section>
     </main>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay"></div>
+    <aside class="planner-drawer" id="plannerDrawer" aria-hidden="true" aria-label="Planning details">
+      <div class="drawer-header">
+        <div>
+          <span class="panel-kicker">Planning details</span>
+          <h2 id="drawerTitle">Remaining requirements</h2>
+        </div>
+        <button type="button" id="closePlannerDrawerBtn">Close</button>
+      </div>
+      <div class="drawer-tabs" role="tablist" aria-label="Planning detail views">
+        <button type="button" class="active" id="drawerRequirementsTab">Requirements</button>
+        <button type="button" id="drawerAvailabilityTab">Availability</button>
+      </div>
+
+      <div class="drawer-panel" id="drawerRequirementsPanel">
+        <section class="requirements core-requirements">
+          <div class="drawer-section-heading">
+            <h3>Core curriculum</h3>
+            <button type="button" id="coreUncheckedOnly" class="filter-button active" aria-pressed="true">Show all</button>
+          </div>
+          <div id="corePanel">
+            <div class="course-list" id="coreList"></div>
+          </div>
+        </section>
+
+        <section class="requirements program-requirements">
+          <div class="drawer-section-heading">
+            <h3>Programs</h3>
+            <button type="button" id="programUncheckedOnly" class="filter-button active" aria-pressed="true">Show all</button>
+          </div>
+          <div id="programPanel">
+            <div class="small" id="programHelp">Choose at least one major or minor.</div>
+            <div class="section-title first"><h4>Required courses</h4><span class="badge" id="requiredBadge">0</span></div>
+            <div class="course-list" id="requiredList"></div>
+            <div class="section-title"><h4>Electives and choices</h4><span class="badge" id="electiveBadge">0</span></div>
+            <div class="course-list" id="electiveList"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="drawer-panel hidden" id="drawerAvailabilityPanel">
+        <section class="offerings-panel">
+          <p class="panel-intro">Current-semester and typical offerings come from the CSV data. Confirm final availability in BadgerWeb.</p>
+          <table class="offering-table" aria-label="Typical course offerings">
+            <thead><tr><th>Area</th><th id="currentOfferingHeading">Current</th><th>Fall</th><th>Spring</th><th>Summer</th></tr></thead>
+            <tbody id="offeringRows"></tbody>
+          </table>
+        </section>
+      </div>
+    </aside>
+
+    <section class="controls legacy-controls" aria-hidden="true">
+      <div id="majorControls"></div>
+      <div id="minorControls"></div>
+      <select id="gradSelect"></select>
+      <select id="mathPlacementSelect">
+        <option value="">Select result</option>
+        <option value="MTH 100">MTH 100</option>
+        <option value="MTH 111">MTH 111</option>
+        <option value="MTH 121">MTH 121</option>
+      </select>
+      <button type="button" id="exportBtn">Export JSON</button>
+      <button type="button" id="resetBtn">Reset</button>
+    </section>
   </div>
+
+
+  <div class="semester-planner-shell hidden" id="semesterPlannerApp">
+    <section class="semester-toolbar" aria-label="Upcoming semester plan controls">
+      <div>
+        <span class="plan-kicker">Upcoming semester</span>
+        <h2 id="semesterPlanTitle">Plan the upcoming semester</h2>
+        <div class="profile-summary" id="semesterProfileSummary"></div>
+      </div>
+      <div class="semester-toolbar-actions">
+        <button type="button" class="primary" id="semesterPlanForMeBtn">Plan for me</button>
+        <button type="button" id="semesterPrintBtn">Print / PDF</button>
+        <button type="button" id="semesterShareBtn">Share with advisor</button>
+        <button type="button" id="semesterChangeSetupBtn">Change setup</button>
+      </div>
+    </section>
+
+    <div class="semester-status-strip" id="semesterStatusStrip"></div>
+
+    <main class="semester-planning-layout">
+      <aside class="semester-catalog-panel">
+        <div class="semester-panel-head">
+          <span class="panel-kicker">Published schedule</span>
+          <h2>Available sections</h2>
+          <p class="panel-intro" id="semesterCatalogIntro">Drag a section into the weekly schedule or use Add.</p>
+        </div>
+        <div class="semester-panel-body">
+          <div class="semester-catalog-tools">
+            <input type="search" id="semesterSectionSearch" placeholder="Search course code, title, or instructor" />
+            <div class="semester-view-toggle" role="group" aria-label="Available section view">
+              <button type="button" class="active" id="semesterNeededViewBtn">Needed</button>
+              <button type="button" id="semesterAllViewBtn">All courses</button>
+            </div>
+          </div>
+          <div class="semester-section-list" id="semesterSectionList"></div>
+        </div>
+      </aside>
+
+      <section class="weekly-schedule-panel">
+        <div class="weekly-panel-toolbar">
+          <div>
+            <span class="panel-kicker">Conflict-aware view</span>
+            <h2>Weekly schedule</h2>
+            <p class="panel-intro">Classes and unavailable routine blocks appear together. Conflicts are highlighted immediately.</p>
+          </div>
+          <div class="weekly-panel-actions">
+            <button type="button" id="editRoutineBtn">Edit weekly routine</button>
+            <button type="button" id="clearSemesterPlanBtn">Clear courses</button>
+          </div>
+        </div>
+        <div class="weekly-schedule-wrap">
+          <div class="weekly-day-heads" aria-hidden="true"><span></span><span>Monday</span><span>Tuesday</span><span>Wednesday</span><span>Thursday</span><span>Friday</span></div>
+          <div class="weekly-board" id="weeklyScheduleBoard" aria-label="Weekly class schedule"></div>
+        </div>
+      </section>
+
+      <aside class="semester-selection-panel">
+        <div class="semester-panel-head">
+          <div class="semester-selection-summary">
+            <div>
+              <span class="panel-kicker">Final schedule</span>
+              <h3>Selected courses</h3>
+            </div>
+            <div><span class="semester-credit-total" id="semesterCreditTotal">0</span><span class="small"> credits</span></div>
+          </div>
+        </div>
+        <div class="semester-panel-body">
+          <div class="semester-conflict-list" id="semesterConflictList"></div>
+          <table class="semester-final-table" aria-label="Selected course schedule">
+            <thead><tr><th>Course code</th><th>Days and times</th><th>Credit hours</th><th>Type</th></tr></thead>
+            <tbody id="semesterFinalTableBody"></tbody>
+          </table>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <dialog class="routine-dialog" id="routineDialog">
+    <div class="routine-dialog-head"><h2>Weekly routine</h2><button type="button" id="closeRoutineDialogBtn">Done</button></div>
+    <div class="routine-dialog-body" id="routineDialogBody"></div>
+  </dialog>
 
 <script>
 const START_TERM = { term: "Fall", year: 2026 };
@@ -1035,6 +1770,7 @@ const TERMS = ["Fall", "Spring", "Summer"];
 const DEGREE_MIN_CREDITS = 120;
 const TERM_LIMITS = { Fall: 18, Spring: 18, Summer: 12 };
 let CURRENT_OFFERINGS = {};
+let SEMESTER_SECTIONS = [];
 let DATA_SOURCE_KIND = "embedded";
 
 let OFFERINGS = {
@@ -1392,10 +2128,12 @@ const $ = id => document.getElementById(id);
 function defaultState() {
   return {
     majors: [], minors: [], grad: "Spring 2030", gradYear: 2030, gradTerm: "Spring", mathPlacement: "",
+    mathPlacementTaken: "", planningScope: "degree", workflowVersion: 2,
     profileRole: "", studentType: "", setupStep: 1, setupComplete: false,
     githubBaseUrl: "./data", dataStatus: "",
     checked: {}, checkedCore: {}, checkedCourses: {}, planned: {}, satisfied: {}, satisfiedCore: {},
-    courseSources: {}, acadeumApprovals: {}
+    courseSources: {}, acadeumApprovals: {},
+    routineBlocks: [], semesterSelections: [], semesterCourseTypes: {}, semesterCourseView: "needed"
   };
 }
 
@@ -1410,6 +2148,14 @@ function loadState() {
     state.checkedCourses = state.checkedCourses || {};
     state.planned = state.planned || {};
     state.mathPlacement = state.mathPlacement || "";
+    state.mathPlacementTaken = state.mathPlacementTaken || (state.mathPlacement ? "yes" : "");
+    state.planningScope = state.planningScope || "degree";
+    state.routineBlocks = Array.isArray(state.routineBlocks) ? state.routineBlocks : [];
+    state.semesterSelections = Array.isArray(state.semesterSelections) ? state.semesterSelections : [];
+    state.semesterCourseTypes = state.semesterCourseTypes || {};
+    state.semesterCourseView = state.semesterCourseView || "needed";
+    const oldWorkflow = Number(state.workflowVersion || 0) < 2;
+    state.workflowVersion = 2;
     state.gradYear = Number(state.gradYear || parseTerm(state.grad || "Spring 2030").year || 2030);
     state.gradTerm = state.gradTerm || parseTerm(state.grad || "Spring 2030").term || "Spring";
     state.profileRole = state.profileRole || "";
@@ -1419,6 +2165,7 @@ function loadState() {
     state.githubBaseUrl = state.githubBaseUrl || "./data";
     state.courseSources = state.courseSources || {};
     state.acadeumApprovals = state.acadeumApprovals || {};
+    if (oldWorkflow) { state.setupStep = 1; state.setupComplete = false; }
   } catch (e) { state = defaultState(); }
 }
 function saveState() { localStorage.setItem("degreefyState", JSON.stringify(state)); }
@@ -1637,6 +2384,8 @@ let COURSE_FILTERS = [
   { id: "arts", label: "Visual/Performing Arts", prefixes: ["ART", "ARH", "MUS", "THR"] }
 ];
 let activeCourseFilter = "all";
+let courseViewMode = "needed";
+let showSummerTerms = false;
 
 function courseGroup(item) {
   const raw = item.rawCode || item.code;
@@ -1670,6 +2419,43 @@ function coursePassesFilter(item) {
   if ((filter.rawStarts || []).some(start => String(raw).startsWith(start))) return true;
   if ((filter.rawIncludes || []).some(part => String(raw).includes(part))) return true;
   return false;
+}
+
+function unmetProgramRequirements() {
+  return Array.from(getRequirementMap().values()).filter(item => !isRequirementChecked(item));
+}
+
+function unmetCoreRequirements() {
+  return CORE.map(makeCoreItem).filter(Boolean).filter(item => !isCoreRequirementChecked(item));
+}
+
+function remainingDependencyCodes() {
+  const seeds = [
+    ...unmetProgramRequirements().filter(item => !isCriteriaRequirement(item)).map(item => item.code),
+    ...unmetCoreRequirements().filter(item => !isCriteriaRequirement(item)).map(item => item.code)
+  ].filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+  const dependencies = new Set();
+  const visit = code => {
+    if (!code || dependencies.has(code)) return;
+    dependencies.add(code);
+    getPrereqCodes(code).forEach(visit);
+    getCoreqCodes(code).forEach(visit);
+  };
+  seeds.forEach(visit);
+  return dependencies;
+}
+
+function courseBelongsToRemainingPlan(item) {
+  const offered = item.id && isOfferedCourseId(item.id) ? item : makeOfferedItem(item.rawCode || item.code);
+  const raw = offered.rawCode || offered.code;
+  if (remainingDependencyCodes().has(raw)) return true;
+  return [...unmetProgramRequirements(), ...unmetCoreRequirements()].some(req => canSatisfyRequirement(offered, req));
+}
+
+function courseShouldStayOutOfBank(item) {
+  const raw = item.rawCode || item.code;
+  if (isOfferedSelected(item.id) || isCourseDone(raw)) return true;
+  return getDoneCourseCodes().some(done => doneCodeSatisfiesNeeded(done, raw));
 }
 
 function renderCourseFilterButtons() {
@@ -2011,7 +2797,7 @@ function renderRequirementList() {
   const required = reqs.filter(x => !isCriteriaRequirement(x));
   const electives = reqs.filter(x => isCriteriaRequirement(x));
 
-  $("programHelp").textContent = reqs.length ? "Requirements are listed here. Use the Course Draggables panel to plan courses or drop eligible choices onto a requirement." : "Choose at least one major or minor.";
+  $("programHelp").textContent = reqs.length ? "Only remaining requirements are shown. Planned and completed requirements are hidden by default." : "Choose at least one major or minor.";
   $("requiredBadge").textContent = required.length;
   $("electiveBadge").textContent = electives.length;
 
@@ -2037,8 +2823,24 @@ function renderCourseBank() {
   if (!bank) return;
   bank.innerHTML = "";
 
+  const hasScheduledPlan = Object.values(state.planned || {}).some(list => (list || []).length);
+  if (courseViewMode === "needed" && !hasScheduledPlan) {
+    const count = $("remainingCourseCount");
+    if (count) count.textContent = "";
+    const empty = document.createElement("div");
+    empty.className = "empty course-bank-start";
+    empty.textContent = "Use Plan for me to create a first draft. Switch to All courses to build a plan manually.";
+    bank.appendChild(empty);
+    return;
+  }
+
+  const candidates = getCourseBankItems()
+    .filter(item => !courseShouldStayOutOfBank(item))
+    .filter(item => courseViewMode === "all" || courseBelongsToRemainingPlan(item))
+    .filter(coursePassesFilter);
+
   const grouped = new Map();
-  getCourseBankItems().filter(coursePassesFilter).forEach(item => {
+  candidates.forEach(item => {
     const group = courseGroup(item);
     if (!grouped.has(group)) grouped.set(group, []);
     grouped.get(group).push(item);
@@ -2059,23 +2861,12 @@ function renderCourseBank() {
 
     let groupShown = 0;
     items.forEach(item => {
-      const checked = isOfferedSelected(item.id);
       const before = list.children.length;
-      appendCard(list, item, checked, {
-        draggable: !isPlanned(item.id),
-        checkable: true,
+      appendCard(list, item, false, {
+        draggable: true,
+        checkable: false,
         dropTarget: false,
-        searchId: "courseSearch",
-        hideCompletedId: "hideCompletedCourses",
-        onCheck: (isChecked, offeredItem) => {
-          if (isChecked) {
-            state.checkedCourses[offeredItem.id] = true;
-            satisfyMatchingRequirementsWithCourse(offeredItem);
-          } else {
-            delete state.checkedCourses[offeredItem.id];
-            if (!isPlanned(offeredItem.id)) cleanSatisfiedByCourse(offeredItem.id);
-          }
-        }
+        searchId: "courseSearch"
       });
       if (list.children.length > before) groupShown++;
     });
@@ -2089,10 +2880,15 @@ function renderCourseBank() {
     }
   });
 
+  const count = $("remainingCourseCount");
+  if (count) count.textContent = shown ? `${shown} available` : "";
+
   if (!shown) {
     const empty = document.createElement("div");
     empty.className = "empty";
-    empty.textContent = "No courses match this filter.";
+    empty.textContent = courseViewMode === "needed"
+      ? "All currently needed courses are completed or already placed."
+      : "No courses match this search or filter.";
     bank.appendChild(empty);
   }
 }
@@ -2764,9 +3560,7 @@ function fillRemainingCreditsTo120(activeTerms, skipped) {
   }
 }
 
-function populateAllUnchecked() {
-  const planningAidMessage = "This is a planning aid only. Real course offerings, seats, prerequisites, and degree-audit details may differ. Class planning should be reviewed every semester when the semester schedule is released, and all plans should be verified by the student's advisor.";
-  if (!confirm(planningAidMessage + "\n\nContinue with auto-populate?")) return;
+function populateAllUnchecked(options = {}) {
 
   // Auto-population starts with Fall/Spring. Summer is used only as a last resort if warnings cannot be repaired otherwise.
   const allTerms = generateTerms(state.grad);
@@ -2858,12 +3652,21 @@ function renderPlanner() {
   const all = getAllCourseById();
   const activeTerms = generateTerms(state.grad);
   Object.keys(state.planned).forEach(k => { if (!activeTerms.includes(k)) delete state.planned[k]; });
+  const hasScheduledPlan = Object.values(state.planned || {}).some(list => (list || []).length);
+  $("planStartPrompt")?.classList.toggle("hidden", hasScheduledPlan);
+  $("populateBtn")?.classList.toggle("hidden", !hasScheduledPlan);
+  $("printBtn")?.classList.toggle("hidden", !hasScheduledPlan);
+  $("sharePlanBtn")?.classList.toggle("hidden", !hasScheduledPlan);
+  $("clearPlanBtn")?.classList.toggle("hidden", !hasScheduledPlan);
+  if ($("toggleSummerBtn")) $("toggleSummerBtn").textContent = showSummerTerms ? "Hide empty summers" : "Show summer terms";
 
   activeTerms.forEach(key => {
     if (!state.planned[key]) state.planned[key] = [];
+    const termInfo = parseTerm(key);
+    if (termInfo.term === "Summer" && !showSummerTerms && state.planned[key].length === 0) return;
     const credits = state.planned[key].reduce((sum, id) => sum + (all.get(id)?.credits || 0), 0);
     const limit = semesterLimit(key);
-    const term = parseTerm(key).term;
+    const term = termInfo.term;
     const overload = credits > limit;
     const underScholarshipMinimum = term !== "Summer" && credits > 0 && credits < 12;
     const sem = document.createElement("div");
@@ -3107,32 +3910,7 @@ function renderPlannerWarnings() {
 }
 
 function triggerConfetti() {
-  let layer = $("confettiLayer");
-  if (!layer) {
-    layer = document.createElement("div");
-    layer.id = "confettiLayer";
-    layer.setAttribute("aria-hidden", "true");
-    document.body.appendChild(layer);
-  }
-  layer.innerHTML = "";
-  const burst = document.createElement("div");
-  burst.className = "confetti-burst";
-  burst.textContent = "🎉";
-  layer.appendChild(burst);
-  const colors = ["#5f4bb6", "#f6ad55", "#68d391", "#f6e05e", "#b794f4", "#fc8181"];
-  const count = 90;
-  for (let i = 0; i < count; i++) {
-    const piece = document.createElement("span");
-    piece.className = "confetti-piece";
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.background = colors[i % colors.length];
-    piece.style.animationDelay = `${Math.random() * 0.25}s`;
-    piece.style.animationDuration = `${1.8 + Math.random() * 1.1}s`;
-    piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 260}px`);
-    piece.style.setProperty("--spin", `${360 + Math.random() * 720}deg`);
-    layer.appendChild(piece);
-  }
-  window.setTimeout(() => { if (layer) layer.innerHTML = ""; }, 3200);
+  // Keep completion feedback calm and unobtrusive.
 }
 
 function renderSummary() {
@@ -3212,7 +3990,8 @@ const DATA_FILES = {
   requirements: "requirements.csv",
   courses: "courses.csv",
   offerings: "offerings.csv",
-  core: "core_requirements.csv"
+  core: "core_requirements.csv",
+  schedule: "semester_schedule.csv"
 };
 
 const ROLE_OPTIONS = [
@@ -3220,6 +3999,16 @@ const ROLE_OPTIONS = [
   { value: "faculty", icon: "🧑‍🏫", title: "Faculty", description: "Help a student map requirements and course order." },
   { value: "staff", icon: "🧭", title: "Staff", description: "Support advising, transfer review, or registration." }
 ];
+
+const PLANNING_SCOPE_OPTIONS = [
+  { value: "degree", title: "Plan the full degree journey", description: "Build a semester-by-semester path through graduation." },
+  { value: "semester", title: "Plan only the upcoming semester", description: "Use the published class schedule and a weekly conflict checker." }
+];
+const MATH_TEST_OPTIONS = [
+  { value: "yes", title: "Yes", description: "The student has completed the math placement test." },
+  { value: "no", title: "No", description: "The student has not completed the math placement test yet." }
+];
+
 const STUDENT_TYPE_OPTIONS = [
   { value: "incoming", icon: "🌱", title: "Incoming student", description: "Starting college with no completed or transferred courses." },
   { value: "transfer", icon: "🔁", title: "Transfer student", description: "Bringing completed coursework from another institution." },
@@ -3273,7 +4062,8 @@ async function fetchCSV(base, file) {
 function refreshDerivedCollections() {
   const offered = Object.values(OFFERINGS).flatMap(terms => [...(terms.Fall || []), ...(terms.Spring || []), ...(terms.Summer || [])]);
   const current = Object.values(CURRENT_OFFERINGS).flat();
-  OFFERED_CODES = Array.from(new Set([...Object.keys(COURSE_CATALOG), ...Object.keys(BUNDLES), ...offered, ...current]));
+  const scheduled = (SEMESTER_SECTIONS || []).map(section => section.course_code).filter(Boolean);
+  OFFERED_CODES = Array.from(new Set([...Object.keys(COURSE_CATALOG), ...Object.keys(BUNDLES), ...offered, ...current, ...scheduled]));
   const areas = Array.from(new Set(OFFERED_CODES.map(code => courseGroup(makeOfferedItem(code))).filter(Boolean))).sort();
   COURSE_GROUP_ORDER = areas.length ? areas : ["Other"];
   COURSE_FILTERS = [
@@ -3350,13 +4140,42 @@ function buildDataFromCSV(datasets) {
   Object.values(current).forEach(list => list.sort());
   return { courses, bundles, programs, core, offerings, current };
 }
+
+function normalizeScheduleSection(row) {
+  return {
+    term: row.term || "",
+    term_code: row.term_code || "",
+    start_date: row.start_date || "",
+    end_date: row.end_date || "",
+    section_id: row.section_id || `${String(row.course_code || "").replace(/\s/g, "")}-${row.section || "01"}`,
+    course_code: row.course_code || "",
+    section: row.section || "01",
+    course_title: row.course_title || COURSE_CATALOG[row.course_code]?.title || row.course_code || "Course",
+    credit_hours: Number(row.credit_hours || COURSE_CATALOG[row.course_code]?.credits || 0),
+    days: String(row.days || "").replace(/\s/g, ""),
+    begin_time: row.begin_time || "",
+    end_time: row.end_time || "",
+    modality: row.modality || ((row.building === "OLC" || row.room === "OLC") ? "Online" : "In person"),
+    building: row.building || "",
+    room: row.room || "",
+    location: row.location || [row.building, row.room].filter(Boolean).join(" "),
+    instructor: row.instructor || "",
+    comments: row.comments || "",
+    registered: Number(row.registered || 0),
+    capacity: Number(row.capacity || 0)
+  };
+}
+
 async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = false) {
   const status = $("dataSourceStatus");
   if (status) { status.className = "data-status"; status.textContent = "Loading CSV files…"; }
   try {
     const programs = await fetchCSV(base, DATA_FILES.programs);
-    const [courses, offerings, core] = await Promise.all([
-      fetchCSV(base, DATA_FILES.courses), fetchCSV(base, DATA_FILES.offerings), fetchCSV(base, DATA_FILES.core)
+    const [courses, offerings, core, schedule] = await Promise.all([
+      fetchCSV(base, DATA_FILES.courses),
+      fetchCSV(base, DATA_FILES.offerings),
+      fetchCSV(base, DATA_FILES.core),
+      fetchCSV(base, DATA_FILES.schedule).catch(() => [])
     ]);
     const programFiles = Array.from(new Set(programs.map(row => row.requirements_file).filter(Boolean)));
     let requirements = [];
@@ -3376,9 +4195,15 @@ async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = f
     CORE = built.core;
     OFFERINGS = built.offerings;
     CURRENT_OFFERINGS = built.current;
+    SEMESTER_SECTIONS = schedule.map(normalizeScheduleSection).filter(section => section.course_code);
+    const primaryScheduleTerm = SEMESTER_SECTIONS.find(section => section.term_code === "FA")?.term || SEMESTER_SECTIONS[0]?.term;
+    if (primaryScheduleTerm) {
+      const scheduledCodes = Array.from(new Set(SEMESTER_SECTIONS.filter(section => section.term === primaryScheduleTerm).map(section => section.course_code)));
+      CURRENT_OFFERINGS[primaryScheduleTerm] = Array.from(new Set([...(CURRENT_OFFERINGS[primaryScheduleTerm] || []), ...scheduledCodes])).sort();
+    }
     DATA_SOURCE_KIND = "csv";
     state.githubBaseUrl = base;
-    state.dataStatus = `Loaded ${programs.length} programs and ${courses.length} courses from CSV.`;
+    state.dataStatus = `Loaded ${programs.length} programs, ${courses.length} courses, and ${SEMESTER_SECTIONS.length} published sections from CSV.`;
     state.majors = (state.majors || []).filter(key => REQUIREMENTS.majors[key]);
     state.minors = (state.minors || []).filter(key => REQUIREMENTS.minors[key]);
     refreshDerivedCollections();
@@ -3387,6 +4212,7 @@ async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = f
     renderAll(true);
     renderWizard();
     renderProfileBar();
+    renderSemesterPlanner();
     if (status) { status.className = "data-status good"; status.textContent = state.dataStatus; }
     return true;
   } catch (error) {
@@ -3410,16 +4236,27 @@ function selectedProgramNames() {
     ...(state.minors || []).map(key => REQUIREMENTS.minors[key]?.label).filter(Boolean)
   ];
 }
-function wizardVisibleSteps() { return state.studentType === "incoming" ? [1, 2, 3, 4, 7] : [1, 2, 3, 4, 5, 6, 7]; }
+function wizardVisibleSteps() {
+  const incoming = state.studentType === "incoming";
+  const semesterOnly = state.planningScope === "semester";
+  const steps = [1, 2, 3, 4];
+  if (!semesterOnly) steps.push(5);
+  steps.push(6);
+  if (!incoming) steps.push(7, 8);
+  if (semesterOnly) steps.push(9);
+  steps.push(10);
+  return steps;
+}
 function normalizedWizardStep(step) {
   const visible = wizardVisibleSteps();
-  if (visible.includes(step)) return step;
-  return visible.find(value => value > step) || visible[visible.length - 1];
+  const numericStep = Number(step || visible[0]);
+  if (visible.includes(numericStep)) return numericStep;
+  return visible.find(value => value > numericStep) || visible[visible.length - 1];
 }
 function choiceCards(options, selected, inputName) {
   return `<div class="choice-grid">${options.map(option => `<label class="choice-card ${selected === option.value ? "selected" : ""}">
     <input type="radio" name="${inputName}" value="${option.value}" ${selected === option.value ? "checked" : ""}>
-    <span class="choice-icon">${option.icon}</span><span class="choice-title">${option.title}</span>
+    <span class="choice-title">${option.title}</span>
     <div class="choice-description">${option.description}</div></label>`).join("")}</div>`;
 }
 function renderProgramWizard() {
@@ -3464,6 +4301,371 @@ function renderHistoryRows(items, coreMode = false) {
     </div>`;
   }).join("")}</div>`;
 }
+
+function schedulePrimaryTerm() {
+  return SEMESTER_SECTIONS.find(section => section.term_code === "FA")?.term || SEMESTER_SECTIONS[0]?.term || "Upcoming semester";
+}
+function scheduleSectionsForPrimaryTerm() {
+  const term = schedulePrimaryTerm();
+  return (SEMESTER_SECTIONS || []).filter(section => section.term === term);
+}
+function scheduleSectionById(id) { return (SEMESTER_SECTIONS || []).find(section => section.section_id === id); }
+function displayMeeting(section) {
+  if (!section) return "";
+  if (section.modality === "Online" && !section.days) return "Online";
+  if (!section.days || !section.begin_time || !section.end_time) return section.modality || "Meeting time not listed";
+  return `${section.days} · ${section.begin_time}-${section.end_time}`;
+}
+function timeToMinutes(value) {
+  const match = String(value || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+  let hour = Number(match[1]) % 12;
+  if (match[3].toUpperCase() === "PM") hour += 12;
+  return hour * 60 + Number(match[2]);
+}
+function dayCodes(value) {
+  return Array.from(new Set(String(value || "").toUpperCase().split("").filter(day => "MTWRF".includes(day))));
+}
+function intervalsOverlap(aStart, aEnd, bStart, bEnd) { return aStart < bEnd && bStart < aEnd; }
+function sectionIntervals(section) {
+  const start = timeToMinutes(section?.begin_time), end = timeToMinutes(section?.end_time);
+  if (start == null || end == null) return [];
+  return dayCodes(section.days).map(day => ({ day, start, end }));
+}
+function routineIntervals(block) {
+  const start = timeToMinutes(block?.start), end = timeToMinutes(block?.end);
+  if (start == null || end == null) return [];
+  return dayCodes(block.days).map(day => ({ day, start, end }));
+}
+function semesterConflictMap(selectionIds = state.semesterSelections || []) {
+  const map = new Map(selectionIds.map(id => [id, []]));
+  const sections = selectionIds.map(scheduleSectionById).filter(Boolean);
+  sections.forEach((section, index) => {
+    const intervals = sectionIntervals(section);
+    sections.slice(index + 1).forEach(other => {
+      const conflict = intervals.some(a => sectionIntervals(other).some(b => a.day === b.day && intervalsOverlap(a.start, a.end, b.start, b.end)));
+      if (conflict) {
+        map.get(section.section_id).push(`Conflicts with ${other.course_code}-${other.section}`);
+        map.get(other.section_id).push(`Conflicts with ${section.course_code}-${section.section}`);
+      }
+    });
+    (state.routineBlocks || []).forEach(block => {
+      const conflict = intervals.some(a => routineIntervals(block).some(b => a.day === b.day && intervalsOverlap(a.start, a.end, b.start, b.end)));
+      if (conflict) map.get(section.section_id).push(`Conflicts with ${block.label || "weekly routine"}`);
+    });
+  });
+  return map;
+}
+function sectionWouldConflict(section, selectionIds = state.semesterSelections || []) {
+  const test = [...selectionIds.filter(id => scheduleSectionById(id)?.course_code !== section.course_code), section.section_id];
+  return (semesterConflictMap(test).get(section.section_id) || []).length > 0;
+}
+function isCompletedCourseCode(code) {
+  if ((state.checkedCourses || {})[offeredCourseId(code)]) return true;
+  if (state.checked?.[code]) return true;
+  if (Object.values(state.satisfied || {}).includes(offeredCourseId(code))) return true;
+  if (Object.values(state.satisfiedCore || {}).includes(offeredCourseId(code))) return true;
+  const directProgram = getRequirementMap().get(code);
+  if (directProgram && isRequirementChecked(directProgram)) return true;
+  return CORE.map(makeCoreItem).some(req => isCoreRequirementChecked(req) && canSatisfyRequirement(makeOfferedItem(code), req));
+}
+function semesterRequirementMatches(code) {
+  const offered = makeOfferedItem(code);
+  const matches = [];
+  CORE.map(makeCoreItem).forEach(req => {
+    if (!isCoreRequirementChecked(req) && canSatisfyRequirement(offered, req)) matches.push({ type: "Core", req });
+  });
+  Array.from(getRequirementMap().values()).forEach(req => {
+    if (isRequirementChecked(req) || !canSatisfyRequirement(offered, req)) return;
+    const major = (req.sourceKeys || []).some(key => key.startsWith("major:"));
+    const minor = (req.sourceKeys || []).some(key => key.startsWith("minor:"));
+    if (major) matches.push({ type: "Major", req });
+    else if (minor) matches.push({ type: "Minor", req });
+  });
+  return matches;
+}
+function defaultSemesterCourseType(code) {
+  if (isCompletedCourseCode(code)) return "Retake";
+  const matches = semesterRequirementMatches(code);
+  return matches.find(match => match.type === "Core")?.type || matches.find(match => match.type === "Major")?.type || matches.find(match => match.type === "Minor")?.type || "";
+}
+function neededSemesterCodes() {
+  return new Set(scheduleSectionsForPrimaryTerm().map(section => section.course_code).filter(code => !isCompletedCourseCode(code) && semesterRequirementMatches(code).length));
+}
+function renderRoutineEditorMarkup(context = "wizard") {
+  const prefix = `routine-${context}`;
+  const blocks = state.routineBlocks || [];
+  const dayOptions = [["M", "Mon"], ["T", "Tue"], ["W", "Wed"], ["R", "Thu"], ["F", "Fri"]]
+    .map(([value, label]) => `<label><input type="checkbox" data-routine-day value="${value}"> ${label}</label>`).join("");
+  return `<div class="routine-builder" data-routine-context="${context}">
+    <div class="routine-entry-form">
+      <label class="routine-label-field">What is this block?<input id="${prefix}-label" type="text" placeholder="Work, practice, commute, lunch…"></label>
+      <div class="routine-days-field"><span class="small">Days</span><div class="routine-day-options">${dayOptions}</div></div>
+      <label>Start<input id="${prefix}-start" type="time" value="08:00"></label>
+      <label>End<input id="${prefix}-end" type="time" value="09:00"></label>
+      <button type="button" class="primary" data-routine-add>Add block</button>
+    </div>
+    <div class="routine-list">${blocks.length ? blocks.map(block => `<div class="routine-row"><div><strong>${block.label}</strong><div class="small">${block.days} · ${block.start}-${block.end}</div></div><button type="button" data-routine-remove="${block.id}">Remove</button></div>`).join("") : '<div class="routine-empty">No unavailable times added. This step is optional.</div>'}</div>
+  </div>`;
+}
+function attachRoutineEditorEvents(container, context = "wizard") {
+  const prefix = `routine-${context}`;
+  container.querySelector("[data-routine-add]")?.addEventListener("click", () => {
+    const label = container.querySelector(`#${prefix}-label`)?.value.trim() || "Unavailable";
+    const days = Array.from(container.querySelectorAll("[data-routine-day]:checked")).map(input => input.value).join("");
+    const startValue = container.querySelector(`#${prefix}-start`)?.value || "";
+    const endValue = container.querySelector(`#${prefix}-end`)?.value || "";
+    if (!days || !startValue || !endValue || startValue >= endValue) {
+      const error = container.querySelector(".routine-error") || document.createElement("div");
+      error.className = "wizard-error routine-error";
+      error.textContent = "Choose at least one day and a valid start and end time.";
+      container.appendChild(error);
+      return;
+    }
+    const formatTime = value => {
+      const [hourText, minute] = value.split(":");
+      const hour = Number(hourText), suffix = hour >= 12 ? "PM" : "AM";
+      return `${hour % 12 || 12}:${minute} ${suffix}`;
+    };
+    state.routineBlocks.push({ id: `routine-${Date.now()}-${Math.random().toString(16).slice(2)}`, label, days, start: formatTime(startValue), end: formatTime(endValue) });
+    saveState();
+    if (context === "wizard") renderWizard(); else renderRoutineDialog();
+    renderSemesterPlanner();
+  });
+  container.querySelectorAll("[data-routine-remove]").forEach(button => button.addEventListener("click", () => {
+    state.routineBlocks = state.routineBlocks.filter(block => block.id !== button.dataset.routineRemove);
+    saveState();
+    if (context === "wizard") renderWizard(); else renderRoutineDialog();
+    renderSemesterPlanner();
+  }));
+}
+function renderRoutineDialog() {
+  const body = $("routineDialogBody");
+  if (!body) return;
+  body.innerHTML = `<p class="panel-intro">Add recurring times when the student cannot take a class. These blocks appear on the weekly schedule.</p>${renderRoutineEditorMarkup("dialog")}`;
+  attachRoutineEditorEvents(body, "dialog");
+}
+function openRoutineDialog() { renderRoutineDialog(); $("routineDialog")?.showModal(); }
+function semesterSelectedSections() { return (state.semesterSelections || []).map(scheduleSectionById).filter(Boolean); }
+function addSemesterSection(sectionId) {
+  const section = scheduleSectionById(sectionId);
+  if (!section) return;
+  const old = semesterSelectedSections().find(item => item.course_code === section.course_code);
+  if (old) state.semesterSelections = state.semesterSelections.filter(id => id !== old.section_id);
+  if (!state.semesterSelections.includes(sectionId)) state.semesterSelections.push(sectionId);
+  if (!state.semesterCourseTypes[sectionId]) state.semesterCourseTypes[sectionId] = old ? state.semesterCourseTypes[old.section_id] : defaultSemesterCourseType(section.course_code);
+  if (old && old.section_id !== sectionId) delete state.semesterCourseTypes[old.section_id];
+  saveState(); renderSemesterPlanner();
+}
+function removeSemesterSection(sectionId) {
+  state.semesterSelections = (state.semesterSelections || []).filter(id => id !== sectionId);
+  delete state.semesterCourseTypes[sectionId];
+  saveState(); renderSemesterPlanner();
+}
+function semesterCreditsTotal(ids = state.semesterSelections || []) {
+  return ids.map(scheduleSectionById).filter(Boolean).reduce((sum, section) => sum + Number(section.credit_hours || 0), 0);
+}
+function renderSemesterSectionList() {
+  const list = $("semesterSectionList");
+  if (!list) return;
+  const selected = new Set(state.semesterSelections || []);
+  const selectedCodes = new Set(semesterSelectedSections().map(section => section.course_code));
+  const needed = neededSemesterCodes();
+  const search = ($("semesterSectionSearch")?.value || "").trim().toLowerCase();
+  let sections = scheduleSectionsForPrimaryTerm().filter(section => !selected.has(section.section_id));
+  if (state.semesterCourseView !== "all") sections = sections.filter(section => needed.has(section.course_code));
+  if (search) sections = sections.filter(section => [section.course_code, section.section, section.course_title, section.instructor].join(" ").toLowerCase().includes(search));
+  sections.sort((a, b) => courseSortScore(a.course_code) - courseSortScore(b.course_code) || a.course_code.localeCompare(b.course_code) || a.section.localeCompare(b.section));
+  if (!sections.length) {
+    list.innerHTML = `<div class="weekly-empty-message">${SEMESTER_SECTIONS.length ? (state.semesterCourseView === "all" ? "No sections match this search." : "No remaining required courses are offered in the published schedule. Switch to All courses to browse every section.") : "No semester schedule was loaded. Add semester_schedule.csv to the GitHub data folder."}</div>`;
+    return;
+  }
+  list.innerHTML = sections.map(section => {
+    const conflict = sectionWouldConflict(section);
+    const missing = missingSemesterPrerequisites(section.course_code);
+    const replacing = selectedCodes.has(section.course_code);
+    return `<article class="semester-section-card ${conflict ? "conflict-preview" : ""}" draggable="true" data-semester-section="${section.section_id}">
+      <div class="section-card-top"><div><div class="section-card-code">${section.course_code}-${section.section}</div><div class="section-card-title">${section.course_title}</div></div><span class="credit-pill">${section.credit_hours} cr</span></div>
+      <div class="section-card-meta"><span>${displayMeeting(section)}</span><span>${section.instructor || "Instructor not listed"}${section.location ? ` · ${section.location}` : ""}</span>${section.comments ? `<span>${section.comments}</span>` : ""}${replacing ? '<span>Adding this replaces the selected section of the same course.</span>' : ""}${missing.length ? `<span class="course-alert">Prerequisite check: ${missing.join("; ")}</span>` : ""}${conflict ? '<span class="course-alert">Conflicts with the current schedule or routine.</span>' : ""}</div>
+      <div class="section-card-actions"><button type="button" data-add-semester-section="${section.section_id}">Add</button></div>
+    </article>`;
+  }).join("");
+  list.querySelectorAll("[data-add-semester-section]").forEach(button => button.addEventListener("click", () => addSemesterSection(button.dataset.addSemesterSection)));
+  list.querySelectorAll("[data-semester-section]").forEach(card => card.addEventListener("dragstart", event => {
+    event.dataTransfer.setData("text/degreefy-section", card.dataset.semesterSection);
+    event.dataTransfer.effectAllowed = "copy";
+  }));
+}
+function renderWeeklySchedule() {
+  const board = $("weeklyScheduleBoard");
+  if (!board) return;
+  const dayOrder = ["M", "T", "W", "R", "F"];
+  const startMinute = 8 * 60, endMinute = 21 * 60 + 30, pxPerMinute = 56 / 60;
+  const height = Math.round((endMinute - startMinute) * pxPerMinute);
+  board.style.setProperty("--schedule-height", `${height}px`);
+  const conflicts = semesterConflictMap();
+  const timeLabels = [];
+  for (let minute = startMinute; minute <= endMinute; minute += 60) {
+    const hour = Math.floor(minute / 60), label = `${hour % 12 || 12} ${hour >= 12 ? "PM" : "AM"}`;
+    timeLabels.push(`<span class="weekly-time-label" style="top:${Math.round((minute - startMinute) * pxPerMinute)}px">${label}</span>`);
+  }
+  const timeRail = `<div class="weekly-time-rail">${timeLabels.join("")}</div>`;
+  const selected = semesterSelectedSections();
+  const columns = dayOrder.map(day => {
+    const blocks = [];
+    (state.routineBlocks || []).forEach(block => {
+      const interval = routineIntervals(block).find(item => item.day === day);
+      if (!interval) return;
+      const top = Math.max(0, (interval.start - startMinute) * pxPerMinute);
+      const blockHeight = Math.max(22, (interval.end - interval.start) * pxPerMinute);
+      blocks.push(`<div class="weekly-block routine" style="top:${top}px;height:${blockHeight}px"><strong>${block.label}</strong>${block.start}-${block.end}</div>`);
+    });
+    selected.forEach(section => {
+      const interval = sectionIntervals(section).find(item => item.day === day);
+      if (!interval) return;
+      const top = Math.max(0, (interval.start - startMinute) * pxPerMinute);
+      const blockHeight = Math.max(22, (interval.end - interval.start) * pxPerMinute);
+      const conflict = (conflicts.get(section.section_id) || []).length;
+      blocks.push(`<div class="weekly-block ${conflict ? "conflict" : ""}" style="top:${top}px;height:${blockHeight}px"><strong>${section.course_code}-${section.section}</strong>${section.begin_time}-${section.end_time}</div>`);
+    });
+    return `<div class="weekly-day-column" data-weekly-dropzone>${blocks.join("")}</div>`;
+  }).join("");
+  board.innerHTML = timeRail + columns;
+  board.querySelectorAll("[data-weekly-dropzone]").forEach(zone => {
+    zone.addEventListener("dragover", event => { if (event.dataTransfer.types.includes("text/degreefy-section")) { event.preventDefault(); event.dataTransfer.dropEffect = "copy"; } });
+    zone.addEventListener("drop", event => { event.preventDefault(); addSemesterSection(event.dataTransfer.getData("text/degreefy-section")); });
+  });
+}
+function renderSemesterFinalTable() {
+  const body = $("semesterFinalTableBody"), conflictList = $("semesterConflictList");
+  if (!body || !conflictList) return;
+  const sections = semesterSelectedSections();
+  const conflicts = semesterConflictMap();
+  $("semesterCreditTotal").textContent = semesterCreditsTotal();
+  const messages = [], advising = [];
+  sections.forEach(section => {
+    (conflicts.get(section.section_id) || []).forEach(message => messages.push(`${section.course_code}-${section.section}: ${message}`));
+    const missing = missingSemesterPrerequisites(section.course_code);
+    if (missing.length) advising.push(`${section.course_code}-${section.section}: prerequisite check needed (${missing.join("; ")})`);
+  });
+  conflictList.innerHTML = Array.from(new Set(messages)).map(message => `<div class="semester-conflict-item">${message}</div>`).join("") + Array.from(new Set(advising)).map(message => `<div class="semester-advising-warning">${message}</div>`).join("");
+  if (!sections.length) {
+    body.innerHTML = '<tr><td colspan="4" class="semester-table-empty">No courses selected yet. Use Plan for me or add sections from the published schedule.</td></tr>';
+    return;
+  }
+  body.innerHTML = sections.sort((a, b) => a.course_code.localeCompare(b.course_code)).map(section => {
+    const type = state.semesterCourseTypes[section.section_id] || defaultSemesterCourseType(section.course_code);
+    return `<tr class="${(conflicts.get(section.section_id) || []).length ? "semester-conflict-row" : ""}">
+      <td><div class="semester-course-cell"><strong>${section.course_code}-${section.section}</strong><span>${section.course_title}</span><button class="semester-remove-button" type="button" data-remove-semester-section="${section.section_id}">Remove</button></div></td>
+      <td>${displayMeeting(section)}</td>
+      <td>${section.credit_hours}</td>
+      <td><select data-semester-course-type="${section.section_id}"><option value="" ${!type ? "selected" : ""}>Select type</option>${["Core", "Major", "Minor", "Retake"].map(option => `<option value="${option}" ${type === option ? "selected" : ""}>${option}</option>`).join("")}</select></td>
+    </tr>`;
+  }).join("");
+  body.querySelectorAll("[data-remove-semester-section]").forEach(button => button.addEventListener("click", () => removeSemesterSection(button.dataset.removeSemesterSection)));
+  body.querySelectorAll("[data-semester-course-type]").forEach(select => select.addEventListener("change", () => { state.semesterCourseTypes[select.dataset.semesterCourseType] = select.value; saveState(); }));
+}
+function renderSemesterStatus() {
+  const strip = $("semesterStatusStrip");
+  if (!strip) return;
+  const term = schedulePrimaryTerm();
+  const sectionCount = scheduleSectionsForPrimaryTerm().length;
+  const placementKnown = state.mathPlacementTaken === "yes" && !!state.mathPlacement;
+  const placementText = state.mathPlacementTaken === "no" ? "Math placement test not taken" : placementKnown ? `Math placement: ${state.mathPlacement}` : "Math placement result not entered";
+  strip.classList.toggle("warning-state", !placementKnown);
+  strip.innerHTML = `<span><strong>${term}</strong> · ${sectionCount} published sections loaded</span><span>${placementText}</span>`;
+}
+function renderSemesterProfile() {
+  const title = $("semesterPlanTitle"), wrap = $("semesterProfileSummary");
+  if (title) title.textContent = `Plan ${schedulePrimaryTerm()}`;
+  if (wrap) wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${selectedProgramNames().map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
+}
+function renderSemesterPlanner() {
+  if (!$("semesterPlannerApp")) return;
+  state.semesterSelections = (state.semesterSelections || []).filter(id => !!scheduleSectionById(id));
+  $("semesterNeededViewBtn")?.classList.toggle("active", state.semesterCourseView !== "all");
+  $("semesterAllViewBtn")?.classList.toggle("active", state.semesterCourseView === "all");
+  renderSemesterProfile(); renderSemesterStatus(); renderSemesterSectionList(); renderWeeklySchedule(); renderSemesterFinalTable();
+}
+function missingSemesterPrerequisites(code) {
+  return getPrereqGroups(code).filter(group => !relationGroupAlreadySatisfied(group)).map(group => group.join(" or "));
+}
+function courseEligibleForUpcomingSemester(code) {
+  return missingSemesterPrerequisites(code).length === 0;
+}
+function requiredCoreqCodesForSemester(code) {
+  return getCoreqGroups(code).map(group => {
+    if (group.some(option => isRawDone(option) || isPlacementSatisfied(option))) return null;
+    return group.find(option => scheduleSectionsForPrimaryTerm().some(section => section.course_code === option)) || null;
+  }).filter(Boolean);
+}
+function planOneSemesterForMe() {
+  if (!SEMESTER_SECTIONS.length) { alert("No published semester schedule was loaded."); return; }
+  if ((state.semesterSelections || []).length && !confirm("Replace the current semester selections with a new suggested schedule?")) return;
+  const needed = neededSemesterCodes();
+  const codes = Array.from(needed).sort((a, b) => courseSortScore(a) - courseSortScore(b));
+  const selected = [];
+  const selectedCodes = new Set();
+  const tryAddSection = section => {
+    if (!section || selectedCodes.has(section.course_code)) return false;
+    const nextIds = [...selected.map(item => item.section_id), section.section_id];
+    if (semesterCreditsTotal(nextIds) > 18 || sectionWouldConflict(section, selected.map(item => item.section_id))) return false;
+    selected.push(section); selectedCodes.add(section.course_code); return true;
+  };
+  for (const code of codes) {
+    if (semesterCreditsTotal(selected.map(item => item.section_id)) >= 15) break;
+    if (!courseEligibleForUpcomingSemester(code)) continue;
+    const coreqCodes = requiredCoreqCodesForSemester(code);
+    const courseSections = scheduleSectionsForPrimaryTerm().filter(section => section.course_code === code);
+    let placed = false;
+    for (const section of courseSections) {
+      const snapshot = [...selected]; const snapshotCodes = new Set(selectedCodes);
+      if (!tryAddSection(section)) continue;
+      let coreqsOkay = true;
+      for (const coreqCode of coreqCodes) {
+        if (selectedCodes.has(coreqCode)) continue;
+        const coreq = scheduleSectionsForPrimaryTerm().filter(item => item.course_code === coreqCode).find(item => !sectionWouldConflict(item, selected.map(selectedItem => selectedItem.section_id)) && semesterCreditsTotal([...selected.map(selectedItem => selectedItem.section_id), item.section_id]) <= 18);
+        if (!coreq || !tryAddSection(coreq)) { coreqsOkay = false; break; }
+      }
+      if (coreqsOkay) { placed = true; break; }
+      selected.splice(0, selected.length, ...snapshot); selectedCodes.clear(); snapshotCodes.forEach(value => selectedCodes.add(value));
+    }
+    if (placed && semesterCreditsTotal(selected.map(item => item.section_id)) >= 12) {
+      // Continue to a balanced 15 credits when another conflict-free required course is available.
+    }
+  }
+  state.semesterSelections = selected.map(section => section.section_id);
+  state.semesterCourseTypes = Object.fromEntries(selected.map(section => [section.section_id, defaultSemesterCourseType(section.course_code)]));
+  saveState(); renderSemesterPlanner();
+  if (semesterCreditsTotal() < 12) showSemesterToast("Degreefy built the strongest conflict-free draft it could. Review placement, prerequisites, and routine blocks to reach 12 credits.");
+}
+function showSemesterToast(message) {
+  let toast = document.querySelector(".degreefy-toast");
+  if (!toast) { toast = document.createElement("div"); toast.className = "degreefy-toast"; document.body.appendChild(toast); }
+  toast.textContent = message; toast.classList.add("show");
+  window.clearTimeout(showSemesterToast.timer); showSemesterToast.timer = window.setTimeout(() => toast.classList.remove("show"), 3600);
+}
+function printSemesterPlan() {
+  document.body.classList.add("print-semester");
+  const cleanup = () => document.body.classList.remove("print-semester");
+  window.addEventListener("afterprint", cleanup, { once: true });
+  window.print(); window.setTimeout(cleanup, 1000);
+}
+function setupSemesterPlannerEvents() {
+  $("semesterSectionSearch")?.addEventListener("input", renderSemesterSectionList);
+  $("semesterNeededViewBtn")?.addEventListener("click", () => { state.semesterCourseView = "needed"; saveState(); $("semesterNeededViewBtn").classList.add("active"); $("semesterAllViewBtn").classList.remove("active"); renderSemesterSectionList(); });
+  $("semesterAllViewBtn")?.addEventListener("click", () => { state.semesterCourseView = "all"; saveState(); $("semesterAllViewBtn").classList.add("active"); $("semesterNeededViewBtn").classList.remove("active"); renderSemesterSectionList(); });
+  $("semesterPlanForMeBtn")?.addEventListener("click", planOneSemesterForMe);
+  $("semesterPrintBtn")?.addEventListener("click", printSemesterPlan);
+  $("semesterShareBtn")?.addEventListener("click", showSharePlaceholder);
+  $("semesterChangeSetupBtn")?.addEventListener("click", () => showWizard(1));
+  $("editRoutineBtn")?.addEventListener("click", openRoutineDialog);
+  $("closeRoutineDialogBtn")?.addEventListener("click", () => $("routineDialog")?.close());
+  $("clearSemesterPlanBtn")?.addEventListener("click", () => { if (confirm("Clear all selected courses for this semester?")) { state.semesterSelections = []; state.semesterCourseTypes = {}; saveState(); renderSemesterPlanner(); } });
+  $("weeklyScheduleBoard")?.addEventListener("dragover", event => { if (event.dataTransfer.types.includes("text/degreefy-section")) event.preventDefault(); });
+  $("weeklyScheduleBoard")?.addEventListener("drop", event => { event.preventDefault(); addSemesterSection(event.dataTransfer.getData("text/degreefy-section")); });
+}
+
 function renderWizard() {
   const wizard = $("setupWizard");
   if (!wizard) return;
@@ -3471,7 +4673,7 @@ function renderWizard() {
   const visible = wizardVisibleSteps();
   const index = Math.max(0, visible.indexOf(state.setupStep));
   $("wizardEyebrow").textContent = `Step ${index + 1} of ${visible.length}`;
-  $("wizardStepLabel").textContent = "Your answers shape the checklist, course history, and semester plan.";
+  $("wizardStepLabel").textContent = "You can change these answers any time.";
   const progress = $("wizardProgress");
   progress.style.setProperty("--step-count", visible.length);
   progress.innerHTML = visible.map((step, i) => `<span class="${i < index ? "done" : i === index ? "active" : ""}"></span>`).join("");
@@ -3479,69 +4681,63 @@ function renderWizard() {
   const nav = $("wizardNav");
   $("wizardBackBtn").disabled = index === 0;
   $("wizardSaveExitBtn").classList.toggle("hidden", !state.setupComplete);
-  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 7);
-  nav.classList.toggle("hidden", false);
+  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 10);
+  nav.classList.remove("hidden");
 
   if (state.setupStep === 1) {
     $("wizardHeading").textContent = "Who is using Degreefy?";
-    content.innerHTML = `<h3>I’m a…</h3><p class="wizard-subtitle">This helps Degreefy use the right advising language. It does not change degree requirements.</p>${choiceCards(ROLE_OPTIONS, state.profileRole, "profileRole")}<div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('input[name="profileRole"]').forEach(input => input.addEventListener("change", e => { state.profileRole = e.target.value; saveState(); renderWizard(); }));
+    content.innerHTML = `<h3>I'm using Degreefy as…</h3><p class="wizard-subtitle">This only changes the language of the planner. It does not change degree requirements.</p>${choiceCards(ROLE_OPTIONS, state.profileRole, "profileRole")}<div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('input[name="profileRole"]').forEach(input => input.addEventListener("change", event => { state.profileRole = event.target.value; saveState(); renderWizard(); }));
   } else if (state.setupStep === 2) {
     $("wizardHeading").textContent = "Who are you planning for?";
-    content.innerHTML = `<h3>The student is a…</h3><p class="wizard-subtitle">Incoming students skip the completed-course review. Transfer, current, and returning students review core courses first, then program courses.</p>${choiceCards(STUDENT_TYPE_OPTIONS, state.studentType, "studentType")}<div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('input[name="studentType"]').forEach(input => input.addEventListener("change", e => { state.studentType = e.target.value; saveState(); renderWizard(); }));
+    content.innerHTML = `<h3>The plan is for a…</h3><p class="wizard-subtitle">Incoming students skip the completed-course review. Transfer, current, and returning students review prior progress before planning.</p>${choiceCards(STUDENT_TYPE_OPTIONS, state.studentType, "studentType")}<div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('input[name="studentType"]').forEach(input => input.addEventListener("change", event => {
+      state.studentType = event.target.value;
+      if (state.studentType === "incoming") { state.checked = {}; state.checkedCore = {}; state.checkedCourses = {}; state.satisfied = {}; state.satisfiedCore = {}; state.planned = {}; state.courseSources = {}; state.acadeumApprovals = {}; }
+      saveState(); renderWizard();
+    }));
   } else if (state.setupStep === 3) {
+    $("wizardHeading").textContent = "Choose the planning goal";
+    content.innerHTML = `<h3>What would you like to plan?</h3><p class="wizard-subtitle">Choose a complete degree path or focus only on the upcoming semester whose class schedule has been published.</p>${choiceCards(PLANNING_SCOPE_OPTIONS, state.planningScope, "planningScope")}<div class="planning-scope-note">The one-semester planner uses actual sections, meeting times, and weekly conflict detection.</div><div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('input[name="planningScope"]').forEach(input => input.addEventListener("change", event => { state.planningScope = event.target.value; saveState(); renderWizard(); }));
+  } else if (state.setupStep === 4) {
+    $("wizardHeading").textContent = "Math placement";
+    content.innerHTML = `<h3>Has the student taken the math placement test?</h3><p class="wizard-subtitle">Degreefy needs this answer before it can evaluate math prerequisites and recommend a schedule.</p>${choiceCards(MATH_TEST_OPTIONS, state.mathPlacementTaken, "mathPlacementTaken")}
+      ${state.mathPlacementTaken === "yes" ? `<div class="wizard-form-grid" style="margin-top:18px"><label class="field-label">Placement result<select id="wizardMathPlacement"><option value="">Result not available yet</option>${["MTH 100", "MTH 111", "MTH 121"].map(code => `<option value="${code}" ${state.mathPlacement === code ? "selected" : ""}>${code}</option>`).join("")}</select></label></div>` : ""}
+      ${state.mathPlacementTaken === "no" ? '<div class="note">Math-dependent recommendations will remain limited until a placement result is available.</div>' : ""}<div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('input[name="mathPlacementTaken"]').forEach(input => input.addEventListener("change", event => { state.mathPlacementTaken = event.target.value; if (event.target.value === "no") state.mathPlacement = ""; saveState(); renderWizard(); }));
+    $("wizardMathPlacement")?.addEventListener("change", event => { state.mathPlacement = event.target.value; saveState(); renderAll(false); });
+  } else if (state.setupStep === 5) {
     $("wizardHeading").textContent = "Set the graduation target";
     const currentYear = START_TERM.year;
     const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
-    content.innerHTML = `<h3>When does the student plan to graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p>
-      <div class="wizard-form-grid">
-        <label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label>
-        <label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label>
-        <label class="field-label">Math placement (optional)<select id="wizardMathPlacement"><option value="">Not entered</option>${["MTH 100", "MTH 111", "MTH 121"].map(code => `<option value="${code}" ${state.mathPlacement === code ? "selected" : ""}>${code}</option>`).join("")}</select></label>
-      </div><div class="note">Fall and Spring plans must stay between 12 and 18 credits. Summer is capped at 12 credits.</div><div class="wizard-error" id="wizardError"></div>`;
-    const sync = () => { state.gradYear = Number($("wizardGradYear").value); state.gradTerm = $("wizardGradTerm").value; state.grad = `${state.gradTerm} ${state.gradYear}`; state.mathPlacement = $("wizardMathPlacement").value; saveState(); generateGradOptions(); renderAll(false); };
-    ["wizardGradYear", "wizardGradTerm", "wizardMathPlacement"].forEach(id => $(id).addEventListener("change", sync));
-  } else if (state.setupStep === 4) {
+    content.innerHTML = `<h3>When should the student graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p><div class="wizard-form-grid"><label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label><label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label></div><div class="note">Fall and Spring plans must stay between 12 and 18 credits. Summer is capped at 12 credits.</div><div class="wizard-error" id="wizardError"></div>`;
+    const sync = () => { state.gradYear = Number($("wizardGradYear").value); state.gradTerm = $("wizardGradTerm").value; state.grad = `${state.gradTerm} ${state.gradYear}`; saveState(); generateGradOptions(); renderAll(false); };
+    ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
+  } else if (state.setupStep === 6) {
     $("wizardHeading").textContent = "Choose majors and minors";
-    content.innerHTML = `<h3>Select every program the student is considering</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}
-      <details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">Use <code>./data</code> when the CSV folder is stored beside this HTML file on GitHub Pages.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => {
-      const type = input.dataset.wizardProgram;
-      state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(x => x.value);
-      saveState(); renderAll(true); renderProgramWizard();
-    }));
-    $("loadDataBtn")?.addEventListener("click", async () => {
-      state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data";
-      saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard();
-    });
-  } else if (state.setupStep === 5) {
+    content.innerHTML = `<h3>Select majors and minors</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}<details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">The folder can include programs, requirements, courses, offerings, and semester_schedule.csv.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => { const type = input.dataset.wizardProgram; state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(item => item.value); saveState(); renderAll(true); renderWizard(); }));
+    $("loadDataBtn")?.addEventListener("click", async () => { state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data"; saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard(); });
+  } else if (state.setupStep === 7) {
     $("wizardHeading").textContent = "Review completed core courses";
     const items = CORE.map(makeCoreItem);
-    content.innerHTML = `<h3>Which core requirements are already complete?</h3><p class="wizard-subtitle">Mark courses completed at Spring Hill or accepted as transfer credit. Choose the matching course where available.</p>${renderHistoryRows(items, true)}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Which core requirements are already complete?</h3><p class="wizard-subtitle">Mark courses completed at Spring Hill or accepted as transfer credit. Completed courses will not appear as courses still needed.</p>${renderHistoryRows(items, true)}<div class="wizard-error" id="wizardError"></div>`;
     attachHistoryEvents(content);
-  } else if (state.setupStep === 6) {
+  } else if (state.setupStep === 8) {
     $("wizardHeading").textContent = "Review completed program courses";
     const items = Array.from(getRequirementMap().values()).sort((a, b) => a.code.localeCompare(b.code));
-    content.innerHTML = `<h3>Which major or minor requirements are already complete?</h3><p class="wizard-subtitle">Degreefy will place only the remaining requirements into future semesters.</p>${items.length ? renderHistoryRows(items, false) : '<div class="warning">Select at least one program before reviewing program courses.</div>'}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Which major or minor requirements are already complete?</h3><p class="wizard-subtitle">Degreefy will recommend only the remaining requirements.</p>${items.length ? renderHistoryRows(items, false) : '<div class="warning">Select at least one program before reviewing program courses.</div>'}<div class="wizard-error" id="wizardError"></div>`;
     attachHistoryEvents(content);
+  } else if (state.setupStep === 9) {
+    $("wizardHeading").textContent = "Block unavailable times";
+    content.innerHTML = `<h3>What times are already part of the weekly routine?</h3><p class="wizard-subtitle">Add work, practice, commuting, standing appointments, or other times when a class cannot be scheduled. This step is optional.</p>${renderRoutineEditorMarkup("wizard")}<div class="wizard-error" id="wizardError"></div>`;
+    attachRoutineEditorEvents(content, "wizard");
   } else {
-    $("wizardHeading").textContent = "The degree journey is ready";
-    const programs = selectedProgramNames();
-    const completedCore = CORE.map(makeCoreItem).filter(isCoreRequirementChecked).length;
-    const completedProgram = Array.from(getRequirementMap().values()).filter(isRequirementChecked).length;
-    content.innerHTML = `<h3>Choose what to do next</h3><p class="wizard-subtitle">Degreefy will continue enforcing prerequisites, corequisites, typical offerings, the 12-credit minimum, and the 18-credit maximum.</p>
-      <div class="wizard-summary">
-        <div class="wizard-summary-card"><span class="small">Planning for</span><strong>${studentTypeLabel(state.studentType)}</strong></div>
-        <div class="wizard-summary-card"><span class="small">Graduation target</span><strong>${state.grad}</strong></div>
-        <div class="wizard-summary-card"><span class="small">Programs</span><strong>${programs.length}</strong><span class="small">${programs.join(", ") || "None selected"}</span></div>
-        <div class="wizard-summary-card"><span class="small">Prior progress</span><strong>${completedCore + completedProgram}</strong><span class="small">requirements marked complete</span></div>
-      </div>
-      <div class="ready-actions"><button type="button" class="primary" id="startPlanningBtn">Plan the journey</button><button type="button" id="readyPrintChecklistBtn">Print required checklist</button><button type="button" id="readyPrintPlanBtn">Print the plan</button></div>
-      <div class="note">Acadeum online courses can be selected inside a semester. They remain flagged until department approval is recorded.</div><div class="wizard-error" id="wizardError"></div>`;
-    $("startPlanningBtn").addEventListener("click", () => completeSetup());
-    $("readyPrintChecklistBtn").addEventListener("click", () => { completeSetup(); window.setTimeout(printChecklist, 100); });
-    $("readyPrintPlanBtn").addEventListener("click", () => { completeSetup(); window.setTimeout(printPlan, 100); });
+    $("wizardHeading").textContent = "Ready to plan";
+    nav.classList.add("hidden");
+    content.innerHTML = `<div class="wizard-final"><button type="button" class="primary final-plan-button" id="startPlanningBtn">Plan my journey</button></div>`;
+    $("startPlanningBtn").addEventListener("click", () => completeSetup(false));
   }
 }
 function attachHistoryEvents(container) {
@@ -3576,8 +4772,10 @@ function validateWizardStep() {
   let message = "";
   if (state.setupStep === 1 && !state.profileRole) message = "Select student, faculty, or staff.";
   if (state.setupStep === 2 && !state.studentType) message = "Select the student’s planning status.";
-  if (state.setupStep === 3 && !state.gradYear) message = "Select a planned graduation year.";
-  if (state.setupStep === 4 && !(state.majors || []).length) message = "Select at least one major. Minors are optional.";
+  if (state.setupStep === 3 && !state.planningScope) message = "Choose what you would like to plan.";
+  if (state.setupStep === 4 && !state.mathPlacementTaken) message = "Answer whether the math placement test has been taken.";
+  if (state.setupStep === 5 && !state.gradYear) message = "Select a planned graduation year.";
+  if (state.setupStep === 6 && !(state.majors || []).length) message = "Select at least one major. Minors are optional.";
   if (error) error.textContent = message;
   return !message;
 }
@@ -3593,35 +4791,90 @@ function renderProfileBar() {
   const wrap = $("profileSummary");
   if (!wrap) return;
   const programs = selectedProgramNames();
-  wrap.innerHTML = `<span class="profile-pill">${roleLabel(state.profileRole)}</span><span class="profile-pill">${studentTypeLabel(state.studentType)}</span><span class="profile-pill">Graduate ${state.grad}</span>${programs.map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
+  const title = $("planPageTitle");
+  if (title) title.textContent = state.planningScope === "semester" ? `Plan ${schedulePrimaryTerm()}` : `Plan through ${state.grad}`;
+  wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${programs.map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
 }
 function showWizard(step = 1) {
   state.setupStep = normalizedWizardStep(step);
   saveState();
   $("setupWizard").classList.remove("hidden");
   $("plannerApp").classList.add("hidden");
+  $("semesterPlannerApp")?.classList.add("hidden");
   document.body.classList.add("wizard-open");
   renderWizard();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function showPlanner() {
   $("setupWizard").classList.add("hidden");
-  $("plannerApp").classList.remove("hidden");
+  const semesterOnly = state.planningScope === "semester";
+  $("plannerApp").classList.toggle("hidden", semesterOnly);
+  $("semesterPlannerApp")?.classList.toggle("hidden", !semesterOnly);
   document.body.classList.remove("wizard-open");
-  renderProfileBar(); renderAll(true);
+  if (semesterOnly) renderSemesterPlanner(); else { renderProfileBar(); renderAll(true); }
 }
-function completeSetup() {
-  if (!(state.majors || []).length) { state.setupStep = 4; showWizard(4); return; }
+function completeSetup(autoPlan = false) {
+  if (!(state.majors || []).length) { state.setupStep = 6; showWizard(6); return; }
   state.setupComplete = true;
-  saveState(); showPlanner();
+  saveState();
+  showPlanner();
+  if (autoPlan) window.setTimeout(() => populateAllUnchecked({ skipConfirm: true }), 80);
 }
+function setPlannerDrawerView(view = "requirements") {
+  const requirements = view === "requirements";
+  $("drawerRequirementsPanel")?.classList.toggle("hidden", !requirements);
+  $("drawerAvailabilityPanel")?.classList.toggle("hidden", requirements);
+  $("drawerRequirementsTab")?.classList.toggle("active", requirements);
+  $("drawerAvailabilityTab")?.classList.toggle("active", !requirements);
+  if ($("drawerTitle")) $("drawerTitle").textContent = requirements ? "Remaining requirements" : "Course availability";
+}
+
+function openPlannerDrawer(view = "requirements") {
+  setPlannerDrawerView(view);
+  $("plannerDrawer")?.classList.add("open");
+  $("plannerDrawer")?.setAttribute("aria-hidden", "false");
+  $("drawerOverlay")?.classList.remove("hidden");
+  document.body.classList.add("drawer-open");
+}
+
+function closePlannerDrawer() {
+  $("plannerDrawer")?.classList.remove("open");
+  $("plannerDrawer")?.setAttribute("aria-hidden", "true");
+  $("drawerOverlay")?.classList.add("hidden");
+  document.body.classList.remove("drawer-open");
+}
+
+function showSharePlaceholder() {
+  let toast = document.querySelector(".degreefy-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.className = "degreefy-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = "Advisor sharing will be connected here later.";
+  toast.classList.add("show");
+  window.clearTimeout(showSharePlaceholder.timer);
+  showSharePlaceholder.timer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
 function setupDegreefyEvents() {
   $("wizardBackBtn")?.addEventListener("click", () => moveWizard(-1));
   $("wizardNextBtn")?.addEventListener("click", () => moveWizard(1));
-  $("wizardSaveExitBtn")?.addEventListener("click", completeSetup);
+  $("wizardSaveExitBtn")?.addEventListener("click", () => completeSetup(false));
   ["headerEditSetupBtn", "profileEditSetupBtn"].forEach(id => $(id)?.addEventListener("click", () => showWizard(1)));
   ["headerPrintChecklistBtn", "profilePrintChecklistBtn"].forEach(id => $(id)?.addEventListener("click", printChecklist));
   ["headerPrintPlanBtn", "profilePrintPlanBtn"].forEach(id => $(id)?.addEventListener("click", printPlan));
+  $("drawerRequirementsBtn")?.addEventListener("click", () => openPlannerDrawer("requirements"));
+  $("drawerAvailabilityBtn")?.addEventListener("click", () => openPlannerDrawer("availability"));
+  $("toggleSummerBtn")?.addEventListener("click", () => { showSummerTerms = !showSummerTerms; renderPlanner(); });
+  $("drawerRequirementsTab")?.addEventListener("click", () => setPlannerDrawerView("requirements"));
+  $("drawerAvailabilityTab")?.addEventListener("click", () => setPlannerDrawerView("availability"));
+  $("closePlannerDrawerBtn")?.addEventListener("click", closePlannerDrawer);
+  $("drawerOverlay")?.addEventListener("click", closePlannerDrawer);
+  $("sharePlanBtn")?.addEventListener("click", showSharePlaceholder);
+  $("planForMeInlineBtn")?.addEventListener("click", () => populateAllUnchecked({ skipConfirm: true }));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closePlannerDrawer(); });
+  setupSemesterPlannerEvents();
 }
 
 
@@ -3643,19 +4896,21 @@ function setupEvents() {
     const pressed = e.currentTarget.getAttribute("aria-pressed") === "true";
     e.currentTarget.setAttribute("aria-pressed", String(!pressed));
     e.currentTarget.classList.toggle("active", !pressed);
-    e.currentTarget.textContent = pressed ? "Show unchecked only" : "Show all program requirements";
+    e.currentTarget.textContent = pressed ? "Show remaining only" : "Show all";
     renderRequirementList();
   });
   $("coreUncheckedOnly").addEventListener("click", e => {
     const pressed = e.currentTarget.getAttribute("aria-pressed") === "true";
     e.currentTarget.setAttribute("aria-pressed", String(!pressed));
     e.currentTarget.classList.toggle("active", !pressed);
-    e.currentTarget.textContent = pressed ? "Show unchecked only" : "Show all core requirements";
+    e.currentTarget.textContent = pressed ? "Show remaining only" : "Show all";
     renderRequirementList();
   });
   $("courseSearch").addEventListener("input", () => renderCourseBank());
   $("hideCompletedCourses").addEventListener("change", () => renderCourseBank());
-  $("populateBtn").addEventListener("click", populateAllUnchecked);
+  $("populateBtn").addEventListener("click", () => populateAllUnchecked({ skipConfirm: true }));
+  $("courseViewRequiredBtn")?.addEventListener("click", () => { courseViewMode = "needed"; $("courseViewRequiredBtn").classList.add("active"); $("courseViewAllBtn").classList.remove("active"); renderCourseBank(); });
+  $("courseViewAllBtn")?.addEventListener("click", () => { courseViewMode = "all"; $("courseViewAllBtn").classList.add("active"); $("courseViewRequiredBtn").classList.remove("active"); renderCourseBank(); });
   $("clearPlanBtn").addEventListener("click", () => {
     if (!confirm("Clear all scheduled courses? Checked/completed courses will stay checked.")) return;
     clearScheduledCourses();
@@ -3667,7 +4922,7 @@ function setupEvents() {
     const a = document.createElement("a"); a.href = url; a.download = "degreefy-plan.json"; a.click(); URL.revokeObjectURL(url);
   });
   $("resetBtn").addEventListener("click", () => {
-    if (!confirm("Reset Degreefy? This clears programs, graduation semester, math placement, checked courses, and planned semesters.")) return;
+    if (!confirm("Reset Degreefy? This clears setup answers, completed courses, routine blocks, and all plans.")) return;
     localStorage.removeItem("degreefyState");
     localStorage.removeItem("shcDegreePlannerState");
     state = defaultState();
