@@ -1279,7 +1279,6 @@
       .plan-start-prompt button { width: 100%; }
     }
 
-<<<<<<< HEAD
 
     /* Upcoming-semester planner */
     .semester-planner-shell {
@@ -1502,8 +1501,6 @@
       body.print-semester .weekly-board, body.print-semester .weekly-day-heads { min-width: 0; }
     }
 
-=======
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
   </style>
 </head>
 <body>
@@ -4690,7 +4687,6 @@ function renderWizard() {
   if (state.setupStep === 1) {
     $("wizardHeading").textContent = "Who is using Degreefy?";
     content.innerHTML = `<h3>I'm using Degreefy as…</h3><p class="wizard-subtitle">This only changes the language of the planner. It does not change degree requirements.</p>${choiceCards(ROLE_OPTIONS, state.profileRole, "profileRole")}<div class="wizard-error" id="wizardError"></div>`;
-<<<<<<< HEAD
     content.querySelectorAll('input[name="profileRole"]').forEach(input => input.addEventListener("change", event => { state.profileRole = event.target.value; saveState(); renderWizard(); }));
   } else if (state.setupStep === 2) {
     $("wizardHeading").textContent = "Who are you planning for?";
@@ -4700,13 +4696,6 @@ function renderWizard() {
       if (state.studentType === "incoming") { state.checked = {}; state.checkedCore = {}; state.checkedCourses = {}; state.satisfied = {}; state.satisfiedCore = {}; state.planned = {}; state.courseSources = {}; state.acadeumApprovals = {}; }
       saveState(); renderWizard();
     }));
-=======
-    content.querySelectorAll('input[name="profileRole"]').forEach(input => input.addEventListener("change", e => { state.profileRole = e.target.value; saveState(); renderWizard(); }));
-  } else if (state.setupStep === 2) {
-    $("wizardHeading").textContent = "Who are you planning for?";
-    content.innerHTML = `<h3>The plan is for a…</h3><p class="wizard-subtitle">Incoming students skip the completed-course review. Transfer, current, and returning students review core courses first, then program courses.</p>${choiceCards(STUDENT_TYPE_OPTIONS, state.studentType, "studentType")}<div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('input[name="studentType"]').forEach(input => input.addEventListener("change", e => { state.studentType = e.target.value; if (state.studentType === "incoming") { state.checked = {}; state.checkedCore = {}; state.checkedCourses = {}; state.satisfied = {}; state.satisfiedCore = {}; state.planned = {}; state.courseSources = {}; state.acadeumApprovals = {}; } saveState(); renderWizard(); }));
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
   } else if (state.setupStep === 3) {
     $("wizardHeading").textContent = "Choose the planning goal";
     content.innerHTML = `<h3>What would you like to plan?</h3><p class="wizard-subtitle">Choose a complete degree path or focus only on the upcoming semester whose class schedule has been published.</p>${choiceCards(PLANNING_SCOPE_OPTIONS, state.planningScope, "planningScope")}<div class="planning-scope-note">The one-semester planner uses actual sections, meeting times, and weekly conflict detection.</div><div class="wizard-error" id="wizardError"></div>`;
@@ -4722,7 +4711,6 @@ function renderWizard() {
     $("wizardHeading").textContent = "Set the graduation target";
     const currentYear = START_TERM.year;
     const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
-<<<<<<< HEAD
     content.innerHTML = `<h3>When should the student graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p><div class="wizard-form-grid"><label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label><label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label></div><div class="note">Fall and Spring plans must stay between 12 and 18 credits. Summer is capped at 12 credits.</div><div class="wizard-error" id="wizardError"></div>`;
     const sync = () => { state.gradYear = Number($("wizardGradYear").value); state.gradTerm = $("wizardGradTerm").value; state.grad = `${state.gradTerm} ${state.gradYear}`; saveState(); generateGradOptions(); renderAll(false); };
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
@@ -4732,30 +4720,6 @@ function renderWizard() {
     content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => { const type = input.dataset.wizardProgram; state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(item => item.value); saveState(); renderAll(true); renderWizard(); }));
     $("loadDataBtn")?.addEventListener("click", async () => { state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data"; saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard(); });
   } else if (state.setupStep === 7) {
-=======
-    content.innerHTML = `<h3>When should the student graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p>
-      <div class="wizard-form-grid">
-        <label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label>
-        <label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label>
-        <label class="field-label">Math placement (optional)<select id="wizardMathPlacement"><option value="">Not entered</option>${["MTH 100", "MTH 111", "MTH 121"].map(code => `<option value="${code}" ${state.mathPlacement === code ? "selected" : ""}>${code}</option>`).join("")}</select></label>
-      </div><div class="note">Fall and Spring plans must stay between 12 and 18 credits. Summer is capped at 12 credits.</div><div class="wizard-error" id="wizardError"></div>`;
-    const sync = () => { state.gradYear = Number($("wizardGradYear").value); state.gradTerm = $("wizardGradTerm").value; state.grad = `${state.gradTerm} ${state.gradYear}`; state.mathPlacement = $("wizardMathPlacement").value; saveState(); generateGradOptions(); renderAll(false); };
-    ["wizardGradYear", "wizardGradTerm", "wizardMathPlacement"].forEach(id => $(id).addEventListener("change", sync));
-  } else if (state.setupStep === 4) {
-    $("wizardHeading").textContent = "Choose majors and minors";
-    content.innerHTML = `<h3>Select majors and minors</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}
-      <details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">Use <code>./data</code> when the CSV folder is stored beside this HTML file on GitHub Pages.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => {
-      const type = input.dataset.wizardProgram;
-      state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(x => x.value);
-      saveState(); renderAll(true); renderProgramWizard();
-    }));
-    $("loadDataBtn")?.addEventListener("click", async () => {
-      state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data";
-      saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard();
-    });
-  } else if (state.setupStep === 5) {
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
     $("wizardHeading").textContent = "Review completed core courses";
     const items = CORE.map(makeCoreItem);
     content.innerHTML = `<h3>Which core requirements are already complete?</h3><p class="wizard-subtitle">Mark courses completed at Spring Hill or accepted as transfer credit. Completed courses will not appear as courses still needed.</p>${renderHistoryRows(items, true)}<div class="wizard-error" id="wizardError"></div>`;
@@ -4770,19 +4734,9 @@ function renderWizard() {
     content.innerHTML = `<h3>What times are already part of the weekly routine?</h3><p class="wizard-subtitle">Add work, practice, commuting, standing appointments, or other times when a class cannot be scheduled. This step is optional.</p>${renderRoutineEditorMarkup("wizard")}<div class="wizard-error" id="wizardError"></div>`;
     attachRoutineEditorEvents(content, "wizard");
   } else {
-<<<<<<< HEAD
     $("wizardHeading").textContent = "Ready to plan";
     nav.classList.add("hidden");
     content.innerHTML = `<div class="wizard-final"><button type="button" class="primary final-plan-button" id="startPlanningBtn">Plan my journey</button></div>`;
-=======
-    $("wizardHeading").textContent = "Ready to build the plan";
-    nav.classList.add("hidden");
-    content.innerHTML = `<div class="wizard-final">
-      <h3>Everything is ready.</h3>
-      <p class="wizard-subtitle">Degreefy will place the remaining requirements in an order that follows prerequisites, typical offerings, and semester credit limits.</p>
-      <button type="button" class="primary final-plan-button" id="startPlanningBtn">Plan my journey</button>
-    </div>`;
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
     $("startPlanningBtn").addEventListener("click", () => completeSetup(false));
   }
 }
@@ -4838,11 +4792,7 @@ function renderProfileBar() {
   if (!wrap) return;
   const programs = selectedProgramNames();
   const title = $("planPageTitle");
-<<<<<<< HEAD
   if (title) title.textContent = state.planningScope === "semester" ? `Plan ${schedulePrimaryTerm()}` : `Plan through ${state.grad}`;
-=======
-  if (title) title.textContent = `Plan through ${state.grad}`;
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
   wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${programs.map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
 }
 function showWizard(step = 1) {
@@ -4864,11 +4814,7 @@ function showPlanner() {
   if (semesterOnly) renderSemesterPlanner(); else { renderProfileBar(); renderAll(true); }
 }
 function completeSetup(autoPlan = false) {
-<<<<<<< HEAD
   if (!(state.majors || []).length) { state.setupStep = 6; showWizard(6); return; }
-=======
-  if (!(state.majors || []).length) { state.setupStep = 4; showWizard(4); return; }
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
   state.setupComplete = true;
   saveState();
   showPlanner();
@@ -4928,10 +4874,7 @@ function setupDegreefyEvents() {
   $("sharePlanBtn")?.addEventListener("click", showSharePlaceholder);
   $("planForMeInlineBtn")?.addEventListener("click", () => populateAllUnchecked({ skipConfirm: true }));
   document.addEventListener("keydown", e => { if (e.key === "Escape") closePlannerDrawer(); });
-<<<<<<< HEAD
   setupSemesterPlannerEvents();
-=======
->>>>>>> 9ec8f7d89c95b1884fb33df494063541344599b8
 }
 
 
