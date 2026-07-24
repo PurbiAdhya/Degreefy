@@ -1767,7 +1767,7 @@
         <div class="semester-panel-head">
           <span class="panel-kicker">Published schedule</span>
           <h2>Available sections</h2>
-          <p class="panel-intro" id="semesterCatalogIntro">Drag a section into the weekly schedule or use Add.</p>
+          <p class="panel-intro" id="semesterCatalogIntro">Degreefy places the required PTH course first, then prioritizes unfinished major requirements. Drag any section into the weekly schedule to adjust the plan.</p>
         </div>
         <div class="semester-panel-body">
           <div class="semester-catalog-tools">
@@ -4567,10 +4567,28 @@ function semesterRequirementMatches(code) {
   });
   return matches;
 }
+function isRequiredPTHForUpcomingSemester(code) {
+  return ["PTH 101", "PTH 102"].includes(code)
+    && !isCompletedCourseCode(code)
+    && scheduleSectionsForPrimaryTerm().some(section => section.course_code === code)
+    && semesterRequirementMatches(code).some(match => match.type === "Core");
+}
+function semesterPlanningPriority(code) {
+  if (isRequiredPTHForUpcomingSemester(code)) return 0;
+  const matches = semesterRequirementMatches(code);
+  if (matches.some(match => match.type === "Major")) return 1;
+  if (matches.some(match => match.type === "Core")) return 2;
+  if (matches.some(match => match.type === "Minor")) return 3;
+  return 4;
+}
+function semesterPlanningScore(code) {
+  return semesterPlanningPriority(code) * 100000 + courseSortScore(code);
+}
 function defaultSemesterCourseType(code) {
   if (isCompletedCourseCode(code)) return "Retake";
+  if (isRequiredPTHForUpcomingSemester(code)) return "Core";
   const matches = semesterRequirementMatches(code);
-  return matches.find(match => match.type === "Core")?.type || matches.find(match => match.type === "Major")?.type || matches.find(match => match.type === "Minor")?.type || "";
+  return matches.find(match => match.type === "Major")?.type || matches.find(match => match.type === "Core")?.type || matches.find(match => match.type === "Minor")?.type || "";
 }
 function neededSemesterCodes() {
   return new Set(scheduleSectionsForPrimaryTerm().map(section => section.course_code).filter(code => !isCompletedCourseCode(code) && semesterRequirementMatches(code).length));
@@ -4658,7 +4676,7 @@ function renderSemesterSectionList() {
   let sections = scheduleSectionsForPrimaryTerm().filter(section => !selected.has(section.section_id));
   if (state.semesterCourseView !== "all") sections = sections.filter(section => needed.has(section.course_code));
   if (search) sections = sections.filter(section => [section.course_code, section.section, section.course_title, section.instructor].join(" ").toLowerCase().includes(search));
-  sections.sort((a, b) => courseSortScore(a.course_code) - courseSortScore(b.course_code) || a.course_code.localeCompare(b.course_code) || a.section.localeCompare(b.section));
+  sections.sort((a, b) => semesterPlanningScore(a.course_code) - semesterPlanningScore(b.course_code) || a.course_code.localeCompare(b.course_code) || a.section.localeCompare(b.section));
   if (!sections.length) {
     list.innerHTML = `<div class="weekly-empty-message">${SEMESTER_SECTIONS.length ? (state.semesterCourseView === "all" ? "No sections match this search." : "No remaining required courses are offered in the published schedule. Switch to All courses to browse every section.") : "No semester schedule was loaded. Add semester_schedule.csv to the GitHub data folder."}</div>`;
     return;
@@ -4726,6 +4744,9 @@ function renderSemesterFinalTable() {
   const conflicts = semesterConflictMap();
   $("semesterCreditTotal").textContent = semesterCreditsTotal();
   const messages = [], advising = [];
+  const selectedCodes = new Set(sections.map(section => section.course_code));
+  const missingRequiredPTH = Array.from(neededSemesterCodes()).filter(code => isRequiredPTHForUpcomingSemester(code) && !selectedCodes.has(code));
+  if (missingRequiredPTH.length) advising.push(`${missingRequiredPTH.join(" and ")} is required for this semester plan.`);
   sections.forEach(section => {
     (conflicts.get(section.section_id) || []).forEach(message => messages.push(`${section.course_code}-${section.section}: ${message}`));
     const missing = missingSemesterPrerequisites(section.course_code);
@@ -4789,17 +4810,38 @@ function planOneSemesterForMe() {
   if (!SEMESTER_SECTIONS.length) { alert("No published semester schedule was loaded."); return; }
   if ((state.semesterSelections || []).length && !confirm("Replace the current semester selections with a new suggested schedule?")) return;
   const needed = neededSemesterCodes();
-  const codes = Array.from(needed).sort((a, b) => courseSortScore(a) - courseSortScore(b));
+  const codes = Array.from(needed).sort((a, b) => semesterPlanningScore(a) - semesterPlanningScore(b));
   const selected = [];
   const selectedCodes = new Set();
-  const tryAddSection = section => {
+  const currentIds = () => selected.map(item => item.section_id);
+  const tryAddSection = (section, allowConflict = false) => {
     if (!section || selectedCodes.has(section.course_code)) return false;
-    const nextIds = [...selected.map(item => item.section_id), section.section_id];
-    if (semesterCreditsTotal(nextIds) > 18 || sectionWouldConflict(section, selected.map(item => item.section_id))) return false;
+    const nextIds = [...currentIds(), section.section_id];
+    if (semesterCreditsTotal(nextIds) > 18) return false;
+    if (!allowConflict && sectionWouldConflict(section, currentIds())) return false;
     selected.push(section); selectedCodes.add(section.course_code); return true;
   };
-  for (const code of codes) {
-    if (semesterCreditsTotal(selected.map(item => item.section_id)) >= 15) break;
+  const conflictCount = section => {
+    const testIds = [...currentIds().filter(id => scheduleSectionById(id)?.course_code !== section.course_code), section.section_id];
+    return (semesterConflictMap(testIds).get(section.section_id) || []).length;
+  };
+
+  // PTH is required. Add the outstanding PTH course first. When every section
+  // conflicts with a routine block, keep the least-conflicting section so the
+  // conflict is visible rather than silently omitting the required course.
+  const requiredPTHCodes = codes.filter(isRequiredPTHForUpcomingSemester);
+  requiredPTHCodes.forEach(code => {
+    const sections = scheduleSectionsForPrimaryTerm()
+      .filter(section => section.course_code === code)
+      .sort((a, b) => conflictCount(a) - conflictCount(b) || a.section.localeCompare(b.section));
+    const conflictFree = sections.find(section => conflictCount(section) === 0);
+    tryAddSection(conflictFree || sections[0], !conflictFree);
+  });
+
+  // After PTH, unfinished major requirements receive first preference, followed
+  // by core requirements and then minor requirements.
+  for (const code of codes.filter(code => !isRequiredPTHForUpcomingSemester(code))) {
+    if (semesterCreditsTotal(currentIds()) >= 15) break;
     if (!courseEligibleForUpcomingSemester(code)) continue;
     const coreqCodes = requiredCoreqCodesForSemester(code);
     const courseSections = scheduleSectionsForPrimaryTerm().filter(section => section.course_code === code);
@@ -4810,20 +4852,20 @@ function planOneSemesterForMe() {
       let coreqsOkay = true;
       for (const coreqCode of coreqCodes) {
         if (selectedCodes.has(coreqCode)) continue;
-        const coreq = scheduleSectionsForPrimaryTerm().filter(item => item.course_code === coreqCode).find(item => !sectionWouldConflict(item, selected.map(selectedItem => selectedItem.section_id)) && semesterCreditsTotal([...selected.map(selectedItem => selectedItem.section_id), item.section_id]) <= 18);
+        const coreq = scheduleSectionsForPrimaryTerm().filter(item => item.course_code === coreqCode).find(item => !sectionWouldConflict(item, currentIds()) && semesterCreditsTotal([...currentIds(), item.section_id]) <= 18);
         if (!coreq || !tryAddSection(coreq)) { coreqsOkay = false; break; }
       }
       if (coreqsOkay) { placed = true; break; }
       selected.splice(0, selected.length, ...snapshot); selectedCodes.clear(); snapshotCodes.forEach(value => selectedCodes.add(value));
     }
-    if (placed && semesterCreditsTotal(selected.map(item => item.section_id)) >= 12) {
+    if (placed && semesterCreditsTotal(currentIds()) >= 12) {
       // Continue to a balanced 15 credits when another conflict-free required course is available.
     }
   }
   state.semesterSelections = selected.map(section => section.section_id);
   state.semesterCourseTypes = Object.fromEntries(selected.map(section => [section.section_id, defaultSemesterCourseType(section.course_code)]));
   saveState(); renderSemesterPlanner();
-  if (semesterCreditsTotal() < 12) showSemesterToast("Degreefy built the strongest conflict-free draft it could. Review placement, prerequisites, and routine blocks to reach 12 credits.");
+  if (semesterCreditsTotal() < 12) showSemesterToast("Degreefy included the required PTH course and built the strongest conflict-free draft it could. Review placement, prerequisites, and routine blocks to reach 12 credits.");
 }
 function showSemesterToast(message) {
   let toast = document.querySelector(".degreefy-toast");
