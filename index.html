@@ -1,0 +1,3696 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4f467f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235f4bb6'/%3E%3Cpath d='M18 16h14c11 0 18 6 18 16S43 48 32 48H18V16zm10 8v16h4c6 0 9-3 9-8s-3-8-9-8h-4z' fill='white'/%3E%3Cpath d='m36 35 5 5 10-12' fill='none' stroke='%23f7d66d' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <title>Degreefy | Spring Hill College Degree Planner</title>
+  <style>
+    :root {
+      --bg: #f7f6fb;
+      --panel: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --line: #d8d7e8;
+      --purple: #5f4bb6;
+      --purple-dark: #463b83;
+      --purple-soft: #ebe7ff;
+      --fall: #ffe6cc;
+      --spring: #dff4e7;
+      --summer: #fff2b8;
+      --green: #237a57;
+      --red: #b42318;
+      --shadow: 0 10px 28px rgba(45, 39, 84, 0.08);
+      --radius: 16px;
+      --floating-offset: 86px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4f467f, #6757c8 62%, #7b68d8);
+      color: white;
+      padding: 26px 28px 20px;
+      border-bottom: 4px solid #d7ccff;
+    }
+
+    header h1 {
+      margin: 0 0 7px;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.04em;
+    }
+
+    header p {
+      margin: 0;
+      color: #f4f1ff;
+      font-size: 15px;
+    }
+
+    .app {
+      display: grid;
+      gap: 16px;
+      padding: 16px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .controls { padding: 16px; }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: minmax(360px, 1.3fr) minmax(190px, 0.6fr) minmax(220px, 0.7fr) minmax(220px, 0.7fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .program-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    h2, h3, h4 { color: var(--purple-dark); }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    h3 { margin: 12px 0 8px; font-size: 15px; }
+    h4 { margin: 12px 0 8px; font-size: 14px; }
+
+    label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 7px 0;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] { margin-top: 2px; }
+
+    select, input[type="search"] {
+      width: 100%;
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .small { color: var(--muted); font-size: 12px; }
+
+    .note {
+      background: var(--purple-soft);
+      border-left: 4px solid var(--purple);
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #344054;
+      font-size: 13px;
+      margin: 10px 0 0;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--purple-dark);
+      padding: 9px 11px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button.primary {
+      background: var(--purple);
+      color: white;
+      border-color: var(--purple);
+    }
+
+    button:hover { filter: brightness(0.98); }
+
+    .main { display: grid; gap: 16px; }
+
+    .summary {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 70;
+      box-shadow: 0 12px 26px rgba(45, 39, 84, 0.10);
+    }
+
+    .stat {
+      background: var(--purple-soft);
+      border-radius: 14px;
+      padding: 11px 12px;
+      border: 1px solid #ddd6ff;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      color: var(--purple-dark);
+      line-height: 1.1;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(95, 75, 182, 0.14);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid rgba(95, 75, 182, 0.12);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--purple);
+      border-radius: 999px;
+      transition: width 180ms ease;
+    }
+
+
+
+    #confettiLayer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -16px;
+      width: 9px;
+      height: 14px;
+      border-radius: 3px;
+      opacity: 0.98;
+      transform: translate3d(0, 0, 0) rotate(0deg);
+      transform-origin: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+      animation: confettiFall 2.4s ease-out forwards;
+    }
+
+    .confetti-burst {
+      position: fixed;
+      left: 50%;
+      top: 28%;
+      transform: translate(-50%, -50%) scale(0.8);
+      font-size: 48px;
+      line-height: 1;
+      animation: confettiPop 1.2s ease-out forwards;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,0.18));
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 1; }
+      75% { opacity: 1; }
+      100% { transform: translate3d(var(--drift), 105vh, 0) rotate(var(--spin)); opacity: 0; }
+    }
+
+    @keyframes confettiPop {
+      0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
+      15% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+      75% { opacity: 1; }
+      100% { transform: translate(-50%, -70%) scale(0.96); opacity: 0; }
+    }
+
+    .success, .warning {
+      margin: 0 16px 16px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .success {
+      background: #e7f8ef;
+      border: 1px solid #addfc1;
+      border-left: 5px solid var(--green);
+      color: #14532d;
+    }
+
+    .warning {
+      background: #fff7e6;
+      border: 1px solid #f3cf8a;
+      border-left: 5px solid #d97706;
+      color: #7a3e00;
+    }
+
+    .top-warning {
+      position: sticky;
+      top: 78px;
+      z-index: 69;
+      box-shadow: 0 10px 22px rgba(122, 62, 0, 0.10);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(230px, 1fr) minmax(620px, 2fr) minmax(260px, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 12px;
+      align-content: stretch;
+      max-height: calc(100vh - var(--floating-offset) - 12px);
+      overflow: visible;
+      position: sticky;
+      top: var(--floating-offset);
+      padding-right: 2px;
+    }
+
+    .requirements, .courses-panel, .offerings-panel {
+      padding: 14px;
+      max-height: none;
+      overflow: auto;
+      position: static;
+    }
+
+    .requirements > h2,
+    .courses-panel > h2,
+    .offerings-panel > h2 {
+      position: sticky;
+      top: -14px;
+      z-index: 20;
+      background: var(--panel);
+      margin: -14px -14px 10px;
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid var(--line);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .checklist-side .core-requirements { min-height: 280px; }
+    .checklist-side .program-requirements { min-height: 280px; }
+
+    .checklist-side {
+      grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+      height: calc(100vh - var(--floating-offset) - 12px);
+      overflow: visible;
+    }
+
+    .checklist-side .requirements {
+      min-height: 0;
+      overflow: auto;
+    }
+
+    .checklist-side .core-requirements,
+    .checklist-side .program-requirements { min-height: 0; }
+    .course-side {
+      grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+      height: calc(100vh - var(--floating-offset) - 12px);
+      overflow: visible;
+    }
+
+    .course-side .courses-panel,
+    .course-side .offerings-panel { min-height: 0; }
+
+    .checklist-tools {
+      display: grid;
+      gap: 8px;
+      margin: 10px 0 12px;
+    }
+
+    .course-list { display: grid; gap: 5px; }
+
+    .course-card {
+      border: 1px solid #e3e1ef;
+      border-radius: 10px;
+      padding: 7px 8px;
+      background: white;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .course-card.completed { opacity: 0.62; background: #fafafa; }
+    .course-card.draggable { cursor: grab; }
+    .course-card:active { cursor: grabbing; }
+    .course-card:hover { background: #fcfbff; }
+    .course-card.drop-ready { outline: 2px dashed #8a78df; outline-offset: 2px; }
+    .criterion-card { background: #fffdf8; border-color: #f0dec6; }
+
+    .requirements .course-card {
+      border: 0;
+      border-bottom: 1px solid #eceaf5;
+      border-radius: 0;
+      background: transparent;
+      padding: 7px 2px;
+    }
+
+    .requirements .course-card:hover { background: #fbfaff; }
+    .requirements .course-card.completed { background: transparent; opacity: 0.65; }
+    .requirements .criterion-card { background: transparent; }
+    .requirements .course-card.drop-ready {
+      outline: 2px dashed #8a78df;
+      outline-offset: 2px;
+      border-radius: 10px;
+      background: #fcfbff;
+    }
+
+    .courses-panel .course-card { padding: 8px 9px; }
+
+    .bank-section {
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    .bank-section:first-child {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .bank-section-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .bank-section-title h3 { margin: 0; }
+
+    .course-title {
+      font-weight: 700;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .course-meta {
+      display: grid;
+      gap: 1px;
+      margin-top: 3px;
+    }
+
+    .credit-pill {
+      border-radius: 999px;
+      background: #f4f1ff;
+      color: var(--purple-dark);
+      border: 1px solid #ded7ff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      padding: 5px 7px;
+      white-space: nowrap;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .section-title.first { border-top: 0; padding-top: 0; margin-top: 0; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); }
+
+    .planner-wrap { padding: 16px; }
+
+    .planner-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin: -16px -16px 12px;
+      padding: 16px;
+      position: sticky;
+      top: var(--floating-offset);
+      z-index: 30;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .planner-actions {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      max-width: 260px;
+    }
+
+    .planner-actions button { width: 100%; }
+
+    .term-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 7px;
+    }
+
+    .legend-chip {
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      color: #344054;
+    }
+
+    .legend-fall { background: var(--fall); }
+    .legend-spring { background: var(--spring); }
+    .legend-summer { background: var(--summer); }
+
+    .semester-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .semester {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      overflow: hidden;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .semester.over { outline: 3px solid #c8bfff; outline-offset: 2px; }
+
+    .semester-header {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .semester.term-fall .semester-header { background: var(--fall); }
+    .semester.term-spring .semester-header { background: var(--spring); }
+    .semester.term-summer .semester-header { background: var(--summer); }
+
+    .semester-header strong { color: #344054; }
+    .credits { font-weight: 800; color: var(--purple-dark); }
+    .credits.warn { color: var(--red); }
+
+    .drop-zone {
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+      flex: 1;
+      min-height: 150px;
+    }
+
+    .empty {
+      border: 1px dashed #bcc7d5;
+      border-radius: 12px;
+      padding: 18px 10px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .planned-course {
+      border: 1px solid #d5d3e5;
+      background: #fbfbff;
+      border-radius: 12px;
+      padding: 7px 8px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 5px;
+      align-items: start;
+      cursor: grab;
+      font-size: 12.5px;
+      line-height: 1.28;
+    }
+
+    .planned-course .small { font-size: 10.8px; line-height: 1.25; }
+    .print-credits { display: none; }
+
+    .planned-course:active { cursor: grabbing; }
+
+    .planned-course.offcycle { border-color: #f4bc79; background: #fffaf4; }
+    .planned-course.req-warning { border-color: #fda29b; background: #fff7f7; }
+
+    .course-alert {
+      color: var(--red);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .warn-sign {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #fff0d5;
+      border: 1px solid #f0a545;
+      color: #9a4b00;
+      font-weight: 900;
+      font-size: 13px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .req-warn-sign {
+      background: #fee4e2;
+      border-color: #fda29b;
+      color: var(--red);
+    }
+
+    .bank-tools {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-button {
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fbfaff;
+      border: 1px solid #ded7ff;
+      color: var(--purple-dark);
+    }
+
+    .filter-button.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: white;
+    }
+
+    .bank-list {
+      display: grid;
+      gap: 5px;
+      max-height: none;
+      overflow: visible;
+      padding-right: 2px;
+    }
+
+    .planned-course .x {
+      border: 0;
+      padding: 0 4px;
+      color: #667085;
+      background: transparent;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .hidden { display: none !important; }
+
+    .offering-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .offering-table th, .offering-table td { border: 1px solid var(--line); padding: 6px; vertical-align: top; }
+    .offering-table th {
+      background: var(--purple-soft);
+      color: var(--purple-dark);
+      position: sticky;
+      top: 39px;
+      z-index: 12;
+    }
+
+    .print-footer { display: none; margin-top: 16px; color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 1180px) {
+      .setup-grid, .workspace { grid-template-columns: 1fr; }
+      .side-stack { position: static; max-height: none; overflow: visible; padding-right: 0; }
+      .checklist-side { height: auto; grid-template-rows: auto; }
+      .checklist-side .requirements { overflow: visible; }
+      .summary { grid-template-columns: repeat(3, minmax(130px, 1fr)); }
+      .semester-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .program-columns, .summary { grid-template-columns: 1fr; }
+      header { padding: 22px 16px 18px; }
+      .app { padding: 12px; }
+    }
+
+    @media print {
+      @page { size: Letter landscape; margin: 0.18in; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      header, .controls, .requirements, .courses-panel, .toolbar, .note, .offerings-panel, .planner-actions, .term-legend, #successMessage, #overlapMessage, .empty { display: none !important; }
+      html, body { width: 100%; background: white; overflow: visible; }
+      body { line-height: 1.08; }
+      .app, .main, .workspace, .side-stack { display: block !important; max-width: none; padding: 0; margin: 0; overflow: visible; }
+      .panel { box-shadow: none; border: 0; border-radius: 0; background: white; }
+      .summary {
+        position: static !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        margin: 0 0 4px 0;
+        padding: 0;
+      }
+      .stat { padding: 3px 6px; border-radius: 6px; font-size: 7pt; }
+      .stat strong { font-size: 13pt; }
+      .progress-track { height: 4px; margin-top: 3px; }
+      .planner-wrap { display: block !important; }
+      .planner-head { display: block; padding: 0 0 4px 0; border-bottom: 0; }
+      .planner-head h2 { margin: 0; font-size: 12pt; color: #463b83; }
+      .planner-head .small { display: none; }
+      .semester-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+      }
+      .semester {
+        min-height: 0;
+        margin: 0;
+        border-radius: 6px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .semester-header { position: static; padding: 3px 5px; font-size: 7pt; gap: 4px; }
+      .credits { font-size: 6.5pt; }
+      .drop-zone { padding: 3px; gap: 2px; min-height: 0; }
+      .planned-course {
+        grid-template-columns: 1fr;
+        padding: 2px 3px;
+        border-radius: 4px;
+        font-size: 6.6pt;
+        line-height: 1.05;
+        gap: 0;
+        break-inside: avoid;
+      }
+      .planned-course .x, .planned-course .small, .planned-title, .warn-sign, .course-alert { display: none !important; }
+      .print-credits { display: inline; font-weight: 400; color: #475467; }
+      .print-footer { display: block; font-size: 6.5pt; margin-top: 4px; }
+    }
+
+
+    /* Degreefy guided experience */
+    :root {
+      --degreefy-navy: #29244f;
+      --degreefy-gold: #f2c94c;
+      --degreefy-teal: #2f7f78;
+    }
+
+    body.wizard-open { background: linear-gradient(180deg, #f0edff 0, var(--bg) 360px); }
+    body.wizard-open .header-actions { display: none; }
+    header.degreefy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 28px;
+    }
+    .brand-lockup { display: flex; align-items: center; gap: 13px; }
+    .brand-mark {
+      width: 48px; height: 48px; border-radius: 15px;
+      display: grid; place-items: center;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.28);
+      font-size: 24px; font-weight: 900; letter-spacing: -.08em;
+    }
+    .brand-copy h1 { font-size: clamp(27px, 4vw, 38px); margin: 0; }
+    .brand-copy p { margin-top: 2px; }
+    .header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .header-actions button { background: rgba(255,255,255,.12); color: white; border-color: rgba(255,255,255,.35); }
+
+    .wizard-shell { max-width: 1040px; margin: 30px auto 54px; padding: 0 18px; }
+    .wizard-card { overflow: hidden; }
+    .wizard-top {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #fff, #faf9ff);
+    }
+    .wizard-eyebrow { color: var(--purple); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .wizard-top h2 { font-size: clamp(24px, 4vw, 34px); margin: 5px 0 4px; letter-spacing: -.03em; }
+    .wizard-progress { display: grid; grid-template-columns: repeat(var(--step-count, 7), 1fr); gap: 7px; margin-top: 18px; }
+    .wizard-progress span { height: 6px; border-radius: 999px; background: #e4e0f2; }
+    .wizard-progress span.active { background: var(--purple); }
+    .wizard-progress span.done { background: var(--degreefy-teal); }
+    .wizard-content { padding: 24px; min-height: 360px; }
+    .wizard-content h3 { font-size: 22px; margin: 0 0 7px; }
+    .wizard-subtitle { color: var(--muted); margin: 0 0 20px; max-width: 720px; }
+    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+    .choice-card {
+      display: block; position: relative; cursor: pointer;
+      border: 1px solid var(--line); border-radius: 15px; padding: 17px;
+      background: white; min-height: 112px; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .choice-card:hover { transform: translateY(-2px); border-color: #bcb3e7; box-shadow: var(--shadow); }
+    .choice-card.selected { border: 2px solid var(--purple); background: var(--purple-soft); padding: 16px; }
+    .choice-card input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice-icon { font-size: 25px; display: block; margin-bottom: 8px; }
+    .choice-title { font-weight: 850; font-size: 16px; color: var(--degreefy-navy); }
+    .choice-description { color: var(--muted); font-size: 12.5px; margin-top: 5px; }
+    .wizard-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+    .field-label { display: grid; gap: 6px; font-weight: 750; color: var(--degreefy-navy); }
+    .field-label select, .field-label input { font-weight: 400; }
+    .program-area { margin-top: 18px; }
+    .program-area h4 { font-size: 15px; margin-bottom: 8px; }
+    .program-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 9px; }
+    .program-chip {
+      display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 11px 12px;
+      border: 1px solid var(--line); border-radius: 12px; background: white;
+    }
+    .program-chip:has(input:checked) { border-color: var(--purple); background: var(--purple-soft); }
+    .program-chip strong { color: var(--degreefy-navy); }
+    .source-box { margin-top: 22px; border: 1px dashed #b9b1dc; border-radius: 14px; padding: 13px; background: #fbfaff; }
+    .source-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; }
+    .data-status { margin-top: 8px; font-size: 12px; color: var(--muted); }
+    .data-status.good { color: var(--green); font-weight: 700; }
+    .data-status.bad { color: var(--red); }
+    .history-list { display: grid; gap: 9px; }
+    .history-row {
+      display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(190px, .8fr) auto;
+      gap: 10px; align-items: center; padding: 11px 12px;
+      border: 1px solid #e5e2f0; border-radius: 12px; background: white;
+    }
+    .history-row.completed { background: #f2fbf6; border-color: #b8dfc8; }
+    .history-main strong { display: block; font-size: 13.5px; }
+    .history-main span { color: var(--muted); font-size: 12px; }
+    .history-check { display: flex; align-items: center; gap: 6px; margin: 0; white-space: nowrap; font-size: 12px; font-weight: 750; }
+    .wizard-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 11px; margin: 16px 0 22px; }
+    .wizard-summary-card { background: var(--purple-soft); border: 1px solid #dcd6ff; border-radius: 14px; padding: 14px; }
+    .wizard-summary-card strong { display: block; color: var(--purple-dark); font-size: 18px; }
+    .ready-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+    .ready-actions button { min-height: 54px; }
+    .wizard-error { margin-top: 10px; color: var(--red); font-size: 13px; font-weight: 700; }
+    .wizard-nav { display: flex; justify-content: space-between; gap: 10px; padding: 16px 24px 22px; border-top: 1px solid var(--line); }
+    .wizard-nav .right { display: flex; gap: 8px; }
+    .planner-shell.hidden, .wizard-shell.hidden { display: none !important; }
+    .legacy-controls { display: none !important; }
+    .profile-bar { padding: 12px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .profile-summary { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+    .profile-pill { border: 1px solid #dcd6ff; background: var(--purple-soft); color: var(--purple-dark); border-radius: 999px; padding: 5px 9px; font-size: 12px; font-weight: 750; }
+    .profile-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+    .current-pill { display: inline-block; margin-top: 4px; border-radius: 999px; padding: 3px 6px; font-size: 10px; font-weight: 800; color: #14532d; background: #e7f8ef; border: 1px solid #addfc1; }
+    .plan-source-controls { display: grid; gap: 4px; margin-top: 6px; }
+    .plan-source-select { width: 100%; font-size: 10.5px; padding: 5px 6px; border-radius: 7px; }
+    .approval-check { display: flex; gap: 5px; align-items: center; margin: 0; font-size: 10.5px; color: #7a3e00; }
+    .print-source { display: none; }
+
+    @media (max-width: 720px) {
+      header.degreefy-header { align-items: flex-start; padding: 16px; }
+      .header-actions { display: none; }
+      .wizard-shell { margin-top: 16px; padding: 0 10px; }
+      .wizard-content, .wizard-top { padding: 18px; }
+      .wizard-nav { padding: 13px 18px 18px; }
+      .history-row { grid-template-columns: 1fr; }
+      .source-row { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      .print-source { display: inline !important; }
+      .plan-source-controls { display: none !important; }
+      body.print-checklist header, body.print-checklist .profile-bar, body.print-checklist .summary,
+      body.print-checklist .planner-wrap, body.print-checklist .courses-panel, body.print-checklist .offerings-panel,
+      body.print-checklist #plannerWarnings, body.print-checklist #successMessage, body.print-checklist #overlapMessage { display: none !important; }
+      body.print-checklist .workspace, body.print-checklist .checklist-side { display: block !important; height: auto !important; }
+      body.print-checklist .requirements { display: block !important; overflow: visible !important; max-height: none !important; margin-bottom: 12px; border: 1px solid #ddd !important; padding: 12px !important; }
+      body.print-checklist .requirements > h2 { position: static !important; margin: 0 0 8px !important; padding: 0 0 6px !important; }
+      body.print-checklist .requirements .course-card { display: grid !important; grid-template-columns: auto 1fr auto !important; font-size: 9pt; break-inside: avoid; }
+      body.print-checklist .requirements input { display: inline !important; }
+      body.print-checklist .checklist-tools, body.print-checklist .small { display: none !important; }
+      body.print-plan .requirements, body.print-plan .courses-panel, body.print-plan .offerings-panel { display: none !important; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="degreefy-header">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">D✓</div>
+      <div class="brand-copy">
+        <h1>Degreefy</h1>
+        <p>A guided Spring Hill College degree-planning journey.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button type="button" id="headerEditSetupBtn">Edit setup</button>
+      <button type="button" id="headerPrintChecklistBtn">Print checklist</button>
+      <button type="button" id="headerPrintPlanBtn">Print plan</button>
+    </div>
+  </header>
+
+  <section class="wizard-shell" id="setupWizard" aria-label="Degreefy guided setup">
+    <div class="panel wizard-card">
+      <div class="wizard-top">
+        <div class="wizard-eyebrow" id="wizardEyebrow">Step 1</div>
+        <h2 id="wizardHeading">Let’s build a degree journey</h2>
+        <div class="small" id="wizardStepLabel"></div>
+        <div class="wizard-progress" id="wizardProgress"></div>
+      </div>
+      <div class="wizard-content" id="wizardContent"></div>
+      <div class="wizard-nav" id="wizardNav">
+        <button type="button" id="wizardBackBtn">Back</button>
+        <div class="right">
+          <button type="button" id="wizardSaveExitBtn">Save and view planner</button>
+          <button type="button" class="primary" id="wizardNextBtn">Continue</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="app planner-shell hidden" id="plannerApp">
+    <section class="panel profile-bar" aria-label="Planning profile">
+      <div class="profile-summary" id="profileSummary"></div>
+      <div class="profile-actions">
+        <button type="button" id="profileEditSetupBtn">Edit setup</button>
+        <button type="button" id="profilePrintChecklistBtn">Print checklist</button>
+        <button type="button" class="primary" id="profilePrintPlanBtn">Print plan</button>
+      </div>
+    </section>
+    <section class="panel controls legacy-controls" aria-label="Legacy degree planner setup">
+      <div class="setup-grid">
+        <div>
+          <h2>Programs</h2>
+          <div class="program-columns">
+            <div>
+              <h3>Majors</h3>
+              <div id="majorControls"></div>
+            </div>
+            <div>
+              <h3>Minors</h3>
+              <div id="minorControls"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2>Graduation</h2>
+          <label style="display:block; margin-bottom:10px;">
+            <span class="small">Graduating semester</span>
+            <select id="gradSelect"></select>
+          </label>
+          <div class="note">Planning starts in <strong>Fall 2026</strong>.</div>
+        </div>
+
+        <div>
+          <h2>Math Placement</h2>
+          <label style="display:block; margin-bottom:10px;">
+            <span class="small">Placement result</span>
+            <select id="mathPlacementSelect">
+              <option value="">Select result</option>
+              <option value="MTH 100">MTH 100</option>
+              <option value="MTH 111">MTH 111</option>
+              <option value="MTH 121">MTH 121</option>
+            </select>
+          </label>
+          <div class="small">Placement into MTH 111 or MTH 121 satisfies lower math prerequisites for planning, but does not add earned credits.</div>
+        </div>
+
+        <div>
+          <h2>Save / Share</h2>
+          <div class="small">Students should confirm plans with their advisor.</div>
+          <div class="toolbar">
+            <button class="primary" id="printBtn">Print plan</button>
+            <button id="exportBtn">Export JSON</button>
+            <button id="resetBtn">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="main">
+      <section class="panel summary" aria-label="Degree planning summary">
+        <div class="stat"><strong id="programLeft">0</strong><span>program courses left</span><div class="progress-track"><div class="progress-fill" id="programProgress"></div></div></div>
+        <div class="stat"><strong id="coreLeft">0</strong><span>core courses left</span><div class="progress-track"><div class="progress-fill" id="coreProgress"></div></div></div>
+        <div class="stat"><strong id="creditsLeft">120</strong><span>credits left to 120</span><div class="progress-track"><div class="progress-fill" id="creditProgress"></div></div></div>
+      </section>
+      <div id="plannerWarnings" class="warning top-warning hidden"></div>
+      <div id="successMessage" class="success hidden">Your degree planning is a success. Please review it with your advisor.</div>
+      <div id="overlapMessage" class="warning hidden"></div>
+
+      <section class="workspace">
+        <div class="side-stack checklist-side">
+          <aside class="panel requirements core-requirements">
+            <h2>Checklist: Core</h2>
+            <div id="corePanel">
+              <div class="small" style="margin-bottom:10px;">Core requirements are satisfied by completed, checked, or planned eligible courses.</div>
+              <div class="checklist-tools core-only-tool">
+                <button type="button" id="coreUncheckedOnly" class="filter-button" aria-pressed="false">Show unchecked only</button>
+              </div>
+              <div class="course-list" id="coreList"></div>
+            </div>
+          </aside>
+
+          <aside class="panel requirements program-requirements">
+            <h2>Checklist: Program</h2>
+            <div class="checklist-tools program-only-tool">
+              <button type="button" id="programUncheckedOnly" class="filter-button" aria-pressed="false">Show unchecked only</button>
+            </div>
+            <div id="programPanel">
+              <div class="small" id="programHelp">Choose at least one major or minor.</div>
+              <div class="section-title first"><h3>Required Courses</h3><span class="badge" id="requiredBadge">0</span></div>
+              <div class="course-list" id="requiredList"></div>
+              <div class="section-title"><h3>Electives / Choices</h3><span class="badge" id="electiveBadge">0</span></div>
+              <div class="small" style="margin-bottom:6px;">Drop an eligible course here, check it manually, or place an eligible course in the planner.</div>
+              <div class="course-list" id="electiveList"></div>
+            </div>
+          </aside>
+        </div>
+
+        <section class="panel planner-wrap">
+          <div class="planner-head">
+            <div>
+              <h2>Planner</h2>
+              <div class="small">Drag course cards into semesters. Credits update automatically.</div>
+              <div class="term-legend" aria-label="Semester color legend">
+                <span class="legend-chip legend-fall">Fall</span>
+                <span class="legend-chip legend-spring">Spring</span>
+                <span class="legend-chip legend-summer">Summer</span>
+              </div>
+            </div>
+            <div class="planner-actions">
+              <button class="primary" id="populateBtn">Populate all unchecked</button>
+              <button id="clearPlanBtn">Clear scheduled courses</button>
+              <div class="small"><strong>Tip:</strong> Auto-populate uses Fall/Spring only, avoids Summer, prioritizes prerequisites/gateway courses, and tries to keep Fall/Spring semesters at 12–18 credits.</div>
+            </div>
+          </div>
+          <div class="semester-grid" id="semesterGrid"></div>
+          <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
+        </section>
+
+        <div class="side-stack course-side">
+          <aside class="panel courses-panel">
+            <h2>Courses</h2>
+            <div class="small" style="margin-bottom:10px;">Drag these course cards into the planner or onto a matching choice requirement. Course data is loaded from the configured GitHub CSV folder. Confirm registration details in BadgerWeb.</div>
+            <div class="bank-tools">
+              <input type="search" id="courseSearch" placeholder="Filter courses" />
+              <div class="filter-buttons" id="courseFilterButtons" aria-label="Course filters"></div>
+              <label>
+                <input type="checkbox" id="hideCompletedCourses" />
+                <span>Hide completed/planned courses</span>
+              </label>
+            </div>
+            <div class="bank-list" id="courseBank"></div>
+          </aside>
+
+          <aside class="panel offerings-panel">
+            <h2>Course Availability</h2>
+            <div class="small" style="margin-bottom:10px;">Current-semester courses and projected typical offerings are loaded from CSV. An <strong>!</strong> appears when a Spring Hill course is planned outside its typical term. Confirm final availability in BadgerWeb.</div>
+            <table class="offering-table" aria-label="Typical course offerings">
+              <thead><tr><th>Area</th><th id="currentOfferingHeading">Current</th><th>Typical Fall</th><th>Typical Spring</th><th>Typical Summer</th></tr></thead>
+              <tbody id="offeringRows"></tbody>
+            </table>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const START_TERM = { term: "Fall", year: 2026 };
+const TERMS = ["Fall", "Spring", "Summer"];
+const DEGREE_MIN_CREDITS = 120;
+const TERM_LIMITS = { Fall: 18, Spring: 18, Summer: 12 };
+let CURRENT_OFFERINGS = {};
+let DATA_SOURCE_KIND = "embedded";
+
+let OFFERINGS = {
+  PTH: {
+    Fall: ["PTH 101"],
+    Spring: ["PTH 102"],
+    Summer: []
+  },
+  ENG: {
+    Fall: ["ENG 121", "ENG 123", "ENG 242", "ENG 243", "ENG 276"],
+    Spring: ["ENG 123", "ENG 240", "ENG 241", "ENG 242"],
+    Summer: ["ENG 123"]
+  },
+  PHL: {
+    Fall: ["PHL 101", "PHL 190", "PHL 210"],
+    Spring: ["PHL 101", "PHL 214", "PHL 292"],
+    Summer: ["PHL 101"]
+  },
+  THL: {
+    Fall: ["THL 101", "THL 242", "THL 250", "THL 261"],
+    Spring: ["THL 101", "THL 190", "THL 232", "THL 242", "THL 250", "THL 261"],
+    Summer: ["THL 101", "THL 250"]
+  },
+  Language: {
+    Fall: ["SPA 101", "FRE 101", "ITA 101"],
+    Spring: ["SPA 102", "FRE 102", "ITA 102"],
+    Summer: ["SPA 101", "SPA 102"]
+  },
+  MTH: {
+    Fall: ["MTH 100", "MTH 101", "MTH 111", "MTH 121", "MTH 163", "MTH 223", "MTH 322", "MTH 451", "MTH 464", "MTH 482"],
+    Spring: ["MTH 100", "MTH 101", "MTH 111", "MTH 121", "MTH 122", "MTH 163", "MTH 221", "MTH 261", "MTH 301", "MTH 365", "MTH 423", "MTH 491"],
+    Summer: ["MTH 111", "MTH 163", "MTH 121"]
+  },
+  HIS: {
+    Fall: ["HIS 110", "HIS 213", "HIS 214"],
+    Spring: ["HIS 110", "HIS 120", "HIS 212"],
+    Summer: ["HIS 214"]
+  },
+  POL: {
+    Fall: ["POL 112", "POL 151"],
+    Spring: ["POL 112", "POL 161"],
+    Summer: ["POL 151"]
+  },
+  BIO: {
+    Fall: ["BIO 101", "BIO 103", "BIO 120", "BIO 125", "BIO 140"],
+    Spring: [],
+    Summer: ["BIO 101", "BIO 120"]
+  },
+  CHM: {
+    Fall: ["CHM 111", "CHM 113", "CHM 115"],
+    Spring: ["CHM 112", "CHM 114"],
+    Summer: []
+  },
+  PHY: {
+    Fall: ["PHY 115", "PHY 201", "PHY 221", "PHY 213"],
+    Spring: ["PHY 202", "PHY 222", "PHY 214"],
+    Summer: []
+  },
+  CSC: {
+    Fall: ["CSC 100", "CSC 202", "CSC 210", "CSC 311", "CSC 320", "CSC 341"],
+    Spring: ["CSC 101", "CSC 203", "CSC 312", "CSC 321", "CSC 414", "CSC 431"],
+    Summer: []
+  },
+  DSC: {
+    Fall: ["DSC 240", "DSC 443"],
+    Spring: ["DSC 442", "DSC 499"],
+    Summer: []
+  },
+  PSY: {
+    Fall: ["PSY 101", "PSY 150"],
+    Spring: ["PSY 101"],
+    Summer: ["PSY 101", "PSY 263"]
+  },
+  ECO: {
+    Fall: ["ECO 101"],
+    Spring: ["ECO 102"],
+    Summer: ["ECO 101", "ECO 102"]
+  },
+  SOC: {
+    Fall: ["SOC 101"],
+    Spring: ["SOC 101"],
+    Summer: []
+  },
+  ART: {
+    Fall: ["ART 101", "ART 102", "ART 103"],
+    Spring: ["ART 101", "ART 103"],
+    Summer: []
+  },
+  THR: {
+    Fall: ["THR 245"],
+    Spring: ["THR 250"],
+    Summer: []
+  },
+  Statistics: {
+    Fall: [],
+    Spring: [],
+    Summer: ["BUS 263"]
+  }
+};
+
+let COURSE_CATALOG = {
+  "MTH 100": { title: "Intermediate Algebra", credits: 3, coreq: ["MTH 101"] },
+  "MTH 101": { title: "Intermediate Algebra Recitation", credits: 0, coreq: ["MTH 100"] },
+  "MTH 111": { title: "Precalculus with Trigonometry", credits: 3, prereq: ["MTH 100"] },
+  "MTH 121": { title: "Calculus I", credits: 4, prereq: ["MTH 111"] },
+  "MTH 122": { title: "Calculus II", credits: 4, prereq: ["MTH 121"] },
+  "MTH 163": { title: "Basic Statistics for the Sciences", credits: 3, prereq: ["MTH 100"] },
+  "MTH 221": { title: "Linear Algebra", credits: 3, prereq: ["MTH 121"] },
+  "MTH 223": { title: "Calculus III", credits: 4, prereq: ["MTH 122"] },
+  "MTH 261": { title: "Differential Equations", credits: 3, prereq: ["MTH 122"] },
+  "MTH 301": { title: "Introduction to Abstract Mathematics", credits: 3, prereq: ["MTH 121", "PHL 101"] },
+  "MTH 322": { title: "Discrete Mathematics", credits: 3, prereq: ["MTH 121"] },
+  "MTH 365": { title: "Probability and Statistics", credits: 3, prereq: ["MTH 122"] },
+  "MTH 423": { title: "Cryptography", credits: 3, prereq: ["MTH 121"] },
+  "MTH 451": { title: "Basic Real Analysis", credits: 3, prereq: ["MTH 301", "MTH 223"] },
+  "MTH 464": { title: "Complex Variables", credits: 3, prereq: ["MTH 301", "MTH 223"] },
+  "MTH 482": { title: "Abstract Algebra", credits: 3, prereq: ["MTH 301"] },
+  "MTH 491": { title: "Seminar", credits: 1, prereq: ["MTH 451", "MTH 464", "MTH 482"] },
+
+  "CSC 100": { title: "Computer Science 0: Foundations", credits: 4, coreq: ["MTH 111"] },
+  "CSC 101": { title: "Computer Science 1: Principles", credits: 4, coreq: ["MTH 111"] },
+  "CSC 202": { title: "Computer Science 2: Data Structures", credits: 4, prereq: ["CSC 101"] },
+  "CSC 203": { title: "Computer Science 3: Algorithms", credits: 4, prereq: ["CSC 101"] },
+  "CSC 210": { title: "Computer Architecture", credits: 4, prereq: ["CSC 101"] },
+  "CSC 311": { title: "Operating Systems: Design and Implementation", credits: 4, prereq: ["CSC 210"] },
+  "CSC 312": { title: "Database Systems and Theory", credits: 3, prereq: ["CSC 202"] },
+  "CSC 313": { title: "Systems and Software Security", credits: 3, prereq: ["CSC 210"] },
+  "CSC 315": { title: "Cloud Computing and Development Operations", credits: 3, prereq: ["CSC 210"] },
+  "CSC 320": { title: "Automata", credits: 3, prereq: ["MTH 301", "CSC 203"] },
+  "CSC 321": { title: "Programming Language Theory", credits: 3, prereq: ["CSC 203"] },
+  "CSC 330": { title: "Junior Software Engineering Seminar", credits: 2, prereq: ["CSC 203", "CSC 210"] },
+  "CSC 341": { title: "Data Science 1", credits: 3, prereq: ["CSC 100", "CSC 101", "MTH 163"] },
+  "CSC 414": { title: "Networking and Network Security", credits: 3, prereq: ["CSC 210"] },
+  "CSC 431": { title: "Senior Software Architecture Seminar", credits: 1, prereq: ["CSC 330"] },
+
+  "DSC 240": { title: "Data Visualization", credits: 3, prereq: ["CSC 100", "CSC 101"] },
+  "DSC 442": { title: "Data Analysis", credits: 3, prereq: ["DSC 240"] },
+  "DSC 443": { title: "AI, Machine Learning, and Deep Learning", credits: 3, prereq: ["CSC 341", "DSC 442"] },
+  "DSC 499": { title: "Senior Seminar in AI and Data Science", credits: 1, prereq: ["DSC 240", "DSC 442", "DSC 443"] },
+
+  "PHY 201": { title: "Algebra-Based Physics I", credits: 3, prereq: ["MTH 111"], coreq: ["PHY 213"] },
+  "PHY 202": { title: "Algebra-Based Physics II", credits: 3, prereq: ["PHY 201"], coreq: ["PHY 214"] },
+  "PHY 221": { title: "Physics with Calculus I", credits: 3, prereq: ["MTH 121"], coreq: ["PHY 213"] },
+  "PHY 213": { title: "Physics Laboratory I", credits: 1, coreq: ["PHY 201", "PHY 221"] },
+  "PHY 222": { title: "Physics with Calculus II", credits: 3, prereq: ["PHY 221"], coreq: ["PHY 214"] },
+  "PHY 214": { title: "Physics Laboratory II", credits: 1, coreq: ["PHY 202", "PHY 222"] },
+
+  "CHM 111": { title: "General Chemistry I", credits: 3, prereq: ["MTH 111", "MTH 121"], coreq: ["CHM 113", "CHM 115"] },
+  "CHM 113": { title: "General Chemistry I Laboratory", credits: 1, coreq: ["CHM 111"] },
+  "CHM 112": { title: "General Chemistry II", credits: 3, prereq: ["CHM 111"], coreq: ["CHM 114"] },
+  "CHM 114": { title: "General Chemistry II Laboratory", credits: 1, coreq: ["CHM 112"] },
+
+  "PHY 115": { title: "Introduction to Astronomy", credits: 3 },
+  "BIO 103": { title: "Principles of Biology Lab", credits: 1, coreq: ["BIO 101"] },
+  "BIO 120": { title: "Farms to Pharmaceuticals", credits: 3 },
+  "BIO 125": { title: "Pandemics", credits: 3 },
+  "BIO 140": { title: "STEM Community Service Seminar", credits: 1 },
+  "CHM 115": { title: "General Chemistry I Recitation", credits: 0, coreq: ["CHM 111"] },
+  "PSY 150": { title: "Careers in Psychology", credits: 1 },
+  "SPA 102": { title: "Elementary Spanish II", credits: 3, prereq: ["SPA 101"] },
+  "FRE 102": { title: "Elementary French II", credits: 3, prereq: ["FRE 101"] },
+  "ITA 102": { title: "Elementary Italian II", credits: 3, prereq: ["ITA 101"] },
+  "ECO 102": { title: "Principles of Microeconomics", credits: 3 },
+  "ENG 240": { title: "Introduction to Poetry", credits: 3, prereq: ["ENG 123"] },
+  "ENG 241": { title: "Introduction to Fiction", credits: 3, prereq: ["ENG 123"] },
+  "ENG 242": { title: "Introduction to Drama and Theatre", credits: 3, prereq: ["ENG 123"] },
+  "ENG 243": { title: "Introduction to Non-Fiction Prose", credits: 3, prereq: ["ENG 123"] },
+  "ENG 276": { title: "Introduction to Creative Writing", credits: 3, prereq: ["ENG 123"] },
+  "PHL 210": { title: "Ethics", credits: 3, prereq: ["PHL 101"] },
+  "PHL 214": { title: "Environmental Ethics", credits: 3, prereq: ["PHL 101"], coreq: ["BIO 110"] },
+  "PHL 292": { title: "Honors Philosophy of Human Nature", credits: 3, prereq: ["PHL 190"] },
+  "THL 232": { title: "Synoptic Gospels", credits: 3, prereq: ["THL 101", "THL 190"] },
+  "THL 242": { title: "Catholicism", credits: 3, prereq: ["THL 101", "THL 190"] },
+  "THL 250": { title: "The Good Life: Christian Ethics", credits: 3, prereq: ["THL 101", "THL 190"] },
+  "THL 261": { title: "World Religions", credits: 3, prereq: ["THL 101", "THL 190"] },
+  "THR 245": { title: "Theater Production I", credits: 3 },
+  "THR 250": { title: "Acting I", credits: 3 },
+  "BUS 263": { title: "Business Statistics", credits: 3 },
+  "PSY 263": { title: "Statistics for the Social Sciences", credits: 3 },
+
+  "ENG 121": { title: "Composition I", credits: 3 },
+  "ENG 123": { title: "Composition II (Writing with Research)", credits: 3, prereq: ["ENG 121"] },
+  "PTH 101": { title: "Community and Well-Being", credits: 1 },
+  "PTH 102": { title: "Engagement and Outreach", credits: 1 },
+  "PHL 101": { title: "Introductory Logic", credits: 3 },
+  "PHL 190": { title: "Honors Logic", credits: 3 },
+  "THL 101": { title: "Intro to Christian Theology", credits: 3 },
+  "THL 190": { title: "Honors Introduction to Christian Theology", credits: 3 },
+  "LAN 301": { title: "Language and Culture", credits: 3 },
+  "HIS 213": { title: "America to 1876", credits: 3 },
+  "POL 112": { title: "Intro to American Politics", credits: 3 },
+  "HIS 211": { title: "Western Civilization I", credits: 3 },
+  "POL 151": { title: "Intro to Comparative Politics", credits: 3 },
+  "BIO 101": { title: "Principles of Biology", credits: 3 },
+  "PSY 101": { title: "Intro to Psychology", credits: 3 },
+  "ENG 2XX": { title: "Literature", credits: 3 },
+  "ART 100": { title: "Visual/Performing Arts", credits: 3 },
+  "ART 101": { title: "Foundations of Art", credits: 3 },
+  "ART 102": { title: "Introduction to Drawing", credits: 3 },
+  "ART 103": { title: "Ceramics I", credits: 3 },
+  "PHL 2XX": { title: "Philosophy 2XX/3XX", credits: 3, prereq: ["PHL 101", "PHL 190"] },
+  "THL 2XX": { title: "Theology 2XX/3XX", credits: 3, prereq: ["THL 101", "THL 190"] },
+  "HIS 120": { title: "United States History I", credits: 3 },
+  "HIS 110": { title: "Western Civilization I", credits: 3 },
+  "HIS 212": { title: "Western Civilization II", credits: 3 },
+  "HIS 214": { title: "The United States Since 1876", credits: 3 },
+  "HIS 290": { title: "Global History Topics", credits: 3 },
+  "POL 161": { title: "World Politics", credits: 3 },
+  "SPA 101": { title: "Elementary Spanish I", credits: 3 },
+  "FRE 101": { title: "Elementary French I", credits: 3 },
+  "ITA 101": { title: "Elementary Italian I", credits: 3 },
+  "ECO 101": { title: "Principles of Macroeconomics", credits: 3 },
+  "SOC 101": { title: "Intro to Sociology", credits: 3 },
+  "ARH 100": { title: "Art Appreciation", credits: 3 },
+  "MUS 100": { title: "Music Appreciation", credits: 3 },
+};
+
+let BUNDLES = {
+  "SCI PHY I": { code: "PHY 221 + PHY 213", title: "Physics with Calculus I with Laboratory", credits: 4, prereq: ["MTH 121"], coreq: ["PHY 213"] },
+  "SCI PHY II": { code: "PHY 222 + PHY 214", title: "Physics with Calculus II with Laboratory", credits: 4, prereq: ["PHY 221"], coreq: ["PHY 214"] },
+  "SCI CHM I": { code: "CHM 111 + CHM 113", title: "General Chemistry I with Laboratory", credits: 4, prereq: ["MTH 111", "MTH 121"], coreq: ["CHM 113"] },
+  "SCI CHM II": { code: "CHM 112 + CHM 114", title: "General Chemistry II with Laboratory", credits: 4, prereq: ["CHM 111"], coreq: ["CHM 114"] }
+};
+
+const CRITERIA = {
+  statistics: { type: "choice", choices: ["MTH 163", "BUS 263", "PSY 263"], minCredits: 3 },
+  aiCsc: { type: "elective", prefixes: ["CSC"], minLevel: 300, maxLevel: 499, minCredits: 3 },
+  aiMth: { type: "elective", prefixes: ["MTH"], minLevel: 300, maxLevel: 499, minCredits: 3 },
+  csAny: { type: "elective", prefixes: ["MTH", "CSC", "DSC"], minLevel: 300, maxLevel: 499, minCredits: 3 },
+  csCsc: { type: "elective", prefixes: ["CSC"], minLevel: 300, maxLevel: 499, minCredits: 3 },
+  mathUpper: { type: "elective", prefixes: ["MTH"], minLevel: 300, maxLevel: 499, minCredits: 3 },
+  mathChoose: { type: "choice", choices: ["MTH 451", "MTH 464", "MTH 482"], minCredits: 3 },
+  labScienceI: { type: "choice", choices: ["SCI PHY I", "SCI CHM I"], minCredits: 4 },
+  labScienceII: { type: "choice", choices: ["SCI PHY II", "SCI CHM II"], minCredits: 4 },
+  mthCore: { type: "choice", prefixes: ["MTH"], minLevel: 100, maxLevel: 499, minCredits: 3 },
+  logicCore: { type: "choice", choices: ["PHL 101", "PHL 190"], minCredits: 3 },
+  introTheologyCore: { type: "choice", choices: ["THL 101", "THL 190"], minCredits: 3 },
+  languageCore: { type: "choice", choices: ["SPA 101", "SPA 102", "FRE 101", "FRE 102", "ITA 101", "ITA 102", "LAN 301"], minCredits: 3 },
+  americanCore: { type: "choice", choices: ["HIS 120", "HIS 213", "HIS 214", "POL 112"], minCredits: 3 },
+  globalCore: { type: "choice", choices: ["HIS 110", "HIS 211", "HIS 212", "HIS 290", "POL 151", "POL 161"], minCredits: 3 },
+  naturalScienceCore: { type: "choice", prefixes: ["BIO", "CHM", "CSC", "PHY"], minLevel: 100, maxLevel: 499, minCredits: 3 },
+  socialScienceCore: { type: "choice", prefixes: ["PSY", "POL", "ECO", "SOC"], minLevel: 100, maxLevel: 499, minCredits: 3 },
+  artsCore: { type: "choice", choices: ["ART 100", "ART 101", "ART 102", "ART 103", "ARH 100", "MUS 100", "THR 245", "THR 250"], minCredits: 3 },
+  literatureCore: { type: "choice", choices: ["ENG 2XX", "ENG 240", "ENG 241", "ENG 242", "ENG 243", "ENG 276"], minCredits: 3 },
+  phlUpperCore: { type: "choice", choices: ["PHL 2XX", "PHL 210", "PHL 214", "PHL 292"], minCredits: 3 },
+  thlUpperCore: { type: "choice", choices: ["THL 2XX", "THL 232", "THL 242", "THL 250", "THL 261"], minCredits: 3 },
+  explorationCore: { type: "choice", choices: ["ARH 100", "ART 100", "ART 101", "ART 102", "ART 103", "MUS 100", "THR 245", "THR 250", "BIO 120", "BIO 125", "ECO 101", "ECO 102", "SOC 101", "PSY 101", "HIS 120", "HIS 110", "POL 112", "POL 151", "POL 161", "ENG 240", "ENG 241", "ENG 242", "ENG 243", "ENG 276", "PHL 210", "PHL 214", "THL 232", "THL 242", "THL 250", "THL 261"], minCredits: 3 }
+};
+
+function c(code) {
+  const item = COURSE_CATALOG[code] || BUNDLES[code];
+  return [code, item?.title || code, item?.credits || 0, "Required"];
+}
+function choice(id, title, credits, criteria, category="Choice") { return [id, title, credits, category, criteria]; }
+
+let REQUIREMENTS = {
+  majors: {
+    ai: {
+      label: "AI and Data Science Major",
+      totalCredits: 61,
+      courses: [
+        c("CSC 100"), c("CSC 101"), c("CSC 202"), c("CSC 203"), c("MTH 121"), c("MTH 122"), c("MTH 221"),
+        choice("STATISTICS", "Statistics: MTH 163, BUS 263, or PSY 263", 3, CRITERIA.statistics),
+        c("DSC 240"), c("MTH 322"), c("MTH 365"), c("CSC 312"), c("CSC 341"), c("DSC 442"), c("DSC 443"), c("DSC 499"),
+        choice("AI CSC ELECTIVE 1", "CSC 3XX/4XX Elective", 3, CRITERIA.aiCsc, "Elective"),
+        choice("AI CSC ELECTIVE 2", "CSC 3XX/4XX Elective", 3, CRITERIA.aiCsc, "Elective"),
+        choice("AI MTH ELECTIVE 1", "MTH 3XX/4XX Elective", 3, CRITERIA.aiMth, "Elective")
+      ]
+    },
+    cs: {
+      label: "Computer Science Major",
+      totalCredits: 56,
+      courses: [
+        c("MTH 121"), c("MTH 122"), c("MTH 221"), c("CSC 100"), c("CSC 101"), c("CSC 202"), c("CSC 203"), c("CSC 210"),
+        c("CSC 311"), c("CSC 312"), c("CSC 320"), c("CSC 321"), c("CSC 431"), c("MTH 301"), c("MTH 322"),
+        choice("CS ELECTIVE 1", "MTH/CSC/DSC 3XX Elective", 3, CRITERIA.csAny, "Elective"),
+        choice("CS ELECTIVE 2", "MTH/CSC/DSC 3XX Elective", 3, CRITERIA.csAny, "Elective"),
+        choice("CS ELECTIVE 3", "MTH/CSC/DSC 3XX Elective", 3, CRITERIA.csAny, "Elective")
+      ]
+    },
+    math: {
+      label: "Mathematics Major",
+      totalCredits: 47,
+      courses: [
+        c("MTH 121"), c("MTH 122"), c("CSC 100"), c("CSC 101"),
+        choice("MATH LAB SCIENCE I", "Laboratory Science I", 4, CRITERIA.labScienceI, "Choice"),
+        choice("MATH LAB SCIENCE II", "Laboratory Science II", 4, CRITERIA.labScienceII, "Choice"),
+        c("MTH 221"), c("MTH 223"), c("MTH 261"), c("MTH 301"),
+        choice("MATH MTH ELECTIVE 1", "MTH 3XX/4XX Elective", 3, CRITERIA.mathUpper, "Elective"),
+        c("MTH 491"),
+        choice("MATH PROGRAM ELECTIVE 1", "Choose MTH 451, MTH 464, or MTH 482", 3, CRITERIA.mathChoose, "Choice"),
+        choice("MATH PROGRAM ELECTIVE 2", "Choose MTH 451, MTH 464, or MTH 482", 3, CRITERIA.mathChoose, "Choice")
+      ]
+    }
+  },
+  minors: {
+    aiMinor: {
+      label: "AI and Data Science Minor",
+      totalCredits: 27,
+      courses: [c("CSC 100"), c("CSC 101"), choice("STATISTICS", "Statistics: MTH 163, BUS 263, or PSY 263", 3, CRITERIA.statistics), c("CSC 202"), c("DSC 240"), c("CSC 341"), c("DSC 442"), c("DSC 443")]
+    },
+    csMinor: {
+      label: "Computer Science Minor",
+      totalCredits: 25,
+      courses: [c("CSC 100"), c("CSC 101"), c("CSC 202"), c("CSC 203"), c("MTH 322"), choice("CS MINOR ELECTIVE 1", "CSC 3XX/4XX Elective", 3, CRITERIA.csCsc, "Elective"), choice("CS MINOR ELECTIVE 2", "CSC 3XX/4XX Elective", 3, CRITERIA.csCsc, "Elective")]
+    },
+    mathMinor: {
+      label: "Mathematics Minor",
+      totalCredits: 24,
+      courses: [c("MTH 121"), c("MTH 122"), c("MTH 223"), c("MTH 301"), choice("MATH MINOR ELECTIVE 1", "MTH 3XX/4XX Elective", 3, CRITERIA.mathUpper, "Elective"), choice("MATH MINOR ELECTIVE 2", "MTH 3XX/4XX Elective", 3, CRITERIA.mathUpper, "Elective"), choice("MATH MINOR ELECTIVE 3", "MTH 3XX/4XX Elective", 3, CRITERIA.mathUpper, "Elective")]
+    }
+  }
+};
+
+let CORE = [
+  ["CORE PTH 101", "PTH 101", "Community and Well-Being", 1],
+  ["CORE PTH 102", "PTH 102", "Engagement and Outreach", 1],
+  ["CORE ENG 121", "ENG 121", "Composition I", 3],
+  ["CORE ENG 123", "ENG 123", "Composition II", 3],
+  ["CORE LOGIC", "Logic", "PHL 101 or PHL 190", 3, CRITERIA.logicCore],
+  ["CORE INTRO THEOLOGY", "Intro Theology", "THL 101 or THL 190", 3, CRITERIA.introTheologyCore],
+  ["CORE MTH", "MTH core", "One MTH course", 3, CRITERIA.mthCore],
+  ["CORE LANGUAGE", "Language and Culture", "SPA, FRE, ITA, or LAN", 3, CRITERIA.languageCore],
+  ["CORE AMERICAN", "American national community", "HIS 120/213/214 or POL 112", 3, CRITERIA.americanCore],
+  ["CORE GLOBAL", "Global human community", "HIS 110/211/212/290 or POL 151/161", 3, CRITERIA.globalCore],
+  ["CORE SCIENCE", "Natural Science", "BIO, CHM, CSC, or PHY", 3, CRITERIA.naturalScienceCore],
+  ["CORE SOCIAL", "Social Science", "PSY, POL, ECO, or SOC", 3, CRITERIA.socialScienceCore],
+  ["CORE ARTS", "Visual/Performing Arts", "ART, ARH, MUS, or THR", 3, CRITERIA.artsCore],
+  ["CORE LITERATURE", "Literature", "ENG 2XX", 3, CRITERIA.literatureCore],
+  ["CORE PHL UPPER", "PHL 2XX/3XX", "Philosophy elective", 3, CRITERIA.phlUpperCore],
+  ["CORE THL UPPER", "THL 2XX/3XX", "Theology elective", 3, CRITERIA.thlUpperCore],
+  ["CORE EXPLORATION", "Exploration", "Elective outside major knowledge area", 3, CRITERIA.explorationCore]
+];
+
+let OFFERED_CODES = Array.from(new Set([
+  ...Object.values(OFFERINGS).flatMap(terms => [...(terms.Fall || []), ...(terms.Spring || []), ...(terms.Summer || [])]),
+  "MTH 100", "MTH 101", "MTH 111", "MTH 121", "MTH 122", "MTH 163", "MTH 221", "MTH 223", "MTH 261", "MTH 301", "MTH 322", "MTH 365", "MTH 423", "MTH 451", "MTH 464", "MTH 482", "MTH 491",
+  "CSC 100", "CSC 101", "CSC 202", "CSC 203", "CSC 210", "CSC 311", "CSC 312", "CSC 313", "CSC 315", "CSC 320", "CSC 321", "CSC 330", "CSC 341", "CSC 414", "CSC 431",
+  "DSC 240", "DSC 442", "DSC 443", "DSC 499",
+  "PHY 115", "PHY 201", "PHY 202", "PHY 213", "PHY 214", "PHY 221", "PHY 222",
+  "CHM 111", "CHM 112", "CHM 113", "CHM 114", "CHM 115",
+  "BIO 101", "BIO 103", "BIO 120", "BIO 125", "BIO 140",
+  "BUS 263", "PSY 263", "SCI PHY I", "SCI PHY II", "SCI CHM I", "SCI CHM II",
+  "LAN 301", "ART 100", "ARH 100", "MUS 100", "ENG 2XX", "PHL 2XX", "THL 2XX"
+]));
+
+let state;
+let summaryHasRendered = false;
+let lastFullyPlanned = false;
+let forceConfettiOnNextSummary = false;
+let lastConfettiAt = 0;
+let autoPopulateAllowSummer = false;
+const $ = id => document.getElementById(id);
+
+function defaultState() {
+  return {
+    majors: [], minors: [], grad: "Spring 2030", gradYear: 2030, gradTerm: "Spring", mathPlacement: "",
+    profileRole: "", studentType: "", setupStep: 1, setupComplete: false,
+    githubBaseUrl: "./data", dataStatus: "",
+    checked: {}, checkedCore: {}, checkedCourses: {}, planned: {}, satisfied: {}, satisfiedCore: {},
+    courseSources: {}, acadeumApprovals: {}
+  };
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem("degreefyState") || localStorage.getItem("shcDegreePlannerState");
+    state = raw ? { ...defaultState(), ...JSON.parse(raw) } : defaultState();
+    state.satisfied = state.satisfied || {};
+    state.satisfiedCore = state.satisfiedCore || {};
+    state.checked = state.checked || {};
+    state.checkedCore = state.checkedCore || {};
+    state.checkedCourses = state.checkedCourses || {};
+    state.planned = state.planned || {};
+    state.mathPlacement = state.mathPlacement || "";
+    state.gradYear = Number(state.gradYear || parseTerm(state.grad || "Spring 2030").year || 2030);
+    state.gradTerm = state.gradTerm || parseTerm(state.grad || "Spring 2030").term || "Spring";
+    state.profileRole = state.profileRole || "";
+    state.studentType = state.studentType || "";
+    state.setupStep = Number(state.setupStep || 1);
+    state.setupComplete = !!state.setupComplete;
+    state.githubBaseUrl = state.githubBaseUrl || "./data";
+    state.courseSources = state.courseSources || {};
+    state.acadeumApprovals = state.acadeumApprovals || {};
+  } catch (e) { state = defaultState(); }
+}
+function saveState() { localStorage.setItem("degreefyState", JSON.stringify(state)); }
+function termKey(term, year) { return `${term} ${year}`; }
+function parseTerm(key) { const [term, y] = key.split(" "); return { term, year: Number(y) }; }
+function nextTerm(t) { if (t.term === "Fall") return { term: "Spring", year: t.year + 1 }; if (t.term === "Spring") return { term: "Summer", year: t.year }; return { term: "Fall", year: t.year }; }
+function generateTerms(endKey) {
+  const end = parseTerm(endKey), terms = [];
+  let t = { ...START_TERM }, guard = 0;
+  while (guard++ < 30) { terms.push(termKey(t.term, t.year)); if (t.term === end.term && t.year === end.year) break; t = nextTerm(t); }
+  return terms;
+}
+
+function generateGradOptions() {
+  const select = $("gradSelect"); select.innerHTML = "";
+  const options = []; let t = { ...START_TERM };
+  for (let i = 0; i < 33; i++) { options.push(termKey(t.term, t.year)); t = nextTerm(t); }
+  options.forEach(key => { const option = document.createElement("option"); option.value = key; option.textContent = key; select.appendChild(option); });
+  if (!options.includes(state.grad)) state.grad = "Spring 2030";
+  select.value = state.grad;
+}
+
+function renderMathPlacementControl() {
+  const select = $("mathPlacementSelect");
+  if (!select) return;
+  select.value = state.mathPlacement || "";
+}
+
+function placementCompletedCodes() {
+  if (state.mathPlacement === "MTH 111") return ["MTH 100"];
+  if (state.mathPlacement === "MTH 121") return ["MTH 100", "MTH 111"];
+  return [];
+}
+
+function isPlacementSatisfied(rawCode) {
+  return placementCompletedCodes().some(doneCode => doneCodeSatisfiesNeeded(doneCode, rawCode));
+}
+
+function renderProgramControls() {
+  const makeControl = (containerId, groupName, programs) => {
+    const container = $(containerId); container.innerHTML = "";
+    Object.entries(programs).forEach(([key, program]) => {
+      const label = document.createElement("label");
+      label.innerHTML = `<input type="checkbox" data-group="${groupName}" value="${key}"> <span>${program.label} <span class="small">(${program.totalCredits} credits)</span></span>`;
+      const cb = label.querySelector("input"); cb.checked = state[groupName].includes(key);
+      cb.addEventListener("change", () => {
+        state[groupName] = Array.from(document.querySelectorAll(`input[data-group="${groupName}"]:checked`)).map(x => x.value);
+        saveState(); renderAll();
+      });
+      container.appendChild(label);
+    });
+  };
+  makeControl("majorControls", "majors", REQUIREMENTS.majors);
+  makeControl("minorControls", "minors", REQUIREMENTS.minors);
+}
+
+function courseInfo(id) { return COURSE_CATALOG[id] || BUNDLES[id] || {}; }
+function isBundle(id) { return !!BUNDLES[id]; }
+function getDisplayCode(id) { return BUNDLES[id]?.code || id; }
+function isOfferedCourseId(id) { return String(id).startsWith("OFFERED::"); }
+function offeredCourseId(code) { return `OFFERED::${code}`; }
+function offeredCodeFromId(id) { return String(id).replace(/^OFFERED::/, ""); }
+function isCoreCourseId(id) { return String(id).startsWith("CORE "); }
+
+function getRequirementMap() {
+  const map = new Map();
+  const addCourse = (course, sourceLabel, sourceKey) => {
+    const [code, title, credits, category, criteria] = course;
+    const isCriteria = !!criteria || category === "Elective" || category === "Choice";
+    const id = code;
+    if (!map.has(id)) {
+      map.set(id, { id, code, title, credits, category, criteria, sources: [], sourceKeys: [], kind: isCriteria ? "criteria" : "course" });
+    }
+    const item = map.get(id);
+    if (!item.sources.includes(sourceLabel)) item.sources.push(sourceLabel);
+    if (!item.sourceKeys.includes(sourceKey)) item.sourceKeys.push(sourceKey);
+  };
+  state.majors.forEach(k => REQUIREMENTS.majors[k].courses.forEach(c => addCourse(c, REQUIREMENTS.majors[k].label, `major:${k}`)));
+  state.minors.forEach(k => REQUIREMENTS.minors[k].courses.forEach(c => addCourse(c, REQUIREMENTS.minors[k].label, `minor:${k}`)));
+  return map;
+}
+
+function getLevel(code) { const m = String(code).match(/^[A-Z]{3}\s(\d{3})$/); return m ? Number(m[1]) : 0; }
+function getPrefix(code) { const m = String(code).match(/^([A-Z]{3})\s\d{3}$/); return m ? m[1] : ""; }
+function plainCode(code) { return BUNDLES[code]?.code || code; }
+function requirementIncludesCode(req, code) { return req.code === code || req.title.includes(code) || plainCode(req.code).includes(code); }
+function isCriteriaRequirement(item) { return !!item.criteria || item.kind === "criteria"; }
+function isRequirementDraggable(item) { return !isCriteriaRequirement(item); }
+
+function makeOfferedItem(code) {
+  const info = courseInfo(code);
+  return { id: offeredCourseId(code), rawCode: code, code: plainCode(code), title: info.title || code, credits: info.credits || 0, category: "Other offered course", prereq: info.prereq || [], coreq: info.coreq || [], kind: "offered" };
+}
+
+function canSatisfyRequirement(offered, req) {
+  const raw = offered.rawCode || offered.code;
+  const code = raw;
+  const criteria = req.criteria;
+  if (criteria) {
+    if (criteria.choices?.includes(code)) return offered.credits >= (criteria.minCredits || 0);
+    const prefix = getPrefix(code), level = getLevel(code);
+    if (criteria.prefixes?.includes(prefix) && level >= (criteria.minLevel || 0) && level <= (criteria.maxLevel || 999) && offered.credits >= (criteria.minCredits || 0)) return true;
+    return false;
+  }
+  return requirementIncludesCode(req, code);
+}
+
+function matchScore(offered, req) {
+  if (!canSatisfyRequirement(offered, req)) return 0;
+  if (req.criteria?.choices?.includes(offered.rawCode || offered.code)) return 100;
+  if (req.criteria?.prefixes) return 70;
+  return 50;
+}
+
+function isOfferedSelected(offeredId) {
+  return !!(state.checkedCourses || {})[offeredId] || isPlanned(offeredId) || Object.values(state.satisfied || {}).includes(offeredId) || Object.values(state.satisfiedCore || {}).includes(offeredId);
+}
+function cleanSatisfiedByCourse(courseId) {
+  Object.entries(state.satisfied || {}).forEach(([reqId, matchedCourseId]) => { if (matchedCourseId === courseId) delete state.satisfied[reqId]; });
+  Object.entries(state.satisfiedCore || {}).forEach(([reqId, matchedCourseId]) => { if (matchedCourseId === courseId) delete state.satisfiedCore[reqId]; });
+}
+function isPlanned(courseId) { return Object.values(state.planned || {}).some(list => (list || []).includes(courseId)); }
+function normalizedCourseKey(id) { return isOfferedCourseId(id) ? offeredCodeFromId(id) : id; }
+function isCourseDone(code) {
+  const offeredId = offeredCourseId(code);
+  return !!state.checked[code] || !!(state.checkedCourses || {})[offeredId] || isPlanned(code) || isPlanned(offeredId) || Object.values(state.satisfied || {}).includes(offeredId) || Object.values(state.satisfiedCore || {}).includes(offeredId);
+}
+function isRequirementChecked(item) {
+  if (!!state.checked[item.id] || !!(state.satisfied || {})[item.id]) return true;
+  if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) return isPlanned(item.id) || isPlanned(offeredCourseId(item.code)) || !!(state.checkedCourses || {})[offeredCourseId(item.code)];
+  return isPlanned(item.id);
+}
+function isCoreRequirementChecked(item) {
+  if (!!state.checkedCore[item.id] || !!(state.satisfiedCore || {})[item.id]) return true;
+  if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) return isPlanned(item.id) || isPlanned(offeredCourseId(item.code)) || !!(state.checkedCourses || {})[offeredCourseId(item.code)];
+  if (item.id === "CORE MTH") return getDoneCourseCodes().some(code => canSatisfyRequirement(makeOfferedItem(code), item));
+  return false;
+}
+function addRepresentedCodesToSet(codes, rawCode) {
+  if (!rawCode) return;
+  if (COURSE_CATALOG[rawCode]) codes.add(rawCode);
+  if (BUNDLES[rawCode]) BUNDLES[rawCode].code.split(" + ").forEach(part => codes.add(part.trim()));
+}
+
+function checkedRequirementCompletionCodes() {
+  // Manual checks mean the requirement is already complete. When a checked requirement
+  // names specific choices, treat those choices as already satisfied for auto-population
+  // and prerequisite planning so the planner does not add duplicate PHL/THL/ENG/etc.
+  const codes = new Set();
+
+  Array.from(getRequirementMap().values()).forEach(req => {
+    if (!state.checked[req.id]) return;
+    if (!isCriteriaRequirement(req)) addRepresentedCodesToSet(codes, req.code);
+    else if (req.criteria?.choices) req.criteria.choices.forEach(code => addRepresentedCodesToSet(codes, code));
+  });
+
+  CORE.map(makeCoreItem).forEach(req => {
+    if (!req || !state.checkedCore[req.id]) return;
+    if (!isCriteriaRequirement(req)) addRepresentedCodesToSet(codes, req.code);
+    else if (req.criteria?.choices) req.criteria.choices.forEach(code => addRepresentedCodesToSet(codes, code));
+  });
+
+  return Array.from(codes);
+}
+
+function getDoneCourseCodes() {
+  const codes = new Set();
+  Object.entries(state.checked || {}).forEach(([id, checked]) => { if (checked) addRepresentedCodesToSet(codes, id); });
+  checkedRequirementCompletionCodes().forEach(code => addRepresentedCodesToSet(codes, code));
+  Object.entries(state.checkedCourses || {}).forEach(([id, checked]) => {
+    if (!checked) return;
+    const code = isOfferedCourseId(id) ? offeredCodeFromId(id) : id;
+    addRepresentedCodesToSet(codes, code);
+  });
+  Object.values(state.planned || {}).flat().forEach(id => {
+    const code = isOfferedCourseId(id) ? offeredCodeFromId(id) : id;
+    addRepresentedCodesToSet(codes, code);
+  });
+  Object.values(state.satisfied || {}).forEach(id => {
+    const code = isOfferedCourseId(id) ? offeredCodeFromId(id) : id;
+    addRepresentedCodesToSet(codes, code);
+  });
+  Object.values(state.satisfiedCore || {}).forEach(id => {
+    const code = isOfferedCourseId(id) ? offeredCodeFromId(id) : id;
+    addRepresentedCodesToSet(codes, code);
+  });
+  return Array.from(codes);
+}
+
+function getCourseBankItems() {
+  return OFFERED_CODES.map(makeOfferedItem).sort((a, b) => {
+    const pa = getPrefix(a.rawCode || a.code), pb = getPrefix(b.rawCode || b.code);
+    if (pa !== pb) return pa.localeCompare(pb);
+    return a.code.localeCompare(b.code);
+  });
+}
+
+let COURSE_GROUP_ORDER = [
+  "Pathways", "English", "Philosophy", "Theology", "MTH", "CSC", "DSC", "PHY", "CHM", "BIO", "Science Bundles", "Statistics",
+  "Language", "History / Politics", "Social Science", "Arts / Literature", "Theater", "Other"
+];
+
+let COURSE_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "pth", label: "PTH", prefixes: ["PTH"] },
+  { id: "mth", label: "MTH", prefixes: ["MTH"] },
+  { id: "cscdsc", label: "CSC/DSC", prefixes: ["CSC", "DSC"] },
+  { id: "science", label: "Science", prefixes: ["BIO", "CHM", "PHY"], rawStarts: ["SCI "] },
+  { id: "englit", label: "ENG/Lit", prefixes: ["ENG"] },
+  { id: "phl", label: "PHL", prefixes: ["PHL"] },
+  { id: "thl", label: "THL", prefixes: ["THL"] },
+  { id: "language", label: "Language", prefixes: ["SPA", "FRE", "ITA", "LAN"] },
+  { id: "historypolitics", label: "History/Politics", prefixes: ["HIS", "POL"] },
+  { id: "social", label: "Social Science", prefixes: ["PSY", "ECO", "SOC"] },
+  { id: "stats", label: "Statistics", prefixes: ["BUS"], rawIncludes: ["263"] },
+  { id: "arts", label: "Visual/Performing Arts", prefixes: ["ART", "ARH", "MUS", "THR"] }
+];
+let activeCourseFilter = "all";
+
+function courseGroup(item) {
+  const raw = item.rawCode || item.code;
+  const configuredArea = courseInfo(raw).area;
+  if (configuredArea) return configuredArea;
+  const prefix = getPrefix(raw);
+  if (prefix === "PTH") return "Pathways";
+  if (["MTH", "CSC", "DSC", "PHY", "CHM", "BIO"].includes(prefix)) return prefix;
+  if (String(raw).startsWith("SCI ")) return "Science Bundles";
+  if (["BUS", "PSY"].includes(prefix) && String(raw).includes("263")) return "Statistics";
+  if (prefix === "ENG") return String(raw).includes("2XX") ? "Arts / Literature" : "English";
+  if (prefix === "PHL") return "Philosophy";
+  if (prefix === "THL") return "Theology";
+  if (["SPA", "FRE", "ITA", "LAN"].includes(prefix)) return "Language";
+  if (["HIS", "POL"].includes(prefix)) return "History / Politics";
+  if (["PSY", "ECO", "SOC"].includes(prefix)) return "Social Science";
+  if (["ART", "ARH", "MUS"].includes(prefix)) return "Arts / Literature";
+  if (prefix === "THR") return "Theater";
+  return "Other";
+}
+
+function coursePassesFilter(item) {
+  if (activeCourseFilter === "all") return true;
+  const filter = COURSE_FILTERS.find(f => f.id === activeCourseFilter);
+  if (!filter) return true;
+  const raw = item.rawCode || item.code;
+  if (filter.current) return isCurrentlyOffered(raw);
+  if (filter.area) return courseGroup(item) === filter.area;
+  const prefix = getPrefix(raw);
+  if ((filter.prefixes || []).includes(prefix)) return true;
+  if ((filter.rawStarts || []).some(start => String(raw).startsWith(start))) return true;
+  if ((filter.rawIncludes || []).some(part => String(raw).includes(part))) return true;
+  return false;
+}
+
+function renderCourseFilterButtons() {
+  const wrap = $("courseFilterButtons");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  COURSE_FILTERS.forEach(filter => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `filter-button ${activeCourseFilter === filter.id ? "active" : ""}`;
+    btn.textContent = filter.label;
+    btn.addEventListener("click", () => {
+      activeCourseFilter = filter.id;
+      renderCourseFilterButtons();
+      renderCourseBank();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function sourceOverlap(a=[], b=[]) { return a.some(x => b.includes(x)); }
+function isAiCsDoubleMajor() {
+  return (state.majors || []).includes("ai") && (state.majors || []).includes("cs");
+}
+
+function requirementHasSource(req, sourceKey) {
+  return (req.sourceKeys || []).includes(sourceKey);
+}
+
+function isProgramElectiveRequirement(req) {
+  return req && (req.category === "Elective" || /elective/i.test(req.title || ""));
+}
+
+function shouldKeepAiCsElectivesSeparate(req, otherReq) {
+  if (!isAiCsDoubleMajor()) return false;
+  if (!isProgramElectiveRequirement(req) || !isProgramElectiveRequirement(otherReq)) return false;
+  const reqAi = requirementHasSource(req, "major:ai"), reqCs = requirementHasSource(req, "major:cs");
+  const otherAi = requirementHasSource(otherReq, "major:ai"), otherCs = requirementHasSource(otherReq, "major:cs");
+  return (reqAi && otherCs) || (reqCs && otherAi);
+}
+
+function canAssignOfferedToReq(offered, req) {
+  if (!canSatisfyRequirement(offered, req)) return false;
+  const courseId = offered.id;
+  return !Object.entries(state.satisfied || {}).some(([otherReqId, matchedCourseId]) => {
+    if (otherReqId === req.id || matchedCourseId !== courseId) return false;
+    const otherReq = getRequirementMap().get(otherReqId);
+    if (!otherReq) return false;
+    if (sourceOverlap(otherReq.sourceKeys || [], req.sourceKeys || [])) return true;
+    if (shouldKeepAiCsElectivesSeparate(req, otherReq)) return true;
+    return false;
+  });
+}
+
+function canAssignCoreCourseToReq(offered, req) {
+  if (!canSatisfyRequirement(offered, req)) return false;
+  const courseId = offered.id;
+  return !Object.entries(state.satisfiedCore || {}).some(([otherReqId, matchedCourseId]) => otherReqId !== req.id && matchedCourseId === courseId);
+}
+
+function findBestOpenRequirementFor(offered) {
+  return Array.from(getRequirementMap().values())
+    .filter(req => !isRequirementChecked(req) && canAssignOfferedToReq(offered, req))
+    .map(req => ({ req, score: matchScore(offered, req) }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)[0]?.req || null;
+}
+
+function satisfyWithOfferedCourse(offered, explicitReqId=null) {
+  const req = explicitReqId ? getRequirementMap().get(explicitReqId) : findBestOpenRequirementFor(offered);
+  if (!req || !canAssignOfferedToReq(offered, req)) return false;
+  state.satisfied[req.id] = offered.id;
+  delete state.checked[req.id];
+  return true;
+}
+
+function satisfyMatchingRequirementsWithCourse(offered) {
+  let changed = false;
+  const matches = Array.from(getRequirementMap().values())
+    .filter(req => !isRequirementChecked(req) && canAssignOfferedToReq(offered, req))
+    .map(req => ({ req, score: matchScore(offered, req) }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score);
+  matches.forEach(({ req }) => {
+    if (canAssignOfferedToReq(offered, req)) { state.satisfied[req.id] = offered.id; changed = true; }
+  });
+  satisfyMatchingCoreRequirementsWithCourse(offered);
+  return changed;
+}
+
+function satisfyCoreWithCourse(offered, coreReqId) {
+  const req = makeCoreItem(CORE.find(c => c[0] === coreReqId));
+  if (!req || !canAssignCoreCourseToReq(offered, req)) return false;
+  state.satisfiedCore[req.id] = offered.id;
+  delete state.checkedCore[req.id];
+  return true;
+}
+
+function satisfyMatchingCoreRequirementsWithCourse(offered) {
+  CORE.forEach(c => {
+    const req = makeCoreItem(c);
+    if (!isCoreRequirementChecked(req) && canAssignCoreCourseToReq(offered, req)) {
+      state.satisfiedCore[req.id] = offered.id;
+      delete state.checkedCore[req.id];
+    }
+  });
+}
+
+function makeCoreItem(c) {
+  if (!c) return null;
+  const [id, code, title, credits, extra] = c;
+  const info = COURSE_CATALOG[code] || {};
+  return { id, code, title, credits, category: "Core", criteria: extra, prereq: info.prereq || [], coreq: info.coreq || [], sources: ["Core Curriculum"], sourceKeys: ["core"] };
+}
+
+function getAllCourseById() {
+  const map = getRequirementMap();
+  getCourseBankItems().forEach(item => map.set(item.id, item));
+  CORE.forEach(c => { const item = makeCoreItem(c); if (item) map.set(item.id, item); });
+  return map;
+}
+
+function getOfferingTerms(code) {
+  const raw = isOfferedCourseId(code) ? offeredCodeFromId(code) : code;
+  const clean = BUNDLES[raw] ? BUNDLES[raw].code.split(" + ")[0] : String(raw).match(/[A-Z]{3}\s\d{3}/)?.[0];
+  if (!clean) return [];
+  const terms = [];
+  ["Fall", "Spring", "Summer"].forEach(term => {
+    Object.values(OFFERINGS).forEach(area => {
+      if ((area?.[term] || []).includes(clean) && !terms.includes(term)) terms.push(term);
+    });
+  });
+  return terms;
+}
+
+function isOffCycle(courseId, semesterKey) {
+  if (isAcadeumCourse(courseId)) return false;
+  const all = getAllCourseById();
+  const course = all.get(courseId);
+  if (!course) return false;
+  const terms = getOfferingTerms(courseId);
+  if (!terms.length) return false;
+  const term = parseTerm(semesterKey).term;
+  return !terms.includes(term);
+}
+
+function representedRawCodes(id) {
+  const raw = rawCodeFromAnyId(id);
+  const codes = new Set([raw]);
+  if (BUNDLES[raw]) BUNDLES[raw].code.split(" + ").forEach(part => codes.add(part.trim()));
+  return Array.from(codes);
+}
+
+function completionIndexMap(plan = state.planned) {
+  const terms = generateTerms(state.grad);
+  const map = new Map();
+  const setIndex = (code, idx) => {
+    if (!code) return;
+    if (!map.has(code) || idx < map.get(code)) map.set(code, idx);
+  };
+  placementCompletedCodes().forEach(code => setIndex(code, -1));
+  checkedRequirementCompletionCodes().forEach(code => setIndex(code, -1));
+  Object.entries(plan || {}).forEach(([key, list]) => {
+    const idx = terms.indexOf(key);
+    if (idx < 0) return;
+    (list || []).forEach(id => representedRawCodes(id).forEach(code => setIndex(code, idx)));
+  });
+  Object.entries(state.checkedCourses || {}).forEach(([id, checked]) => {
+    if (checked) representedRawCodes(id).forEach(code => setIndex(code, -1));
+  });
+  Object.entries(state.checked || {}).forEach(([id, checked]) => {
+    if (checked) representedRawCodes(id).forEach(code => setIndex(code, -1));
+  });
+  Object.values(state.satisfied || {}).forEach(id => representedRawCodes(id).forEach(code => { if (!map.has(code)) setIndex(code, -1); }));
+  Object.values(state.satisfiedCore || {}).forEach(id => representedRawCodes(id).forEach(code => { if (!map.has(code)) setIndex(code, -1); }));
+  return map;
+}
+
+function mathLevel(code) {
+  if (!String(code).startsWith("MTH ")) return null;
+  const level = getLevel(code);
+  return level || null;
+}
+
+function doneCodeSatisfiesNeeded(doneCode, neededCode) {
+  if (doneCode === neededCode) return true;
+  if (neededCode === "MTH 111") return ["MTH 111", "MTH 121", "MTH 122", "MTH 223"].includes(doneCode);
+  if (neededCode === "MTH 100") return ["MTH 100", "MTH 111", "MTH 121", "MTH 122", "MTH 223"].includes(doneCode);
+  if (neededCode === "PHL 101") return ["PHL 101", "PHL 190"].includes(doneCode);
+  if (neededCode === "THL 101") return ["THL 101", "THL 190"].includes(doneCode);
+  const neededMath = mathLevel(neededCode), doneMath = mathLevel(doneCode);
+  if (neededMath && doneMath && doneMath >= neededMath && neededCode !== "MTH 101") return true;
+  return false;
+}
+
+function completionIndexForNeeded(neededCode, map) {
+  let best = undefined;
+  map.forEach((idx, doneCode) => {
+    if (doneCodeSatisfiesNeeded(doneCode, neededCode)) {
+      if (best === undefined || idx < best) best = idx;
+    }
+  });
+  return best;
+}
+
+function groupSatisfiedByIndex(group, currentIdx, map, relation) {
+  return group.some(code => {
+    const idx = completionIndexForNeeded(code, map);
+    if (idx === undefined) return false;
+    return relation === "prereq" ? idx < currentIdx : idx <= currentIdx;
+  });
+}
+
+function groupLabel(group) {
+  return group.join(" or ");
+}
+
+function prereqCoreqWarningsForPlanned(courseId, semesterKey) {
+  const raw = rawCodeFromAnyId(courseId);
+  if (!raw || isCoreCourseId(raw)) return [];
+  const terms = generateTerms(state.grad);
+  const idx = terms.indexOf(semesterKey);
+  if (idx < 0) return [];
+  const map = completionIndexMap();
+  const warnings = [];
+  getPrereqGroups(raw).forEach(group => {
+    if (!groupSatisfiedByIndex(group, idx, map, "prereq")) warnings.push(`Needs prereq before this term: ${groupLabel(group)}`);
+  });
+  getCoreqGroups(raw).forEach(group => {
+    if (!groupSatisfiedByIndex(group, idx, map, "coreq")) warnings.push(`Needs coreq/completed course: ${groupLabel(group)}`);
+  });
+  return warnings;
+}
+
+function prereqMeta(item) {
+  const info = isOfferedCourseId(item.id) ? courseInfo(item.rawCode) : courseInfo(item.code);
+  const prereq = item.prereq || info.prereq || [];
+  const coreq = item.coreq || info.coreq || [];
+  let out = [];
+  if (prereq.length) out.push(`<div class="small">Prereq: ${prereq.join(", ")}</div>`);
+  if (coreq.length) out.push(`<div class="small">Coreq: ${coreq.join(", ")}</div>`);
+  if (item.criteria?.choices) out.push(`<div class="small">Options: ${item.criteria.choices.map(x => plainCode(x)).join("; ")}</div>`);
+  if (item.criteria?.prefixes) out.push(`<div class="small">Eligible: ${item.criteria.prefixes.join("/")} ${item.criteria.minLevel || 0}–${item.criteria.maxLevel || 499} level</div>`);
+  return out.join("");
+}
+
+function courseCardHTML(item, checked) {
+  const raw = item.rawCode || item.code;
+  const currentBadge = isCurrentlyOffered(raw) ? `<span class="current-pill">Current semester</span>` : "";
+  return `
+    <input type="checkbox" ${checked ? "checked" : ""} aria-label="Mark ${item.code} complete" />
+    <div class="course-main">
+      <div class="course-title">${item.code}: ${item.title}</div>
+      <div class="course-meta">${prereqMeta(item)}${currentBadge}</div>
+    </div>
+    <div class="credit-pill">${item.credits} cr</div>`;
+}
+
+function appendCard(container, item, checked, options={}) {
+  const query = options.searchId ? ($(options.searchId)?.value || "").toLowerCase() : "";
+  const hideControl = options.hideCompletedId ? $(options.hideCompletedId) : null;
+  const uncheckedOnly = hideControl ? (hideControl.matches?.("input[type='checkbox']") ? !!hideControl.checked : hideControl.getAttribute("aria-pressed") === "true") : false;
+  const hay = `${item.code} ${item.title} ${item.category} ${(item.sources||[]).join(" ")} ${prereqMeta(item)}`.toLowerCase();
+  if (query && !hay.includes(query)) return;
+  if (uncheckedOnly && checked) return;
+
+  const draggable = options.draggable ?? (!checked);
+  const checkable = options.checkable ?? true;
+  const card = document.createElement("div");
+  card.className = `course-card ${checked ? "completed" : (draggable ? "draggable" : "")}`;
+  if (isCriteriaRequirement(item)) card.classList.add("criterion-card");
+  card.draggable = draggable;
+  card.dataset.courseId = item.id;
+  card.innerHTML = courseCardHTML(item, checked);
+
+  const cb = card.querySelector("input[type='checkbox']");
+  cb.disabled = !checkable;
+
+  const satisfiedMap = options.core ? (state.satisfiedCore || {}) : (state.satisfied || {});
+  if (satisfiedMap[item.id]) {
+    const matched = getAllCourseById().get(satisfiedMap[item.id]);
+    const note = document.createElement("div");
+    note.className = "small";
+    note.textContent = matched ? `satisfied by ${matched.code}` : "satisfied by planned course";
+    card.querySelector(".course-meta").appendChild(note);
+  }
+
+  if (draggable) {
+    card.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", item.id);
+      e.dataTransfer.effectAllowed = "copy";
+    });
+  }
+
+  if (options.dropTarget !== false) {
+    card.addEventListener("dragover", e => {
+      const id = e.dataTransfer.types.includes("text/plain");
+      if (id) { e.preventDefault(); card.classList.add("drop-ready"); }
+    });
+    card.addEventListener("dragleave", () => card.classList.remove("drop-ready"));
+    card.addEventListener("drop", e => {
+      e.preventDefault(); card.classList.remove("drop-ready");
+      const draggedId = e.dataTransfer.getData("text/plain");
+      const all = getAllCourseById();
+      let offered = all.get(draggedId);
+      if (offered && !isOfferedCourseId(offered.id) && (COURSE_CATALOG[offered.code] || BUNDLES[offered.rawCode || offered.code])) offered = makeOfferedItem(offered.rawCode || offered.code);
+      if (offered) {
+        const ok = options.core ? satisfyCoreWithCourse(offered, item.id) : satisfyWithOfferedCourse(offered, item.id);
+        if (ok) { saveState(); renderAll(false); }
+      }
+    });
+  }
+
+  cb.addEventListener("change", e => {
+    if (options.onCheck) options.onCheck(e.target.checked, item);
+    else if (options.core) {
+      if (e.target.checked) { state.checkedCore[item.id] = true; delete state.satisfiedCore[item.id]; }
+      else { delete state.checkedCore[item.id]; if (state.satisfiedCore) delete state.satisfiedCore[item.id]; }
+    } else {
+      if (e.target.checked) {
+        state.checked[item.id] = true;
+        if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) satisfyMatchingRequirementsWithCourse(makeOfferedItem(item.code));
+      } else {
+        delete state.checked[item.id];
+        if (state.satisfied) delete state.satisfied[item.id];
+        if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code] && !isPlanned(item.id) && !isPlanned(offeredCourseId(item.code))) cleanSatisfiedByCourse(offeredCourseId(item.code));
+      }
+    }
+    saveState(); renderAll(false);
+  });
+
+  container.appendChild(card);
+}
+
+function renderRequirementList() {
+  const requiredList = $("requiredList"), electiveList = $("electiveList"), coreList = $("coreList");
+  requiredList.innerHTML = ""; electiveList.innerHTML = ""; coreList.innerHTML = "";
+  const reqs = Array.from(getRequirementMap().values()).sort((a, b) => (isCriteriaRequirement(a) - isCriteriaRequirement(b)) || a.code.localeCompare(b.code));
+  const required = reqs.filter(x => !isCriteriaRequirement(x));
+  const electives = reqs.filter(x => isCriteriaRequirement(x));
+
+  $("programHelp").textContent = reqs.length ? "Requirements are listed here. Use the Course Draggables panel to plan courses or drop eligible choices onto a requirement." : "Choose at least one major or minor.";
+  $("requiredBadge").textContent = required.length;
+  $("electiveBadge").textContent = electives.length;
+
+  required.forEach(item => {
+    const checked = isRequirementChecked(item);
+    appendCard(requiredList, item, checked, { draggable: false, checkable: true, dropTarget: true, hideCompletedId: "programUncheckedOnly" });
+  });
+
+  electives.forEach(item => {
+    const checked = isRequirementChecked(item);
+    appendCard(electiveList, item, checked, { draggable: false, checkable: true, dropTarget: true, hideCompletedId: "programUncheckedOnly" });
+  });
+
+  CORE.forEach(c => {
+    const item = makeCoreItem(c);
+    const checked = isCoreRequirementChecked(item);
+    appendCard(coreList, item, checked, { core: true, draggable: false, checkable: true, dropTarget: true, hideCompletedId: "coreUncheckedOnly" });
+  });
+}
+
+function renderCourseBank() {
+  const bank = $("courseBank");
+  if (!bank) return;
+  bank.innerHTML = "";
+
+  const grouped = new Map();
+  getCourseBankItems().filter(coursePassesFilter).forEach(item => {
+    const group = courseGroup(item);
+    if (!grouped.has(group)) grouped.set(group, []);
+    grouped.get(group).push(item);
+  });
+
+  let shown = 0;
+  COURSE_GROUP_ORDER.forEach(group => {
+    const items = grouped.get(group) || [];
+    if (!items.length) return;
+
+    const section = document.createElement("section");
+    section.className = "bank-section";
+    const title = document.createElement("div");
+    title.className = "bank-section-title";
+    title.innerHTML = `<h3>${group}</h3><span class="badge">${items.length}</span>`;
+    const list = document.createElement("div");
+    list.className = "course-list";
+
+    let groupShown = 0;
+    items.forEach(item => {
+      const checked = isOfferedSelected(item.id);
+      const before = list.children.length;
+      appendCard(list, item, checked, {
+        draggable: !isPlanned(item.id),
+        checkable: true,
+        dropTarget: false,
+        searchId: "courseSearch",
+        hideCompletedId: "hideCompletedCourses",
+        onCheck: (isChecked, offeredItem) => {
+          if (isChecked) {
+            state.checkedCourses[offeredItem.id] = true;
+            satisfyMatchingRequirementsWithCourse(offeredItem);
+          } else {
+            delete state.checkedCourses[offeredItem.id];
+            if (!isPlanned(offeredItem.id)) cleanSatisfiedByCourse(offeredItem.id);
+          }
+        }
+      });
+      if (list.children.length > before) groupShown++;
+    });
+
+    if (groupShown) {
+      title.querySelector(".badge").textContent = groupShown;
+      section.appendChild(title);
+      section.appendChild(list);
+      bank.appendChild(section);
+      shown += groupShown;
+    }
+  });
+
+  if (!shown) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "No courses match this filter.";
+    bank.appendChild(empty);
+  }
+}
+
+function addCourseToSemester(courseId, semesterKey) {
+  if (!semesterKey || !courseId) return;
+  const all = getAllCourseById();
+  const item = all.get(courseId);
+  if (!item) return;
+  if (!state.planned[semesterKey]) state.planned[semesterKey] = [];
+
+  // A course can appear in only one scheduled semester. If it is dragged
+  // from one semester to another, move it instead of duplicating it.
+  Object.keys(state.planned || {}).forEach(key => {
+    state.planned[key] = (state.planned[key] || []).filter(id => id !== courseId);
+  });
+  state.planned[semesterKey].push(courseId);
+
+  if (isOfferedCourseId(courseId)) {
+    satisfyMatchingRequirementsWithCourse(item);
+  } else if (isCoreCourseId(courseId)) {
+    state.checkedCore[courseId] = true;
+  } else {
+    state.checked[courseId] = true;
+    if (COURSE_CATALOG[courseId]) satisfyMatchingRequirementsWithCourse(makeOfferedItem(courseId));
+  }
+  saveState(); renderAll(false);
+}
+
+function removeCourseFromSemester(courseId, semesterKey) {
+  delete state.courseSources[courseId];
+  delete state.acadeumApprovals[courseId];
+  state.planned[semesterKey] = (state.planned[semesterKey] || []).filter(id => id !== courseId);
+  if (isOfferedCourseId(courseId) && !(state.checkedCourses || {})[courseId]) cleanSatisfiedByCourse(courseId);
+  saveState(); renderAll(false);
+}
+
+function clearScheduledCourses() {
+  const scheduledIds = new Set(Object.values(state.planned || {}).flat());
+  state.planned = {};
+  state.courseSources = {};
+  state.acadeumApprovals = {};
+  scheduledIds.forEach(id => {
+    if (isOfferedCourseId(id) && !(state.checkedCourses || {})[id]) cleanSatisfiedByCourse(id);
+  });
+  reconcileSatisfiedRequirements();
+  saveState();
+  renderAll(false);
+}
+
+function semesterLimit(key) {
+  return TERM_LIMITS[parseTerm(key).term] || 18;
+}
+
+function semesterCredits(key, plan = state.planned) {
+  const all = getAllCourseById();
+  return (plan[key] || []).reduce((sum, id) => sum + (all.get(id)?.credits || 0), 0);
+}
+
+function isSemesterOverLimit(key, credits = null) {
+  const total = credits ?? semesterCredits(key);
+  return total > semesterLimit(key);
+}
+
+function rawCodeFromAnyId(id) {
+  if (isOfferedCourseId(id)) return offeredCodeFromId(id);
+  return id;
+}
+
+function isRawPlanned(rawCode, plan = state.planned) {
+  const offeredId = offeredCourseId(rawCode);
+  return Object.values(plan || {}).some(list => (list || []).includes(rawCode) || (list || []).includes(offeredId));
+}
+
+function isRawChecked(rawCode) {
+  return !!state.checked[rawCode] || !!(state.checkedCourses || {})[offeredCourseId(rawCode)];
+}
+
+function isRawDone(rawCode, plan = state.planned) {
+  return isRawChecked(rawCode) || isRawPlanned(rawCode, plan) || getDoneCourseCodes().includes(rawCode);
+}
+
+function getPrereqGroups(rawCode) {
+  const info = courseInfo(rawCode);
+  if (info.prereqGroups?.length) return info.prereqGroups;
+  const prereqs = [...(info.prereq || [])];
+  const alt = (...codes) => codes.filter(Boolean);
+  const special = {
+    "CHM 111": [alt("MTH 111", "MTH 121")],
+    "SCI CHM I": [alt("MTH 111", "MTH 121")],
+    "MTH 301": [alt("MTH 121"), alt("PHL 101", "PHL 190")],
+    "PHL 2XX": [alt("PHL 101", "PHL 190")],
+    "PHL 210": [alt("PHL 101", "PHL 190")],
+    "PHL 214": [alt("PHL 101", "PHL 190")],
+    "THL 2XX": [alt("THL 101", "THL 190")],
+    "THL 232": [alt("THL 101", "THL 190")],
+    "THL 242": [alt("THL 101", "THL 190")],
+    "THL 250": [alt("THL 101", "THL 190")],
+    "THL 261": [alt("THL 101", "THL 190")]
+  };
+  if (special[rawCode]) return special[rawCode];
+  return prereqs.map(code => [code]).filter(group => group.length);
+}
+
+function getCoreqGroups(rawCode) {
+  const info = courseInfo(rawCode);
+  if (info.coreqGroups?.length) return info.coreqGroups;
+  const coreqs = [...(info.coreq || [])];
+  const alt = (...codes) => codes.filter(Boolean);
+  const special = {
+    "CSC 100": [alt("MTH 111", "MTH 121", "MTH 122", "MTH 223")],
+    "CSC 101": [alt("MTH 111", "MTH 121", "MTH 122", "MTH 223")],
+    "PHY 213": [alt("PHY 201", "PHY 221")],
+    "PHY 214": [alt("PHY 202", "PHY 222")],
+    "PHL 214": [alt("BIO 110")]
+  };
+  if (special[rawCode]) return special[rawCode];
+  return coreqs.map(code => [code]).filter(group => group.length);
+}
+
+function getPrereqCodes(rawCode) {
+  return getPrereqGroups(rawCode)
+    .map(group => {
+      const done = group.find(code => isRawDone(code) || isRawPlanned(code) || isPlacementSatisfied(code));
+      return done || group.find(code => COURSE_CATALOG[code] || BUNDLES[code]) || group[0];
+    })
+    .filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+}
+
+function enforceAiCsElectiveSeparation() {
+  if (!isAiCsDoubleMajor()) return;
+  const reqMap = getRequirementMap();
+  const byCourse = new Map();
+  Object.entries(state.satisfied || {}).forEach(([reqId, courseId]) => {
+    if (!byCourse.has(courseId)) byCourse.set(courseId, []);
+    byCourse.get(courseId).push(reqId);
+  });
+  byCourse.forEach(reqIds => {
+    const kept = [];
+    reqIds.forEach(reqId => {
+      const req = reqMap.get(reqId);
+      if (!req) return;
+      const conflicts = kept.some(keptId => shouldKeepAiCsElectivesSeparate(req, reqMap.get(keptId)));
+      if (conflicts) delete state.satisfied[reqId];
+      else kept.push(reqId);
+    });
+  });
+}
+
+function reconcileSatisfiedRequirements() {
+  getCourseBankItems().forEach(item => {
+    if (isRawDone(item.rawCode || item.code)) satisfyMatchingRequirementsWithCourse(item);
+  });
+  enforceAiCsElectiveSeparation();
+}
+
+const FIRST_YEAR_EARLY_COURSES = ["PTH 101", "PTH 102", "ENG 121", "ENG 123", "PHL 101", "THL 101", "MTH 100", "MTH 101", "MTH 111", "MTH 121"];
+const GATEWAY_COURSES = ["CSC 100", "CSC 101", "MTH 121", "MTH 122", "MTH 301", "CSC 202", "CSC 203", "DSC 240"];
+const SEMINAR_COURSES = ["CSC 431", "DSC 499", "MTH 491"];
+
+function courseSortScore(rawCode) {
+  const level = getLevel(rawCode);
+  const early = {
+    "PTH 101": 1, "PTH 102": 2, "ENG 121": 3, "ENG 123": 4,
+    "PHL 101": 5, "PHL 190": 5, "THL 101": 6, "THL 190": 6,
+    "MTH 100": 7, "MTH 101": 8, "MTH 111": 9, "MTH 121": 10,
+    "CSC 100": 11, "CSC 101": 12
+  };
+  if (early[rawCode]) return early[rawCode];
+  if (GATEWAY_COURSES.includes(rawCode)) return 20 + GATEWAY_COURSES.indexOf(rawCode);
+  if (SEMINAR_COURSES.includes(rawCode)) return 90000;
+  const prefixOrder = { MTH: 1, CSC: 2, DSC: 3, PHY: 4, CHM: 5, ENG: 6, PHL: 7, THL: 8, PTH: 9 };
+  return (prefixOrder[getPrefix(rawCode)] || 20) * 1000 + (level || 999);
+}
+
+function relationGroupAlreadySatisfied(group) {
+  return (group || []).some(code => isRawDone(code) || isPlacementSatisfied(code));
+}
+
+function prereqCoreqBurdenScore(rawCode) {
+  const prereqGroups = getPrereqGroups(rawCode);
+  const coreqGroups = getCoreqGroups(rawCode);
+  const missingPrereqs = prereqGroups.filter(group => !relationGroupAlreadySatisfied(group)).length;
+  const missingCoreqs = coreqGroups.filter(group => !relationGroupAlreadySatisfied(group)).length;
+  const strictCoreqs = getStrictCoreqCodesForScheduling(rawCode).filter(code => !isRawDone(code) && !isPlacementSatisfied(code)).length;
+  const optionComplexity = [...prereqGroups, ...coreqGroups].reduce((sum, group) => sum + Math.max(1, group.length), 0);
+  return missingPrereqs * 420 + missingCoreqs * 260 + prereqGroups.length * 45 + coreqGroups.length * 35 + strictCoreqs * 90 + optionComplexity * 2;
+}
+
+function candidatePreferenceScore(rawCode, req) {
+  let score = prereqCoreqBurdenScore(rawCode);
+  const allowedTerms = autoAllowedTermsForRaw(rawCode);
+  if (!allowedTerms.length) score += 2000;
+  if (SEMINAR_COURSES.includes(rawCode)) score += 8000;
+  // Tie-breaker keeps the established pathway order, but only after preferring courses with fewer barriers.
+  score += courseSortScore(rawCode) * 0.01;
+  if (req?.criteria?.choices?.includes(rawCode)) score -= 8;
+  return score;
+}
+
+function candidateCodesForRequirement(req) {
+  if (req?.id === "CORE MTH" && state.mathPlacement && COURSE_CATALOG[state.mathPlacement]) {
+    return [state.mathPlacement];
+  }
+  if (!isCriteriaRequirement(req)) {
+    return (COURSE_CATALOG[req.code] || BUNDLES[req.code]) ? [req.code] : [];
+  }
+  if (req.criteria?.choices) return req.criteria.choices.filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+  return OFFERED_CODES.filter(code => canSatisfyRequirement(makeOfferedItem(code), req));
+}
+
+function chooseCandidateForRequirement(req) {
+  const candidates = candidateCodesForRequirement(req).sort((a, b) => candidatePreferenceScore(a, req) - candidatePreferenceScore(b, req));
+  const done = candidates.find(code => isRawDone(code) && (req.category === "Core" ? canAssignCoreCourseToReq(makeOfferedItem(code), req) : canAssignOfferedToReq(makeOfferedItem(code), req)));
+  if (done) return done;
+  const unused = candidates.find(code => !isRawDone(code) && !isRawPlanned(code));
+  return unused || candidates[0] || null;
+}
+
+function collectNeededProgramRawCourses() {
+  reconcileSatisfiedRequirements();
+  const needed = [];
+  Array.from(getRequirementMap().values()).forEach(req => {
+    if (isRequirementChecked(req)) return;
+    const code = chooseCandidateForRequirement(req);
+    if (code) needed.push(code);
+  });
+  return Array.from(new Set(needed));
+}
+
+function collectNeededCoreRawCourses() {
+  reconcileSatisfiedRequirements();
+  const needed = [];
+  CORE.map(makeCoreItem).forEach(req => {
+    if (isCoreRequirementChecked(req)) return;
+    const code = chooseCandidateForRequirement(req);
+    if (code) needed.push(code);
+  });
+  return Array.from(new Set(needed));
+}
+
+function collectNeededRawCourses() {
+  return Array.from(new Set([...collectNeededProgramRawCourses(), ...collectNeededCoreRawCourses()]));
+}
+
+function orderedUnique(codes) {
+  const seen = new Set();
+  return (codes || []).filter(code => {
+    if (!code || seen.has(code)) return false;
+    seen.add(code);
+    return true;
+  });
+}
+
+function countNeededCredits(rawCodes) {
+  const seen = new Set();
+  return (rawCodes || []).reduce((sum, code) => {
+    if (!code || seen.has(code) || isRawDone(code) || isRawPlanned(code) || isPlacementSatisfied(code)) return sum;
+    seen.add(code);
+    return sum + (courseInfo(code).credits || 0);
+  }, 0);
+}
+
+function calculateTargetCredits(activeTerms, rawCodes) {
+  const existingCredits = activeTerms.reduce((sum, key) => sum + semesterCredits(key), 0);
+  const remainingCredits = countNeededCredits(rawCodes);
+  const average = Math.ceil((existingCredits + remainingCredits) / Math.max(activeTerms.length, 1));
+  return Math.min(18, Math.max(12, average));
+}
+
+function firstYearNeededCourses(programCodes, coreCodes) {
+  const allNeeded = new Set([...programCodes, ...coreCodes, ...expandWithPrereqs([...programCodes, ...coreCodes])]);
+  const out = [];
+  FIRST_YEAR_EARLY_COURSES.forEach(code => {
+    if (code === "MTH 100" && state.mathPlacement && state.mathPlacement !== "MTH 100") return;
+    if (code === "MTH 101" && state.mathPlacement && state.mathPlacement !== "MTH 100") return;
+    if (code === "MTH 111" && state.mathPlacement && state.mathPlacement !== "MTH 111") return;
+    if (code === "MTH 121" && state.mathPlacement && state.mathPlacement !== "MTH 121") return;
+    if (allNeeded.has(code) || code === state.mathPlacement) out.push(code);
+  });
+  GATEWAY_COURSES.forEach(code => { if (allNeeded.has(code)) out.push(code); });
+  return orderedUnique(expandWithPrereqs(out));
+}
+
+function nonSeminarCodes(codes) { return (codes || []).filter(code => !SEMINAR_COURSES.includes(code)); }
+function seminarCodes(codes) { return (codes || []).filter(code => SEMINAR_COURSES.includes(code)); }
+
+function lastSpringTerm(activeTerms) {
+  const springs = activeTerms.filter(key => parseTerm(key).term === "Spring");
+  return springs[springs.length - 1] || activeTerms[activeTerms.length - 1] || null;
+}
+
+
+function getCoreqCodes(rawCode) {
+  return getCoreqGroups(rawCode)
+    .map(group => group.find(code => COURSE_CATALOG[code] || BUNDLES[code]) || group[0])
+    .filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+}
+
+function getStrictCoreqCodesForScheduling(rawCode) {
+  return getCoreqGroups(rawCode)
+    .filter(group => group.length === 1)
+    .map(group => group[0])
+    .filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+}
+
+function autoAllowedTermsForRaw(rawCode) {
+  const terms = getOfferingTerms(offeredCourseId(rawCode));
+  if (autoPopulateAllowSummer) {
+    return terms.length ? terms : ["Fall", "Spring", "Summer"];
+  }
+  const fallSpringTerms = terms.filter(term => term === "Fall" || term === "Spring");
+  if (fallSpringTerms.length) return fallSpringTerms;
+  if (terms.length) return [];
+  return ["Fall", "Spring"];
+}
+
+function canAutoScheduleRawInTerm(rawCode, term) {
+  return autoAllowedTermsForRaw(rawCode).includes(term);
+}
+
+function strictCoreqsCompatibleWithAutoTerm(rawCode, term) {
+  return getStrictCoreqCodesForScheduling(rawCode).every(coreq => {
+    if (isRawDone(coreq) || isRawPlanned(coreq) || isPlacementSatisfied(coreq)) return true;
+    return canAutoScheduleRawInTerm(coreq, term);
+  });
+}
+
+function coreqCompanionsForTerm(rawCode, semesterKey) {
+  // Returns the extra same-term courses needed for rawCode's coreq groups.
+  // Returns null if the coreq requirement cannot be satisfied in this term.
+  const term = parseTerm(semesterKey).term;
+  const terms = generateTerms(state.grad);
+  const currentIdx = terms.indexOf(semesterKey);
+  if (currentIdx < 0) return null;
+  const map = completionIndexMap();
+  const companions = [];
+  const companionSet = new Set();
+
+  for (const group of getCoreqGroups(rawCode)) {
+    const alreadySatisfied = group.some(code => {
+      const idx = completionIndexForNeeded(code, map);
+      return idx !== undefined && idx <= currentIdx;
+    });
+    if (alreadySatisfied) continue;
+
+    const candidate = group
+      .filter(code => COURSE_CATALOG[code] || BUNDLES[code])
+      .filter(code => !isRawDone(code) && !isRawPlanned(code) && !isPlacementSatisfied(code))
+      .filter(code => canAutoScheduleRawInTerm(code, term))
+      .filter(code => relationGroupsSatisfiedForTerm(code, semesterKey, "prereq"))
+      .sort((a, b) => candidatePreferenceScore(a, null) - candidatePreferenceScore(b, null))[0];
+
+    if (!candidate) return null;
+    if (!companionSet.has(candidate)) {
+      companionSet.add(candidate);
+      companions.push(candidate);
+    }
+  }
+
+  return companions;
+}
+
+function projectedCreditsIfRawPlaced(rawCode, semesterKey) {
+  const companions = coreqCompanionsForTerm(rawCode, semesterKey);
+  if (companions === null) return Infinity;
+  return semesterCredits(semesterKey) + (courseInfo(rawCode).credits || 0) + companions.reduce((sum, code) => sum + (courseInfo(code).credits || 0), 0);
+}
+
+function rawCanBeAutoPlacedInTerm(rawCode, semesterKey) {
+  const term = parseTerm(semesterKey).term;
+  if (!canAutoScheduleRawInTerm(rawCode, term)) return false;
+  if (!relationGroupsSatisfiedForTerm(rawCode, semesterKey, "prereq")) return false;
+  const projected = projectedCreditsIfRawPlaced(rawCode, semesterKey);
+  return Number.isFinite(projected) && projected <= semesterLimit(semesterKey);
+}
+
+function expandWithPrereqs(rawCodes) {
+  const out = [];
+  const seen = new Set();
+  const visiting = new Set();
+  const visit = code => {
+    if (!code || seen.has(code) || isRawDone(code) || isPlacementSatisfied(code)) return;
+    if (visiting.has(code)) return;
+    visiting.add(code);
+    getPrereqCodes(code).forEach(visit);
+    getCoreqCodes(code).forEach(visit);
+    visiting.delete(code);
+    seen.add(code);
+    out.push(code);
+  };
+  rawCodes.forEach(visit);
+  return out;
+}
+
+function existingScheduledIndexes(activeTerms) {
+  const indexes = new Map();
+  placementCompletedCodes().forEach(code => indexes.set(code, -1));
+  checkedRequirementCompletionCodes().forEach(code => indexes.set(code, -1));
+  activeTerms.forEach((term, idx) => {
+    (state.planned[term] || []).forEach(id => representedRawCodes(id).forEach(code => indexes.set(code, idx)));
+  });
+  Object.entries(state.checkedCourses || {}).forEach(([id, checked]) => {
+    if (checked) representedRawCodes(id).forEach(code => indexes.set(code, -1));
+  });
+  Object.entries(state.checked || {}).forEach(([id, checked]) => {
+    if (checked) representedRawCodes(id).forEach(code => indexes.set(code, -1));
+  });
+  return indexes;
+}
+
+function earlyFoundationPriority(rawCode) {
+  if (FIRST_YEAR_EARLY_COURSES.includes(rawCode)) return 18;
+  if (["PHL 190", "THL 190"].includes(rawCode)) return 16;
+  if (GATEWAY_COURSES.includes(rawCode)) return 14;
+  const prefix = getPrefix(rawCode), level = getLevel(rawCode);
+  if (["ENG", "PHL", "THL"].includes(prefix) && level && level < 200) return 10;
+  if (level && level < 200) return 3;
+  return 0;
+}
+
+function chooseSemesterForRaw(rawCode, activeTerms, scheduledIndexes, targetCredits = 15, options = {}) {
+  const credits = courseInfo(rawCode).credits || 0;
+  const prereqIndexes = getPrereqCodes(rawCode).map(code => scheduledIndexes.get(code)).filter(idx => idx !== undefined);
+  const earliest = prereqIndexes.length ? Math.max(...prereqIndexes) + 1 : 0;
+  const typical = getOfferingTerms(offeredCourseId(rawCode));
+  const earlyPriority = earlyFoundationPriority(rawCode);
+  const stage = options.stage || "general";
+  const isSeminar = SEMINAR_COURSES.includes(rawCode);
+  const preferredSeminarTerm = isSeminar ? lastSpringTerm(activeTerms) : null;
+  const preferredSeminarIdx = preferredSeminarTerm ? activeTerms.indexOf(preferredSeminarTerm) : -1;
+
+  const candidates = activeTerms.map((key, idx) => ({ key, idx, term: parseTerm(key).term, credits: semesterCredits(key) }))
+    .filter(x => x.idx >= earliest)
+    .filter(x => rawCanBeAutoPlacedInTerm(rawCode, x.key));
+  if (!candidates.length) return null;
+
+  const scored = candidates.map(x => {
+    const limit = semesterLimit(x.key);
+    const after = projectedCreditsIfRawPlaced(rawCode, x.key);
+    const overLimit = after > limit;
+    const typicalPenalty = typical.length && !typical.includes(x.term) ? 35 : 0;
+    const overPenalty = overLimit ? 10000 + (after - limit) * 100 : 0;
+    const underMinimumBonus = x.term !== "Summer" && x.credits > 0 && x.credits < 12 ? -80 : 0;
+    const emptyEarlyBonus = x.term !== "Summer" && x.credits === 0 && x.idx < 4 ? -8 : 0;
+    const openNewSemesterPenalty = x.term !== "Summer" && x.credits === 0 ? 18 : 0;
+    const tooFullPenalty = after > targetCredits ? (after - targetCredits) * (stage === "core" ? 16 : 7) : 0;
+    const underTargetBonus = after <= targetCredits ? -Math.max(0, targetCredits - after) * (stage === "core" ? 3 : 1) : 0;
+    const balancePenalty = Math.abs(after - targetCredits) * (stage === "core" ? 4 : 2);
+    const earlyPenalty = isSeminar ? 0 : x.idx * earlyPriority;
+    const seminarPenalty = isSeminar ? Math.abs(x.idx - preferredSeminarIdx) * 700 + (x.idx < preferredSeminarIdx ? 250 : 0) : 0;
+    const gatewayPenalty = GATEWAY_COURSES.includes(rawCode) ? x.idx * 55 : 0;
+    const stageTimingPenalty = stage === "program" ? x.idx * 0.5 : (stage === "core" ? x.idx * 0.05 : x.idx * 0.2);
+    return {
+      ...x,
+      after,
+      score: overPenalty + typicalPenalty + balancePenalty + tooFullPenalty + underTargetBonus + openNewSemesterPenalty + underMinimumBonus + emptyEarlyBonus + earlyPenalty + seminarPenalty + gatewayPenalty + stageTimingPenalty
+    };
+  }).sort((a, b) => a.score - b.score);
+
+  return scored[0]?.key || null;
+}
+
+function addRawToTermIfPossible(rawCode, target, scheduledIndexes, activeTerms) {
+  if (!target || isRawDone(rawCode) || isRawPlanned(rawCode)) return false;
+  if (!canAutoScheduleRawInTerm(rawCode, parseTerm(target).term)) return false;
+  const offeredId = offeredCourseId(rawCode);
+  if (!state.planned[target]) state.planned[target] = [];
+  if (!state.planned[target].includes(offeredId)) state.planned[target].push(offeredId);
+  scheduledIndexes.set(rawCode, activeTerms.indexOf(target));
+  satisfyMatchingRequirementsWithCourse(makeOfferedItem(rawCode));
+  return true;
+}
+
+function addStrictCoreqsInSameTerm(rawCode, target, scheduledIndexes, activeTerms, seen = new Set()) {
+  if (seen.has(rawCode)) return;
+  seen.add(rawCode);
+  getStrictCoreqCodesForScheduling(rawCode).forEach(coreq => {
+    if (isRawDone(coreq) || isRawPlanned(coreq)) return;
+    if (!canAutoScheduleRawInTerm(coreq, parseTerm(target).term)) return;
+    const creditsAfter = semesterCredits(target) + (courseInfo(coreq).credits || 0);
+    if (creditsAfter <= semesterLimit(target)) {
+      addRawToTermIfPossible(coreq, target, scheduledIndexes, activeTerms);
+      addStrictCoreqsInSameTerm(coreq, target, scheduledIndexes, activeTerms, seen);
+    }
+  });
+}
+
+function addNeededCoreqsInSameTerm(rawCode, target, scheduledIndexes, activeTerms, seen = new Set()) {
+  if (!target || seen.has(rawCode)) return;
+  seen.add(rawCode);
+  const companions = coreqCompanionsForTerm(rawCode, target) || [];
+  companions.forEach(coreq => {
+    if (isRawDone(coreq) || isRawPlanned(coreq) || isPlacementSatisfied(coreq)) return;
+    if (!rawCanBeAutoPlacedInTerm(coreq, target) && !relationGroupsSatisfiedForTerm(coreq, target, "prereq")) return;
+    addRawToTermIfPossible(coreq, target, scheduledIndexes, activeTerms);
+    addNeededCoreqsInSameTerm(coreq, target, scheduledIndexes, activeTerms, seen);
+  });
+}
+
+function placeRawSequence(rawCodes, activeTerms, scheduledIndexes, targetCredits, skipped, stage = "general") {
+  orderedUnique(rawCodes).forEach(rawCode => {
+    if (!rawCode || isRawDone(rawCode) || isRawPlanned(rawCode) || isPlacementSatisfied(rawCode)) return;
+    const target = chooseSemesterForRaw(rawCode, activeTerms, scheduledIndexes, targetCredits, { stage });
+    if (!target) { skipped.add(rawCode); return; }
+    addNeededCoreqsInSameTerm(rawCode, target, scheduledIndexes, activeTerms);
+    addRawToTermIfPossible(rawCode, target, scheduledIndexes, activeTerms);
+    addNeededCoreqsInSameTerm(rawCode, target, scheduledIndexes, activeTerms);
+  });
+}
+
+function courseHasAutoPlacementProblem(courseId, semesterKey) {
+  return isOffCycle(courseId, semesterKey) || prereqCoreqWarningsForPlanned(courseId, semesterKey).length > 0;
+}
+
+function invalidPlannedEntries(activeTerms) {
+  const out = [];
+  activeTerms.forEach(key => {
+    (state.planned[key] || []).forEach(id => {
+      const rawCode = rawCodeFromAnyId(id);
+      if (!rawCode || !courseInfo(rawCode).title && !courseInfo(rawCode).credits && !COURSE_CATALOG[rawCode] && !BUNDLES[rawCode]) return;
+      if (courseHasAutoPlacementProblem(id, key)) out.push({ key, id, rawCode });
+    });
+  });
+  return out;
+}
+
+function removeRawFromScheduledTerms(rawCode, terms) {
+  const offeredId = offeredCourseId(rawCode);
+  (terms || []).forEach(key => {
+    state.planned[key] = (state.planned[key] || []).filter(id => rawCodeFromAnyId(id) !== rawCode);
+  });
+  cleanSatisfiedByCourse(offeredId);
+  cleanSatisfiedByCourse(rawCode);
+}
+
+function repairSortScore(rawCode) {
+  return prereqCoreqBurdenScore(rawCode) * 10 + courseSortScore(rawCode);
+}
+
+function repairInvalidAutoPlacements(activeTerms, targetCredits, skipped) {
+  // After the initial population, move any auto-scheduled course that still has a term or prereq/coreq warning.
+  // This also improves plans that already had manually placed courses before the Populate button was clicked.
+  for (let pass = 0; pass < 35; pass++) {
+    const invalid = invalidPlannedEntries(activeTerms);
+    if (!invalid.length) return;
+    const rawCodes = orderedUnique(invalid.map(entry => entry.rawCode));
+    rawCodes.forEach(rawCode => removeRawFromScheduledTerms(rawCode, activeTerms));
+    reconcileSatisfiedRequirements();
+    const repairCodes = orderedUnique(expandWithPrereqs(rawCodes).concat(rawCodes))
+      .filter(code => !isRawDone(code) && !isPlacementSatisfied(code))
+      .sort((a, b) => repairSortScore(a) - repairSortScore(b));
+    const scheduledIndexes = existingScheduledIndexes(activeTerms);
+    placeRawSequence(nonSeminarCodes(repairCodes), activeTerms, scheduledIndexes, targetCredits, skipped, "repair");
+    placeRawSequence(seminarCodes(repairCodes), activeTerms, scheduledIndexes, 15, skipped, "seminar");
+  }
+}
+
+function repairUntilWarningsClear(activeTerms, allTerms, targetCredits, skipped) {
+  autoPopulateAllowSummer = false;
+  repairInvalidAutoPlacements(activeTerms, targetCredits, skipped);
+
+  // If Fall/Spring cannot resolve every warning, allow Summer as a last-resort repair space.
+  if (invalidPlannedEntries(allTerms).length) {
+    autoPopulateAllowSummer = true;
+    repairInvalidAutoPlacements(allTerms, targetCredits, skipped);
+    autoPopulateAllowSummer = false;
+  }
+}
+
+
+function codeAppearsInFallSpringOfferings(rawCode) {
+  const terms = getOfferingTerms(offeredCourseId(rawCode));
+  return terms.includes("Fall") || terms.includes("Spring");
+}
+
+function strictCoreqsNeededForTerm(rawCode, term) {
+  return getStrictCoreqCodesForScheduling(rawCode).filter(coreq => {
+    if (isRawDone(coreq) || isRawPlanned(coreq) || isPlacementSatisfied(coreq)) return false;
+    return canAutoScheduleRawInTerm(coreq, term);
+  });
+}
+
+function relationGroupsSatisfiedForTerm(rawCode, semesterKey, relation) {
+  const terms = generateTerms(state.grad);
+  const idx = terms.indexOf(semesterKey);
+  if (idx < 0) return false;
+  const map = completionIndexMap();
+  const groups = relation === "prereq" ? getPrereqGroups(rawCode) : getCoreqGroups(rawCode);
+  return groups.every(group => groupSatisfiedByIndex(group, idx, map, relation));
+}
+
+function canUseStrictCoreqAsFillerCompanion(coreq, semesterKey) {
+  const term = parseTerm(semesterKey).term;
+  if (!canAutoScheduleRawInTerm(coreq, term)) return false;
+  // The companion itself should not introduce an unmet prerequisite. Corequisite cycles are allowed
+  // when both sides are being scheduled in the same term, such as MTH 100/MTH 101 or PHY lecture/lab.
+  return relationGroupsSatisfiedForTerm(coreq, semesterKey, "prereq");
+}
+
+function fillerCreditsNeededForTerm(rawCode, semesterKey) {
+  const term = parseTerm(semesterKey).term;
+  const coreqs = strictCoreqsNeededForTerm(rawCode, term);
+  const allCodes = orderedUnique([rawCode, ...coreqs]);
+  return allCodes.reduce((sum, code) => sum + (courseInfo(code).credits || 0), 0);
+}
+
+function fillerCandidateValidForTerm(rawCode, semesterKey) {
+  const info = courseInfo(rawCode);
+  if (!info || !info.credits || info.credits <= 0) return false;
+  if (SEMINAR_COURSES.includes(rawCode)) return false;
+  if (isRawDone(rawCode) || isRawPlanned(rawCode) || isPlacementSatisfied(rawCode)) return false;
+  if (!autoPopulateAllowSummer && !codeAppearsInFallSpringOfferings(rawCode)) return false;
+  const term = parseTerm(semesterKey).term;
+  if (!rawCanBeAutoPlacedInTerm(rawCode, semesterKey)) return false;
+  const after = projectedCreditsIfRawPlaced(rawCode, semesterKey);
+  return after <= semesterLimit(semesterKey);
+}
+
+function fillerCandidateScore(rawCode, semesterKey) {
+  const info = courseInfo(rawCode);
+  const level = getLevel(rawCode) || 999;
+  const prefix = getPrefix(rawCode);
+  const burden = prereqCoreqBurdenScore(rawCode);
+  const strictCoreqCount = strictCoreqsNeededForTerm(rawCode, parseTerm(semesterKey).term).length;
+  const credits = info.credits || 0;
+  const easyPrefix = { PTH: 0, PHL: 2, THL: 2, ENG: 3, PSY: 4, SOC: 4, ECO: 5, ART: 5, THR: 5, HIS: 6, POL: 6, BIO: 7, PHY: 8, CHM: 9, MTH: 10, CSC: 12, DSC: 12 };
+  const oneCreditPenalty = credits < 3 ? 65 : 0;
+  const highLevelPenalty = level >= 300 ? 140 : (level >= 200 ? 45 : 0);
+  const coreqPenalty = strictCoreqCount * 90;
+  return burden * 2 + highLevelPenalty + oneCreditPenalty + coreqPenalty + (easyPrefix[prefix] ?? 20) * 10 + level * 0.2;
+}
+
+function addFillerRawToTerm(rawCode, semesterKey, scheduledIndexes, activeTerms) {
+  addNeededCoreqsInSameTerm(rawCode, semesterKey, scheduledIndexes, activeTerms);
+  const placed = addRawToTermIfPossible(rawCode, semesterKey, scheduledIndexes, activeTerms);
+  addNeededCoreqsInSameTerm(rawCode, semesterKey, scheduledIndexes, activeTerms);
+  return placed;
+}
+
+function fillRemainingCreditsTo120(activeTerms, skipped) {
+  // After all program/core requirements are satisfied, add easy extra courses only if the plan
+  // still needs credits to reach the 120-credit graduation minimum. This fills lighter semesters first.
+  const maxPasses = 80;
+  let guard = 0;
+  while (completedCreditTotal() < DEGREE_MIN_CREDITS && guard++ < maxPasses) {
+    const termsByNeed = [...activeTerms]
+      .filter(key => semesterCredits(key) < semesterLimit(key))
+      .sort((a, b) => (semesterCredits(a) - semesterCredits(b)) || (activeTerms.indexOf(a) - activeTerms.indexOf(b)));
+    if (!termsByNeed.length) break;
+
+    let placed = false;
+    for (const termKey of termsByNeed) {
+      const candidates = OFFERED_CODES
+        .filter(code => fillerCandidateValidForTerm(code, termKey))
+        .sort((a, b) => fillerCandidateScore(a, termKey) - fillerCandidateScore(b, termKey));
+      if (!candidates.length) continue;
+      const scheduledIndexes = existingScheduledIndexes(activeTerms);
+      if (addFillerRawToTerm(candidates[0], termKey, scheduledIndexes, activeTerms)) {
+        placed = true;
+        break;
+      }
+    }
+    if (!placed) break;
+  }
+
+  if (completedCreditTotal() < DEGREE_MIN_CREDITS) {
+    skipped.add(`additional credits to reach ${DEGREE_MIN_CREDITS}`);
+  }
+}
+
+function populateAllUnchecked() {
+  const planningAidMessage = "This is a planning aid only. Real course offerings, seats, prerequisites, and degree-audit details may differ. Class planning should be reviewed every semester when the semester schedule is released, and all plans should be verified by the student's advisor.";
+  if (!confirm(planningAidMessage + "\n\nContinue with auto-populate?")) return;
+
+  // Auto-population starts with Fall/Spring. Summer is used only as a last resort if warnings cannot be repaired otherwise.
+  const allTerms = generateTerms(state.grad);
+  const activeTerms = allTerms.filter(key => parseTerm(key).term !== "Summer");
+  activeTerms.forEach(key => { if (!state.planned[key]) state.planned[key] = []; });
+  Object.keys(state.planned).forEach(key => { if (!allTerms.includes(key)) delete state.planned[key]; });
+
+  const skipped = new Set();
+  let programNeeded = collectNeededProgramRawCourses();
+  let coreNeeded = collectNeededCoreRawCourses();
+  let allNeededExpanded = expandWithPrereqs([...programNeeded, ...coreNeeded]);
+  let targetCredits = calculateTargetCredits(activeTerms, allNeededExpanded);
+  let scheduledIndexes = existingScheduledIndexes(activeTerms);
+
+  // 1. Place early first-year and gateway courses first, because they unlock the rest of the plan.
+  const earlyAndGateway = firstYearNeededCourses(programNeeded, coreNeeded);
+  placeRawSequence(earlyAndGateway, activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
+
+  // 2. Then place program requirements and their prerequisites, excluding seminar/capstone courses.
+  reconcileSatisfiedRequirements();
+  programNeeded = collectNeededProgramRawCourses();
+  const programMain = nonSeminarCodes(expandWithPrereqs(programNeeded)).filter(code => !SEMINAR_COURSES.includes(code));
+  targetCredits = calculateTargetCredits(activeTerms, [...programMain, ...coreNeeded]);
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeRawSequence(programMain, activeTerms, scheduledIndexes, targetCredits, skipped, "program");
+
+  // 3. Fill remaining core requirements into the leftover space as evenly as possible.
+  reconcileSatisfiedRequirements();
+  coreNeeded = collectNeededCoreRawCourses();
+  const coreMain = nonSeminarCodes(expandWithPrereqs(coreNeeded));
+  targetCredits = calculateTargetCredits(activeTerms, coreMain);
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeRawSequence(coreMain, activeTerms, scheduledIndexes, targetCredits, skipped, "core");
+
+  // 4. Put project/seminar courses in the last Spring semester when possible.
+  reconcileSatisfiedRequirements();
+  programNeeded = collectNeededProgramRawCourses();
+  const seminars = seminarCodes(expandWithPrereqs(programNeeded));
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeRawSequence(seminars, activeTerms, scheduledIndexes, 15, skipped, "seminar");
+
+  // 5. Repair any course that still violates term offering, prerequisite, or corequisite rules.
+  targetCredits = calculateTargetCredits(activeTerms, collectNeededRawCourses());
+  repairUntilWarningsClear(activeTerms, allTerms, targetCredits, skipped);
+
+  // 6. If requirements are planned but the total is still below 120 credits, add easier extra courses
+  // to the lightest Fall/Spring semesters first. If Fall/Spring cannot reach 120, use Summer as needed.
+  reconcileSatisfiedRequirements();
+  fillRemainingCreditsTo120(activeTerms, skipped);
+  if (completedCreditTotal() < DEGREE_MIN_CREDITS) {
+    autoPopulateAllowSummer = true;
+    fillRemainingCreditsTo120(allTerms, skipped);
+    autoPopulateAllowSummer = false;
+    if (completedCreditTotal() >= DEGREE_MIN_CREDITS) skipped.delete(`additional credits to reach ${DEGREE_MIN_CREDITS}`);
+  }
+  repairUntilWarningsClear(activeTerms, allTerms, calculateTargetCredits(activeTerms, collectNeededRawCourses()), skipped);
+
+  // 7. One final cleanup pass catches requirements satisfied by newly placed courses.
+  reconcileSatisfiedRequirements();
+  Array.from(skipped).forEach(code => {
+    if (isRawDone(code) || isRawPlanned(code) || isPlacementSatisfied(code)) skipped.delete(code);
+  });
+  if (completedCreditTotal() >= DEGREE_MIN_CREDITS) skipped.delete(`additional credits to reach ${DEGREE_MIN_CREDITS}`);
+  forceConfettiOnNextSummary = true;
+  saveState();
+  renderAll(false);
+  if (skipped.size) {
+    alert(`Some courses were not placed because there was no remaining Fall/Spring semester that preserved the typical offering term, prerequisite/corequisite order, and credit limits: ${Array.from(skipped).join(", ")}.`);
+  }
+}
+
+
+function planSource(courseId) { return (state.courseSources || {})[courseId] || "shc"; }
+function isAcadeumCourse(courseId) { return planSource(courseId) === "acadeum"; }
+function isAcadeumApproved(courseId) { return !!(state.acadeumApprovals || {})[courseId]; }
+function setPrintMode(mode) {
+  document.body.classList.remove("print-plan", "print-checklist");
+  document.body.classList.add(mode === "checklist" ? "print-checklist" : "print-plan");
+  const cleanup = () => document.body.classList.remove("print-plan", "print-checklist");
+  window.addEventListener("afterprint", cleanup, { once: true });
+  window.print();
+  window.setTimeout(cleanup, 1200);
+}
+function printChecklist() { setPrintMode("checklist"); }
+function printPlan() { setPrintMode("plan"); }
+
+function renderPlanner() {
+  const grid = $("semesterGrid"); grid.innerHTML = "";
+  const all = getAllCourseById();
+  const activeTerms = generateTerms(state.grad);
+  Object.keys(state.planned).forEach(k => { if (!activeTerms.includes(k)) delete state.planned[k]; });
+
+  activeTerms.forEach(key => {
+    if (!state.planned[key]) state.planned[key] = [];
+    const credits = state.planned[key].reduce((sum, id) => sum + (all.get(id)?.credits || 0), 0);
+    const limit = semesterLimit(key);
+    const term = parseTerm(key).term;
+    const overload = credits > limit;
+    const underScholarshipMinimum = term !== "Summer" && credits > 0 && credits < 12;
+    const sem = document.createElement("div");
+    const termClass = term.toLowerCase();
+    sem.className = `semester term-${termClass}`;
+    sem.dataset.semester = key;
+    const creditWarning = overload ? ` ⚠ max ${limit}` : (underScholarshipMinimum ? " ⚠ min 12" : "");
+    sem.innerHTML = `<div class="semester-header"><strong>${key}</strong><span class="credits ${overload || underScholarshipMinimum ? "warn" : ""}">${credits} credits${creditWarning}</span></div><div class="drop-zone"></div>`;
+    const zone = sem.querySelector(".drop-zone");
+    if (!state.planned[key].length) { const empty = document.createElement("div"); empty.className = "empty"; empty.textContent = "Drop courses here"; zone.appendChild(empty); }
+
+    state.planned[key].forEach(id => {
+      const item = all.get(id) || { code: id, title: "Unknown course", credits: 0 };
+      const planned = document.createElement("div");
+      const reqWarnings = prereqCoreqWarningsForPlanned(id, key);
+      planned.className = `planned-course ${isOffCycle(id, key) ? "offcycle" : ""} ${reqWarnings.length ? "req-warning" : ""}`;
+      planned.draggable = true;
+      planned.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", id);
+        e.dataTransfer.setData("source-semester", key);
+        e.dataTransfer.effectAllowed = "move";
+      });
+      const terms = getOfferingTerms(id);
+      const offcycle = isOffCycle(id, key);
+      const offcycleNote = offcycle ? `<div class="small">Usually offered ${terms.join("/")}</div>` : "";
+      const warningBadge = offcycle ? `<span class="warn-sign" title="This course is typically offered ${terms.join("/")}">!</span>` : "";
+      const reqWarningBadge = reqWarnings.length ? `<span class="warn-sign req-warn-sign" title="Prerequisite/corequisite warning">!</span>` : "";
+      const reqWarningNote = reqWarnings.length ? `<div class="small course-alert">${reqWarnings.join(" ")}</div>` : "";
+      const matchedReqs = Object.entries(state.satisfied || {}).filter(([reqId, matchedCourseId]) => matchedCourseId === id);
+      const matchedCoreReqs = Object.entries(state.satisfiedCore || {}).filter(([reqId, matchedCourseId]) => matchedCourseId === id);
+      const satisfiesProgram = matchedReqs.map(([reqId]) => getRequirementMap().get(reqId)?.title || "a program requirement");
+      const satisfiesCore = matchedCoreReqs.map(([reqId]) => makeCoreItem(CORE.find(c => c[0] === reqId))?.title || "a core requirement");
+      const satisfiesNote = [...satisfiesProgram, ...satisfiesCore].length ? `<div class="small">fills ${[...satisfiesProgram, ...satisfiesCore].join("; ")}</div>` : "";
+      const source = planSource(id);
+      const approved = isAcadeumApproved(id);
+      const sourceControls = `<div class="plan-source-controls">
+        <select class="plan-source-select" aria-label="Course source for ${item.code}">
+          <option value="shc" ${source === "shc" ? "selected" : ""}>Spring Hill</option>
+          <option value="acadeum" ${source === "acadeum" ? "selected" : ""}>Acadeum online</option>
+        </select>
+        ${source === "acadeum" ? `<label class="approval-check"><input type="checkbox" class="approval-checkbox" ${approved ? "checked" : ""}> Department approved</label>` : ""}
+      </div>`;
+      const printSource = `<span class="print-source"> · ${source === "acadeum" ? "Acadeum online" : "Spring Hill"}${source === "acadeum" && approved ? " (approved)" : ""}</span>`;
+      planned.innerHTML = `<div><strong>${item.code}</strong><span class="print-credits"> (${item.credits})</span>${printSource}${warningBadge}${reqWarningBadge}<span class="planned-title">: ${item.title}</span><div class="small">${item.credits} credit${item.credits === 1 ? "" : "s"}</div>${satisfiesNote}${offcycleNote}${reqWarningNote}${sourceControls}</div><button class="x" title="Remove ${item.code}" aria-label="Remove ${item.code}">×</button>`;
+      planned.querySelector(".x").addEventListener("click", () => removeCourseFromSemester(id, key));
+      const sourceSelect = planned.querySelector(".plan-source-select");
+      sourceSelect?.addEventListener("mousedown", e => e.stopPropagation());
+      sourceSelect?.addEventListener("change", e => {
+        state.courseSources[id] = e.target.value;
+        if (e.target.value !== "acadeum") delete state.acadeumApprovals[id];
+        saveState(); renderAll(false);
+      });
+      const approvalCheckbox = planned.querySelector(".approval-checkbox");
+      approvalCheckbox?.addEventListener("change", e => { state.acadeumApprovals[id] = e.target.checked; saveState(); renderAll(false); });
+      zone.appendChild(planned);
+    });
+
+    sem.addEventListener("dragover", e => { e.preventDefault(); sem.classList.add("over"); });
+    sem.addEventListener("dragleave", () => sem.classList.remove("over"));
+    sem.addEventListener("drop", e => { e.preventDefault(); sem.classList.remove("over"); addCourseToSemester(e.dataTransfer.getData("text/plain"), key); });
+    grid.appendChild(sem);
+  });
+}
+
+function addCreditUnit(units, key, credits) {
+  if (!key || !credits) return;
+  if (!units.has(key)) units.set(key, credits);
+}
+
+function completedCreditTotal() {
+  const units = new Map();
+  const all = getAllCourseById();
+
+  Object.values(state.planned || {}).flat().forEach(id => {
+    const item = all.get(id);
+    if (item) addCreditUnit(units, normalizedCourseKey(id), item.credits || 0);
+  });
+
+  Object.entries(state.checkedCourses || {}).forEach(([id, checked]) => {
+    if (!checked) return;
+    const item = all.get(id);
+    if (item) addCreditUnit(units, normalizedCourseKey(id), item.credits || 0);
+  });
+
+  Array.from(getRequirementMap().values()).forEach(req => {
+    const matched = (state.satisfied || {})[req.id];
+    if (matched) {
+      const item = all.get(matched);
+      addCreditUnit(units, normalizedCourseKey(matched), item?.credits || req.credits || 0);
+    } else if (state.checked[req.id]) {
+      const key = COURSE_CATALOG[req.code] ? req.code : `REQ::${req.id}`;
+      addCreditUnit(units, key, req.credits || 0);
+    } else if (!isCriteriaRequirement(req) && isPlanned(req.id)) {
+      addCreditUnit(units, req.id, req.credits || 0);
+    }
+  });
+
+  CORE.forEach(c => {
+    const core = makeCoreItem(c);
+    const matched = (state.satisfiedCore || {})[core.id];
+    if (matched) {
+      const item = all.get(matched);
+      addCreditUnit(units, normalizedCourseKey(matched), item?.credits || core.credits || 0);
+    } else if (state.checkedCore[core.id]) {
+      const key = COURSE_CATALOG[core.code] ? core.code : `CORE::${core.id}`;
+      addCreditUnit(units, key, core.credits || 0);
+    }
+  });
+
+  return Array.from(units.values()).reduce((sum, credits) => sum + credits, 0);
+}
+
+function buildMajorCreditMap(majorKey) {
+  const out = new Map();
+  const all = getAllCourseById();
+  REQUIREMENTS.majors[majorKey].courses.forEach(course => {
+    const [code, title, credits, category, criteria] = course;
+    const isCriteria = !!criteria || category === "Elective" || category === "Choice";
+    const matched = (state.satisfied || {})[code];
+    if (matched) {
+      const item = all.get(matched);
+      addCreditUnit(out, normalizedCourseKey(matched), item?.credits || credits || 0);
+    } else if (isCriteria) {
+      if (state.checked[code]) addCreditUnit(out, `${majorKey}::${code}`, credits || 0);
+    } else if (isCourseDone(code)) {
+      addCreditUnit(out, code, credits || 0);
+    }
+  });
+  return out;
+}
+
+function rawRequirementDone(code) {
+  if (code === "STATISTICS") {
+    return ["MTH 163", "BUS 263", "PSY 263"].some(isRawDone) || !!(state.satisfied || {})["STATISTICS"] || !!state.checked["STATISTICS"];
+  }
+  return isRawDone(code) || isCourseDone(code);
+}
+
+function creditsForRaw(code, fallback = 0) {
+  return COURSE_CATALOG[code]?.credits || BUNDLES[code]?.credits || fallback || 0;
+}
+
+function satisfiedAiElectiveIds() {
+  return ["AI CSC ELECTIVE 1", "AI CSC ELECTIVE 2", "AI MTH ELECTIVE 1"].filter(id => {
+    if ((state.satisfied || {})[id]) return true;
+    if (state.checked[id]) return true;
+    return false;
+  });
+}
+
+function aiCsOverlapStatus() {
+  const csDistinct = ["CSC 210", "CSC 311", "CSC 320", "CSC 321", "MTH 301", "MTH 322", "CSC 431"];
+  const dsDistinct = ["MTH 163", "DSC 240", "CSC 341", "DSC 442", "DSC 443", "DSC 499"];
+  const missingCs = csDistinct.filter(code => !rawRequirementDone(code));
+  const missingDs = dsDistinct.filter(code => !rawRequirementDone(code));
+  const aiElectives = satisfiedAiElectiveIds();
+  const hasSeparateAiElective = aiElectives.length > 0;
+  const csCredits = csDistinct.filter(code => !missingCs.includes(code)).reduce((sum, code) => sum + creditsForRaw(code), 0);
+  const dsCredits = dsDistinct.filter(code => !missingDs.includes(code)).reduce((sum, code) => sum + creditsForRaw(code), 0) + (hasSeparateAiElective ? 3 : 0);
+  const csMore = Math.max(0, 18 - csCredits);
+  const dsMore = Math.max(0, 18 - dsCredits);
+  const messages = [];
+  if (csMore > 0) messages.push(`CS distinct credits: ${csCredits}/18; ${csMore} more required.`);
+  if (dsMore > 0) messages.push(`AI/Data Science distinct credits: ${dsCredits}/18; ${dsMore} more required.`);
+  if (!hasSeparateAiElective) messages.push("AI/Data Science also needs one separate elective not used as a CS elective.");
+  return { required: true, ok: csMore === 0 && dsMore === 0 && hasSeparateAiElective, messages };
+}
+
+function majorOverlapStatus() {
+  if ((state.majors || []).length < 2) return { required: false, ok: true, messages: [] };
+  if (isAiCsDoubleMajor() && (state.majors || []).length === 2) return aiCsOverlapStatus();
+  const messages = [];
+  let ok = true;
+  for (let i = 0; i < state.majors.length; i++) {
+    for (let j = i + 1; j < state.majors.length; j++) {
+      const aKey = state.majors[i], bKey = state.majors[j];
+      if ((aKey === "ai" && bKey === "cs") || (aKey === "cs" && bKey === "ai")) {
+        const special = aiCsOverlapStatus();
+        if (!special.ok) ok = false;
+        messages.push(...special.messages);
+        continue;
+      }
+      const a = buildMajorCreditMap(aKey), b = buildMajorCreditMap(bKey);
+      const aUnique = Array.from(a.entries()).filter(([key]) => !b.has(key)).reduce((sum, [, cr]) => sum + cr, 0);
+      const bUnique = Array.from(b.entries()).filter(([key]) => !a.has(key)).reduce((sum, [, cr]) => sum + cr, 0);
+      const aLabel = REQUIREMENTS.majors[aKey].label.replace(" Major", "");
+      const bLabel = REQUIREMENTS.majors[bKey].label.replace(" Major", "");
+      if (aUnique < 18 || bUnique < 18) {
+        ok = false;
+        messages.push(`${aLabel} / ${bLabel}: ${aUnique} separate credits for ${aLabel}, ${bUnique} separate credits for ${bLabel}. Need at least 18 each.`);
+      }
+    }
+  }
+  return { required: true, ok, messages };
+}
+
+
+function collectPlannerWarnings() {
+  const warnings = [];
+  const all = getAllCourseById();
+  const terms = generateTerms(state.grad);
+
+  terms.forEach(key => {
+    const credits = semesterCredits(key);
+    const term = parseTerm(key).term;
+    const limit = semesterLimit(key);
+    if (credits > limit) warnings.push(`${key}: ${credits} credits exceeds the ${limit}-credit limit.`);
+    if (term !== "Summer" && credits > 0 && credits < 12) warnings.push(`${key}: ${credits} credits is below the 12-credit scholarship minimum.`);
+
+    (state.planned[key] || []).forEach(id => {
+      const item = all.get(id);
+      if (!item) return;
+      if (isAcadeumCourse(id) && !isAcadeumApproved(id)) warnings.push(`${key}: ${item.code} is marked for Acadeum and still needs department approval.`);
+      if (isOffCycle(id, key)) {
+        const offered = getOfferingTerms(id).join("/") || "another term";
+        warnings.push(`${key}: ${item.code} is typically offered in ${offered}.`);
+      }
+      prereqCoreqWarningsForPlanned(id, key).forEach(msg => warnings.push(`${key}: ${item.code} — ${msg}.`));
+    });
+  });
+
+  const overlap = majorOverlapStatus();
+  if (overlap.required && !overlap.ok) warnings.push(`Double-major distinct-credit check needs attention: ${overlap.messages.join(" ")}`);
+  return warnings;
+}
+
+function renderPlannerWarnings() {
+  const box = $("plannerWarnings");
+  if (!box) return [];
+  const warnings = collectPlannerWarnings();
+  if (!warnings.length) {
+    box.classList.add("hidden");
+    box.textContent = "";
+    return warnings;
+  }
+  const shown = warnings.slice(0, 6);
+  const extra = warnings.length > shown.length ? ` ${warnings.length - shown.length} more warning${warnings.length - shown.length === 1 ? "" : "s"}.` : "";
+  box.classList.remove("hidden");
+  box.textContent = `Planner warnings: ${shown.join(" • ")}${extra}`;
+  return warnings;
+}
+
+function triggerConfetti() {
+  let layer = $("confettiLayer");
+  if (!layer) {
+    layer = document.createElement("div");
+    layer.id = "confettiLayer";
+    layer.setAttribute("aria-hidden", "true");
+    document.body.appendChild(layer);
+  }
+  layer.innerHTML = "";
+  const burst = document.createElement("div");
+  burst.className = "confetti-burst";
+  burst.textContent = "🎉";
+  layer.appendChild(burst);
+  const colors = ["#5f4bb6", "#f6ad55", "#68d391", "#f6e05e", "#b794f4", "#fc8181"];
+  const count = 90;
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = `${Math.random() * 0.25}s`;
+    piece.style.animationDuration = `${1.8 + Math.random() * 1.1}s`;
+    piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 260}px`);
+    piece.style.setProperty("--spin", `${360 + Math.random() * 720}deg`);
+    layer.appendChild(piece);
+  }
+  window.setTimeout(() => { if (layer) layer.innerHTML = ""; }, 3200);
+}
+
+function renderSummary() {
+  const reqs = Array.from(getRequirementMap().values());
+  const programLeft = reqs.filter(x => !isRequirementChecked(x)).length;
+  const coreItems = CORE.map(makeCoreItem);
+  const coreLeft = coreItems.filter(x => !isCoreRequirementChecked(x)).length;
+  const creditsCompleted = completedCreditTotal();
+  const creditsLeft = Math.max(0, DEGREE_MIN_CREDITS - creditsCompleted);
+  const overlap = majorOverlapStatus();
+  $("programLeft").textContent = programLeft;
+  $("coreLeft").textContent = coreLeft;
+  $("creditsLeft").textContent = creditsLeft;
+  const setProgress = (id, pct) => { const el = $(id); if (el) el.style.width = `${Math.max(0, Math.min(100, pct))}%`; };
+  setProgress("programProgress", reqs.length ? ((reqs.length - programLeft) / reqs.length) * 100 : 0);
+  setProgress("coreProgress", coreItems.length ? ((coreItems.length - coreLeft) / coreItems.length) * 100 : 0);
+  setProgress("creditProgress", Math.min(100, (creditsCompleted / DEGREE_MIN_CREDITS) * 100));
+
+  const overlapBox = $("overlapMessage");
+  if (overlap.required && !overlap.ok) {
+    overlapBox.classList.remove("hidden");
+    overlapBox.textContent = `Double-major distinct-credit check: ${overlap.messages.join(" ")}`;
+  } else {
+    overlapBox.classList.add("hidden");
+    overlapBox.textContent = "";
+  }
+
+  const plannerWarnings = renderPlannerWarnings();
+
+  const fullyPlanned = !!(reqs.length && programLeft === 0 && coreLeft === 0 && creditsLeft === 0 && overlap.ok && plannerWarnings.length === 0);
+  $("successMessage").classList.toggle("hidden", !fullyPlanned);
+  if (fullyPlanned) {
+    const now = Date.now();
+    if (forceConfettiOnNextSummary || !lastFullyPlanned || now - lastConfettiAt > 1800) {
+      triggerConfetti();
+      lastConfettiAt = now;
+    }
+  }
+  forceConfettiOnNextSummary = false;
+  lastFullyPlanned = fullyPlanned;
+  summaryHasRendered = true;
+}
+
+function renderOfferings() {
+  const tbody = $("offeringRows"); tbody.innerHTML = "";
+  const currentKey = termKey(START_TERM.term, START_TERM.year);
+  const heading = $("currentOfferingHeading");
+  if (heading) heading.textContent = `Current (${currentKey})`;
+  const currentCodes = CURRENT_OFFERINGS[currentKey] || [];
+  Object.entries(OFFERINGS).forEach(([area, terms]) => {
+    const tr = document.createElement("tr");
+    const areaCodes = new Set([...(terms.Fall || []), ...(terms.Spring || []), ...(terms.Summer || [])]);
+    const current = currentCodes.filter(code => areaCodes.has(code)).join("<br>") || "—";
+    const fall = (terms.Fall || []).join("<br>") || "—";
+    const spring = (terms.Spring || []).join("<br>") || "—";
+    const summer = (terms.Summer || []).join("<br>") || "—";
+    tr.innerHTML = `<th>${area}</th><td>${current}</td><td>${fall}</td><td>${spring}</td><td>${summer}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderTabs() {
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      $("programPanel").classList.toggle("hidden", btn.dataset.tab !== "program");
+      $("corePanel").classList.toggle("hidden", btn.dataset.tab !== "core");
+    };
+  });
+}
+
+
+
+const DATA_FILES = {
+  programs: "programs.csv",
+  requirements: "requirements.csv",
+  courses: "courses.csv",
+  offerings: "offerings.csv",
+  core: "core_requirements.csv"
+};
+
+const ROLE_OPTIONS = [
+  { value: "student", icon: "🎓", title: "Student", description: "Build or update my own degree plan." },
+  { value: "faculty", icon: "🧑‍🏫", title: "Faculty", description: "Help a student map requirements and course order." },
+  { value: "staff", icon: "🧭", title: "Staff", description: "Support advising, transfer review, or registration." }
+];
+const STUDENT_TYPE_OPTIONS = [
+  { value: "incoming", icon: "🌱", title: "Incoming student", description: "Starting college with no completed or transferred courses." },
+  { value: "transfer", icon: "🔁", title: "Transfer student", description: "Bringing completed coursework from another institution." },
+  { value: "current", icon: "📚", title: "Current student", description: "Already enrolled and continuing toward a degree." },
+  { value: "returning", icon: "↩️", title: "Returning student", description: "Coming back after time away from Spring Hill." }
+];
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cell = "", quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i], next = text[i + 1];
+    if (ch === '"' && quoted && next === '"') { cell += '"'; i++; }
+    else if (ch === '"') quoted = !quoted;
+    else if (ch === ',' && !quoted) { row.push(cell); cell = ""; }
+    else if ((ch === '\n' || ch === '\r') && !quoted) {
+      if (ch === '\r' && next === '\n') i++;
+      row.push(cell); cell = "";
+      if (row.some(value => value.trim() !== "")) rows.push(row);
+      row = [];
+    } else cell += ch;
+  }
+  if (cell.length || row.length) { row.push(cell); if (row.some(value => value.trim() !== "")) rows.push(row); }
+  if (!rows.length) return [];
+  const headers = rows.shift().map(h => h.trim());
+  return rows.map(values => Object.fromEntries(headers.map((h, i) => [h, (values[i] || "").trim()])));
+}
+function splitList(value, delimiter = "|") { return String(value || "").split(delimiter).map(x => x.trim()).filter(Boolean); }
+function parseRelationGroups(value) {
+  return String(value || "").split(";").map(group => group.split("|").map(x => x.trim()).filter(Boolean)).filter(group => group.length);
+}
+function criteriaFromRow(row) {
+  const type = row.criteria_type || "";
+  if (!type) return null;
+  const criteria = { type };
+  const choices = splitList(row.choices);
+  const prefixes = splitList(row.prefixes);
+  if (choices.length) criteria.choices = choices;
+  if (prefixes.length) criteria.prefixes = prefixes;
+  if (row.min_level) criteria.minLevel = Number(row.min_level);
+  if (row.max_level) criteria.maxLevel = Number(row.max_level);
+  criteria.minCredits = Number(row.min_credits || row.credits || 0);
+  return criteria;
+}
+function dataUrl(base, file) { return `${String(base || "./data").replace(/\/$/, "")}/${file}`; }
+async function fetchCSV(base, file) {
+  const response = await fetch(dataUrl(base, file), { cache: "no-store" });
+  if (!response.ok) throw new Error(`${file}: HTTP ${response.status}`);
+  return parseCSV(await response.text());
+}
+function refreshDerivedCollections() {
+  const offered = Object.values(OFFERINGS).flatMap(terms => [...(terms.Fall || []), ...(terms.Spring || []), ...(terms.Summer || [])]);
+  const current = Object.values(CURRENT_OFFERINGS).flat();
+  OFFERED_CODES = Array.from(new Set([...Object.keys(COURSE_CATALOG), ...Object.keys(BUNDLES), ...offered, ...current]));
+  const areas = Array.from(new Set(OFFERED_CODES.map(code => courseGroup(makeOfferedItem(code))).filter(Boolean))).sort();
+  COURSE_GROUP_ORDER = areas.length ? areas : ["Other"];
+  COURSE_FILTERS = [
+    { id: "all", label: "All" },
+    { id: "current", label: "Current semester", current: true },
+    ...areas.map((area, index) => ({ id: `area-${index}`, label: area, area }))
+  ];
+  if (!COURSE_FILTERS.some(filter => filter.id === activeCourseFilter)) activeCourseFilter = "all";
+}
+function buildDataFromCSV(datasets) {
+  const courses = {};
+  const bundles = {};
+  datasets.courses.forEach(row => {
+    if (!row.code) return;
+    const prereqGroups = parseRelationGroups(row.prerequisites);
+    const coreqGroups = parseRelationGroups(row.corequisites);
+    const info = {
+      title: row.title || row.code,
+      credits: Number(row.credits || 0),
+      area: row.area || getPrefix(row.code) || "Other",
+      prereq: prereqGroups.flat(), coreq: coreqGroups.flat(), prereqGroups, coreqGroups
+    };
+    if ((row.is_bundle || "").toLowerCase() === "true") {
+      bundles[row.code] = { ...info, code: row.display_code || row.code };
+    } else courses[row.code] = info;
+  });
+
+  const programs = { majors: {}, minors: {} };
+  datasets.programs.forEach(row => {
+    if (!row.program_id || !row.name) return;
+    const type = (row.type || "major").toLowerCase().startsWith("minor") ? "minors" : "majors";
+    programs[type][row.program_id] = { label: row.name, area: row.area || "Other", totalCredits: Number(row.total_credits || 0), courses: [] };
+  });
+  datasets.requirements.forEach(row => {
+    const target = programs.majors[row.program_id] || programs.minors[row.program_id];
+    if (!target) return;
+    const criteria = criteriaFromRow(row);
+    const code = row.requirement_id || row.course_code;
+    target.courses.push([
+      code,
+      row.title || courses[row.course_code]?.title || row.course_code || code,
+      Number(row.credits || courses[row.course_code]?.credits || 0),
+      row.category || (criteria ? "Choice" : "Required"),
+      criteria
+    ]);
+  });
+
+  const core = datasets.core.map(row => [
+    row.requirement_id,
+    row.label || row.requirement_id,
+    row.title || row.label || row.requirement_id,
+    Number(row.credits || 0),
+    criteriaFromRow(row)
+  ]).filter(row => row[0]);
+
+  const offerings = {};
+  const current = {};
+  datasets.offerings.forEach(row => {
+    if (!row.code || !row.term) return;
+    const area = row.area || courses[row.code]?.area || bundles[row.code]?.area || getPrefix(row.code) || "Other";
+    const term = row.term[0].toUpperCase() + row.term.slice(1).toLowerCase();
+    const status = (row.status || "typical").toLowerCase();
+    if (status === "current") {
+      const key = `${term} ${row.year || START_TERM.year}`;
+      if (!current[key]) current[key] = [];
+      if (!current[key].includes(row.code)) current[key].push(row.code);
+    } else {
+      if (!offerings[area]) offerings[area] = { Fall: [], Spring: [], Summer: [] };
+      if (!offerings[area][term]) offerings[area][term] = [];
+      if (!offerings[area][term].includes(row.code)) offerings[area][term].push(row.code);
+    }
+  });
+  Object.values(offerings).forEach(terms => Object.values(terms).forEach(list => list.sort()));
+  Object.values(current).forEach(list => list.sort());
+  return { courses, bundles, programs, core, offerings, current };
+}
+async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = false) {
+  const status = $("dataSourceStatus");
+  if (status) { status.className = "data-status"; status.textContent = "Loading CSV files…"; }
+  try {
+    const programs = await fetchCSV(base, DATA_FILES.programs);
+    const [courses, offerings, core] = await Promise.all([
+      fetchCSV(base, DATA_FILES.courses), fetchCSV(base, DATA_FILES.offerings), fetchCSV(base, DATA_FILES.core)
+    ]);
+    const programFiles = Array.from(new Set(programs.map(row => row.requirements_file).filter(Boolean)));
+    let requirements = [];
+    if (programFiles.length) {
+      const byFile = await Promise.all(programFiles.map(file => fetchCSV(base, file)));
+      requirements = byFile.flatMap((rows, index) => {
+        const file = programFiles[index];
+        const owner = programs.find(row => row.requirements_file === file)?.program_id || "";
+        return rows.map(row => ({ ...row, program_id: row.program_id || owner }));
+      });
+    } else requirements = await fetchCSV(base, DATA_FILES.requirements);
+    if (!programs.length || !courses.length) throw new Error("Programs or courses CSV is empty.");
+    const built = buildDataFromCSV({ programs, requirements, courses, offerings, core });
+    COURSE_CATALOG = built.courses;
+    BUNDLES = built.bundles;
+    REQUIREMENTS = built.programs;
+    CORE = built.core;
+    OFFERINGS = built.offerings;
+    CURRENT_OFFERINGS = built.current;
+    DATA_SOURCE_KIND = "csv";
+    state.githubBaseUrl = base;
+    state.dataStatus = `Loaded ${programs.length} programs and ${courses.length} courses from CSV.`;
+    state.majors = (state.majors || []).filter(key => REQUIREMENTS.majors[key]);
+    state.minors = (state.minors || []).filter(key => REQUIREMENTS.minors[key]);
+    refreshDerivedCollections();
+    renderCourseFilterButtons();
+    saveState();
+    renderAll(true);
+    renderWizard();
+    renderProfileBar();
+    if (status) { status.className = "data-status good"; status.textContent = state.dataStatus; }
+    return true;
+  } catch (error) {
+    DATA_SOURCE_KIND = "embedded";
+    state.dataStatus = `Using embedded sample data. CSV load failed: ${error.message}`;
+    refreshDerivedCollections();
+    if (status) { status.className = `data-status ${manual ? "bad" : ""}`; status.textContent = state.dataStatus; }
+    if (manual) console.warn(error);
+    return false;
+  }
+}
+function isCurrentlyOffered(rawCode) {
+  return Object.values(CURRENT_OFFERINGS || {}).some(codes => codes.includes(rawCode));
+}
+
+function roleLabel(value) { return ROLE_OPTIONS.find(option => option.value === value)?.title || "Role not selected"; }
+function studentTypeLabel(value) { return STUDENT_TYPE_OPTIONS.find(option => option.value === value)?.title || "Student type not selected"; }
+function selectedProgramNames() {
+  return [
+    ...(state.majors || []).map(key => REQUIREMENTS.majors[key]?.label).filter(Boolean),
+    ...(state.minors || []).map(key => REQUIREMENTS.minors[key]?.label).filter(Boolean)
+  ];
+}
+function wizardVisibleSteps() { return state.studentType === "incoming" ? [1, 2, 3, 4, 7] : [1, 2, 3, 4, 5, 6, 7]; }
+function normalizedWizardStep(step) {
+  const visible = wizardVisibleSteps();
+  if (visible.includes(step)) return step;
+  return visible.find(value => value > step) || visible[visible.length - 1];
+}
+function choiceCards(options, selected, inputName) {
+  return `<div class="choice-grid">${options.map(option => `<label class="choice-card ${selected === option.value ? "selected" : ""}">
+    <input type="radio" name="${inputName}" value="${option.value}" ${selected === option.value ? "checked" : ""}>
+    <span class="choice-icon">${option.icon}</span><span class="choice-title">${option.title}</span>
+    <div class="choice-description">${option.description}</div></label>`).join("")}</div>`;
+}
+function renderProgramWizard() {
+  const groups = new Map();
+  [["majors", "Majors"], ["minors", "Minors"]].forEach(([type, heading]) => {
+    Object.entries(REQUIREMENTS[type] || {}).forEach(([key, program]) => {
+      const area = program.area || "Other programs";
+      if (!groups.has(area)) groups.set(area, { majors: [], minors: [] });
+      groups.get(area)[type].push({ key, program, heading });
+    });
+  });
+  const html = Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([area, types]) => {
+    const sections = ["majors", "minors"].map(type => {
+      if (!types[type].length) return "";
+      const label = type === "majors" ? "Majors" : "Minors";
+      return `<h4>${label}</h4><div class="program-picker">${types[type].map(({ key, program }) => `<label class="program-chip"><input type="checkbox" data-wizard-program="${type}" value="${key}" ${(state[type] || []).includes(key) ? "checked" : ""}><span><strong>${program.label}</strong><span class="small">${program.totalCredits ? ` · ${program.totalCredits} credits` : ""}</span></span></label>`).join("")}</div>`;
+    }).join("");
+    return `<section class="program-area"><h3>${area}</h3>${sections}</section>`;
+  }).join("");
+  return html || `<div class="warning">No programs were found. Check the CSV data source below.</div>`;
+}
+function eligibleCodesForHistory(item) {
+  if (!item) return [];
+  if (!isCriteriaRequirement(item)) return [item.code].filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+  if (item.criteria?.choices) return item.criteria.choices.filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
+  return OFFERED_CODES.filter(code => canSatisfyRequirement(makeOfferedItem(code), item)).slice(0, 120);
+}
+function renderHistoryRows(items, coreMode = false) {
+  return `<div class="history-list">${items.map(item => {
+    const checked = coreMode ? isCoreRequirementChecked(item) : isRequirementChecked(item);
+    const satisfiedMap = coreMode ? state.satisfiedCore : state.satisfied;
+    const matchedId = satisfiedMap[item.id] || "";
+    const matchedCode = isOfferedCourseId(matchedId) ? offeredCodeFromId(matchedId) : matchedId;
+    const options = eligibleCodesForHistory(item);
+    return `<div class="history-row ${checked ? "completed" : ""}">
+      <div class="history-main"><strong>${item.title}</strong><span>${item.code} · ${item.credits} credit${item.credits === 1 ? "" : "s"}</span></div>
+      <select class="history-course-select" data-history-id="${item.id}" data-history-core="${coreMode}">
+        <option value="">Choose completed course (optional)</option>
+        ${options.map(code => `<option value="${code}" ${matchedCode === code ? "selected" : ""}>${plainCode(code)} — ${courseInfo(code).title || code}</option>`).join("")}
+      </select>
+      <label class="history-check"><input type="checkbox" data-history-check="${item.id}" data-history-core="${coreMode}" ${checked ? "checked" : ""}> Completed / transferred</label>
+    </div>`;
+  }).join("")}</div>`;
+}
+function renderWizard() {
+  const wizard = $("setupWizard");
+  if (!wizard) return;
+  state.setupStep = normalizedWizardStep(Number(state.setupStep || 1));
+  const visible = wizardVisibleSteps();
+  const index = Math.max(0, visible.indexOf(state.setupStep));
+  $("wizardEyebrow").textContent = `Step ${index + 1} of ${visible.length}`;
+  $("wizardStepLabel").textContent = "Your answers shape the checklist, course history, and semester plan.";
+  const progress = $("wizardProgress");
+  progress.style.setProperty("--step-count", visible.length);
+  progress.innerHTML = visible.map((step, i) => `<span class="${i < index ? "done" : i === index ? "active" : ""}"></span>`).join("");
+  const content = $("wizardContent");
+  const nav = $("wizardNav");
+  $("wizardBackBtn").disabled = index === 0;
+  $("wizardSaveExitBtn").classList.toggle("hidden", !state.setupComplete);
+  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 7);
+  nav.classList.toggle("hidden", false);
+
+  if (state.setupStep === 1) {
+    $("wizardHeading").textContent = "Who is using Degreefy?";
+    content.innerHTML = `<h3>I’m a…</h3><p class="wizard-subtitle">This helps Degreefy use the right advising language. It does not change degree requirements.</p>${choiceCards(ROLE_OPTIONS, state.profileRole, "profileRole")}<div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('input[name="profileRole"]').forEach(input => input.addEventListener("change", e => { state.profileRole = e.target.value; saveState(); renderWizard(); }));
+  } else if (state.setupStep === 2) {
+    $("wizardHeading").textContent = "Who are you planning for?";
+    content.innerHTML = `<h3>The student is a…</h3><p class="wizard-subtitle">Incoming students skip the completed-course review. Transfer, current, and returning students review core courses first, then program courses.</p>${choiceCards(STUDENT_TYPE_OPTIONS, state.studentType, "studentType")}<div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('input[name="studentType"]').forEach(input => input.addEventListener("change", e => { state.studentType = e.target.value; saveState(); renderWizard(); }));
+  } else if (state.setupStep === 3) {
+    $("wizardHeading").textContent = "Set the graduation target";
+    const currentYear = START_TERM.year;
+    const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
+    content.innerHTML = `<h3>When does the student plan to graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p>
+      <div class="wizard-form-grid">
+        <label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label>
+        <label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label>
+        <label class="field-label">Math placement (optional)<select id="wizardMathPlacement"><option value="">Not entered</option>${["MTH 100", "MTH 111", "MTH 121"].map(code => `<option value="${code}" ${state.mathPlacement === code ? "selected" : ""}>${code}</option>`).join("")}</select></label>
+      </div><div class="note">Fall and Spring plans must stay between 12 and 18 credits. Summer is capped at 12 credits.</div><div class="wizard-error" id="wizardError"></div>`;
+    const sync = () => { state.gradYear = Number($("wizardGradYear").value); state.gradTerm = $("wizardGradTerm").value; state.grad = `${state.gradTerm} ${state.gradYear}`; state.mathPlacement = $("wizardMathPlacement").value; saveState(); generateGradOptions(); renderAll(false); };
+    ["wizardGradYear", "wizardGradTerm", "wizardMathPlacement"].forEach(id => $(id).addEventListener("change", sync));
+  } else if (state.setupStep === 4) {
+    $("wizardHeading").textContent = "Choose majors and minors";
+    content.innerHTML = `<h3>Select every program the student is considering</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}
+      <details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">Use <code>./data</code> when the CSV folder is stored beside this HTML file on GitHub Pages.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
+    content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => {
+      const type = input.dataset.wizardProgram;
+      state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(x => x.value);
+      saveState(); renderAll(true); renderProgramWizard();
+    }));
+    $("loadDataBtn")?.addEventListener("click", async () => {
+      state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data";
+      saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard();
+    });
+  } else if (state.setupStep === 5) {
+    $("wizardHeading").textContent = "Review completed core courses";
+    const items = CORE.map(makeCoreItem);
+    content.innerHTML = `<h3>Which core requirements are already complete?</h3><p class="wizard-subtitle">Mark courses completed at Spring Hill or accepted as transfer credit. Choose the matching course where available.</p>${renderHistoryRows(items, true)}<div class="wizard-error" id="wizardError"></div>`;
+    attachHistoryEvents(content);
+  } else if (state.setupStep === 6) {
+    $("wizardHeading").textContent = "Review completed program courses";
+    const items = Array.from(getRequirementMap().values()).sort((a, b) => a.code.localeCompare(b.code));
+    content.innerHTML = `<h3>Which major or minor requirements are already complete?</h3><p class="wizard-subtitle">Degreefy will place only the remaining requirements into future semesters.</p>${items.length ? renderHistoryRows(items, false) : '<div class="warning">Select at least one program before reviewing program courses.</div>'}<div class="wizard-error" id="wizardError"></div>`;
+    attachHistoryEvents(content);
+  } else {
+    $("wizardHeading").textContent = "The degree journey is ready";
+    const programs = selectedProgramNames();
+    const completedCore = CORE.map(makeCoreItem).filter(isCoreRequirementChecked).length;
+    const completedProgram = Array.from(getRequirementMap().values()).filter(isRequirementChecked).length;
+    content.innerHTML = `<h3>Choose what to do next</h3><p class="wizard-subtitle">Degreefy will continue enforcing prerequisites, corequisites, typical offerings, the 12-credit minimum, and the 18-credit maximum.</p>
+      <div class="wizard-summary">
+        <div class="wizard-summary-card"><span class="small">Planning for</span><strong>${studentTypeLabel(state.studentType)}</strong></div>
+        <div class="wizard-summary-card"><span class="small">Graduation target</span><strong>${state.grad}</strong></div>
+        <div class="wizard-summary-card"><span class="small">Programs</span><strong>${programs.length}</strong><span class="small">${programs.join(", ") || "None selected"}</span></div>
+        <div class="wizard-summary-card"><span class="small">Prior progress</span><strong>${completedCore + completedProgram}</strong><span class="small">requirements marked complete</span></div>
+      </div>
+      <div class="ready-actions"><button type="button" class="primary" id="startPlanningBtn">Plan the journey</button><button type="button" id="readyPrintChecklistBtn">Print required checklist</button><button type="button" id="readyPrintPlanBtn">Print the plan</button></div>
+      <div class="note">Acadeum online courses can be selected inside a semester. They remain flagged until department approval is recorded.</div><div class="wizard-error" id="wizardError"></div>`;
+    $("startPlanningBtn").addEventListener("click", () => completeSetup());
+    $("readyPrintChecklistBtn").addEventListener("click", () => { completeSetup(); window.setTimeout(printChecklist, 100); });
+    $("readyPrintPlanBtn").addEventListener("click", () => { completeSetup(); window.setTimeout(printPlan, 100); });
+  }
+}
+function attachHistoryEvents(container) {
+  container.querySelectorAll(".history-course-select").forEach(select => select.addEventListener("change", e => {
+    const id = e.target.dataset.historyId;
+    const coreMode = e.target.dataset.historyCore === "true";
+    const map = coreMode ? state.satisfiedCore : state.satisfied;
+    const checkedMap = coreMode ? state.checkedCore : state.checked;
+    const prior = map[id];
+    if (prior && state.checkedCourses) delete state.checkedCourses[prior];
+    delete map[id]; delete checkedMap[id];
+    const code = e.target.value;
+    if (code) {
+      const offeredId = offeredCourseId(code);
+      state.checkedCourses[offeredId] = true;
+      map[id] = offeredId;
+    }
+    saveState(); renderAll(false); renderWizard();
+  }));
+  container.querySelectorAll("[data-history-check]").forEach(check => check.addEventListener("change", e => {
+    const id = e.target.dataset.historyCheck;
+    const coreMode = e.target.dataset.historyCore === "true";
+    const checkedMap = coreMode ? state.checkedCore : state.checked;
+    const satisfiedMap = coreMode ? state.satisfiedCore : state.satisfied;
+    if (e.target.checked) checkedMap[id] = true;
+    else { delete checkedMap[id]; const prior = satisfiedMap[id]; if (prior) delete state.checkedCourses[prior]; delete satisfiedMap[id]; }
+    saveState(); renderAll(false); renderWizard();
+  }));
+}
+function validateWizardStep() {
+  const error = $("wizardError");
+  let message = "";
+  if (state.setupStep === 1 && !state.profileRole) message = "Select student, faculty, or staff.";
+  if (state.setupStep === 2 && !state.studentType) message = "Select the student’s planning status.";
+  if (state.setupStep === 3 && !state.gradYear) message = "Select a planned graduation year.";
+  if (state.setupStep === 4 && !(state.majors || []).length) message = "Select at least one major. Minors are optional.";
+  if (error) error.textContent = message;
+  return !message;
+}
+function moveWizard(direction) {
+  if (direction > 0 && !validateWizardStep()) return;
+  const visible = wizardVisibleSteps();
+  const index = visible.indexOf(state.setupStep);
+  const nextIndex = Math.max(0, Math.min(visible.length - 1, index + direction));
+  state.setupStep = visible[nextIndex];
+  saveState(); renderWizard(); window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function renderProfileBar() {
+  const wrap = $("profileSummary");
+  if (!wrap) return;
+  const programs = selectedProgramNames();
+  wrap.innerHTML = `<span class="profile-pill">${roleLabel(state.profileRole)}</span><span class="profile-pill">${studentTypeLabel(state.studentType)}</span><span class="profile-pill">Graduate ${state.grad}</span>${programs.map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
+}
+function showWizard(step = 1) {
+  state.setupStep = normalizedWizardStep(step);
+  saveState();
+  $("setupWizard").classList.remove("hidden");
+  $("plannerApp").classList.add("hidden");
+  document.body.classList.add("wizard-open");
+  renderWizard();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function showPlanner() {
+  $("setupWizard").classList.add("hidden");
+  $("plannerApp").classList.remove("hidden");
+  document.body.classList.remove("wizard-open");
+  renderProfileBar(); renderAll(true);
+}
+function completeSetup() {
+  if (!(state.majors || []).length) { state.setupStep = 4; showWizard(4); return; }
+  state.setupComplete = true;
+  saveState(); showPlanner();
+}
+function setupDegreefyEvents() {
+  $("wizardBackBtn")?.addEventListener("click", () => moveWizard(-1));
+  $("wizardNextBtn")?.addEventListener("click", () => moveWizard(1));
+  $("wizardSaveExitBtn")?.addEventListener("click", completeSetup);
+  ["headerEditSetupBtn", "profileEditSetupBtn"].forEach(id => $(id)?.addEventListener("click", () => showWizard(1)));
+  ["headerPrintChecklistBtn", "profilePrintChecklistBtn"].forEach(id => $(id)?.addEventListener("click", printChecklist));
+  ["headerPrintPlanBtn", "profilePrintPlanBtn"].forEach(id => $(id)?.addEventListener("click", printPlan));
+}
+
+
+function renderAll(rebuildControls=true) {
+  enforceAiCsElectiveSeparation();
+  if (rebuildControls) renderProgramControls();
+  renderMathPlacementControl();
+  renderRequirementList();
+  renderCourseBank();
+  renderPlanner();
+  renderSummary();
+  renderOfferings();
+}
+
+function setupEvents() {
+  $("gradSelect").addEventListener("change", e => { state.grad = e.target.value; saveState(); renderAll(false); });
+  $("mathPlacementSelect").addEventListener("change", e => { state.mathPlacement = e.target.value; saveState(); renderAll(false); });
+  $("programUncheckedOnly").addEventListener("click", e => {
+    const pressed = e.currentTarget.getAttribute("aria-pressed") === "true";
+    e.currentTarget.setAttribute("aria-pressed", String(!pressed));
+    e.currentTarget.classList.toggle("active", !pressed);
+    e.currentTarget.textContent = pressed ? "Show unchecked only" : "Show all program requirements";
+    renderRequirementList();
+  });
+  $("coreUncheckedOnly").addEventListener("click", e => {
+    const pressed = e.currentTarget.getAttribute("aria-pressed") === "true";
+    e.currentTarget.setAttribute("aria-pressed", String(!pressed));
+    e.currentTarget.classList.toggle("active", !pressed);
+    e.currentTarget.textContent = pressed ? "Show unchecked only" : "Show all core requirements";
+    renderRequirementList();
+  });
+  $("courseSearch").addEventListener("input", () => renderCourseBank());
+  $("hideCompletedCourses").addEventListener("change", () => renderCourseBank());
+  $("populateBtn").addEventListener("click", populateAllUnchecked);
+  $("clearPlanBtn").addEventListener("click", () => {
+    if (!confirm("Clear all scheduled courses? Checked/completed courses will stay checked.")) return;
+    clearScheduledCourses();
+  });
+  $("printBtn").addEventListener("click", printPlan);
+  $("exportBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "degreefy-plan.json"; a.click(); URL.revokeObjectURL(url);
+  });
+  $("resetBtn").addEventListener("click", () => {
+    if (!confirm("Reset Degreefy? This clears programs, graduation semester, math placement, checked courses, and planned semesters.")) return;
+    localStorage.removeItem("degreefyState");
+    localStorage.removeItem("shcDegreePlannerState");
+    state = defaultState();
+    summaryHasRendered = false;
+    lastFullyPlanned = false;
+    forceConfettiOnNextSummary = false;
+    lastConfettiAt = 0;
+    initialize();
+  });
+  renderTabs();
+  renderCourseFilterButtons();
+}
+
+async function initialize() {
+  generateGradOptions();
+  refreshDerivedCollections();
+  renderAll(true);
+  setupDegreefyEvents();
+  await loadDegreeData(state.githubBaseUrl || "./data", false);
+  if (state.setupComplete && (state.majors || []).length) showPlanner();
+  else showWizard(state.setupStep || 1);
+}
+loadState(); setupEvents(); initialize();
+</script>
+</body>
+</html>
