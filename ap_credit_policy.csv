@@ -1,0 +1,16 @@
+exam_id,exam_title,minimum_score,credits,equivalent_courses,core_requirement,note
+art-history,Art History,3,3,,CORE ARTS,Art Core
+biology,Biology,3,3,,CORE SCIENCE,Science Core
+calculus-ab,Calculus AB,3,4,MTH 121,,Students who score a 3 are awarded credit but may in individual cases be required to complete MTH 121 before placement in MTH 122.
+calculus-bc,Calculus BC,3,4,MTH 121|MTH 122,,
+chemistry,Chemistry,3,3,,CORE SCIENCE,Science Core
+comparative-government-politics,Comparative Government and Politics,3,3,POL 151,,
+computer-science-a,Computer Science A,3,3,CIS 221,,
+english-language-composition,English Language and Composition,3,3,ENG 121,,
+english-literature-composition,English Literature and Composition,3,3,ENG 121,,
+european-history,European History,3,3,HIS 212,,
+french-language-culture,French Language and Culture,3,3,FRE 101,,
+french-language-culture,French Language and Culture,4,6,FRE 101|FRE 102,,
+german-language-culture,German Language and Culture,3,3,GER 101,,
+german-language-culture,German Language and Culture,4,6,GER 101|GER 102,,
+latin,Latin,3,3,LAT 101,,

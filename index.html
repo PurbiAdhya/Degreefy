@@ -824,7 +824,7 @@
     .ready-actions button { min-height: 54px; }
     .wizard-error { margin-top: 12px; color: var(--red); font-size: 14px; font-weight: 500; }
     .wizard-nav { display: flex; justify-content: space-between; gap: 10px; padding: 18px 28px 24px; border-top: 1px solid var(--line); background: #fff; }
-    .wizard-nav .right { display: flex; gap: 8px; }
+    .wizard-nav .left, .wizard-nav .right { display: flex; gap: 8px; flex-wrap: wrap; }
     .planner-shell.hidden, .wizard-shell.hidden { display: none !important; }
     .legacy-controls { display: none !important; }
     .profile-bar { padding: 14px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -1501,6 +1501,61 @@
       body.print-semester .weekly-board, body.print-semester .weekly-day-heads { min-width: 0; }
     }
 
+
+    /* Placement, AP credit, athletics, and setup reset */
+    .placement-results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .placement-result-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 18px;
+      min-height: 100%;
+    }
+    .placement-result-card h4 { margin: 0 0 6px; color: var(--ink); font-size: 18px; }
+    .placement-result-card p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+    .placement-result-card .field-label + .field-label { margin-top: 12px; }
+    .placement-note { margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .ap-credit-box {
+      margin-top: 18px;
+      border: 1px solid #e1daf5;
+      border-radius: 18px;
+      background: #fbfaff;
+      overflow: hidden;
+    }
+    .ap-credit-box summary { cursor: pointer; padding: 16px 18px; color: var(--ink); font-size: 16px; font-weight: 520; }
+    .ap-credit-content { padding: 0 18px 18px; }
+    .ap-add-row { display: grid; grid-template-columns: minmax(220px, 1fr) 120px auto; gap: 10px; align-items: end; }
+    .ap-award-list { display: grid; gap: 9px; margin-top: 14px; }
+    .ap-award-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .ap-award-row h5 { margin: 0 0 3px; color: var(--ink); font-size: 15px; font-weight: 520; }
+    .ap-award-row p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .ap-award-row .ap-no-credit { color: #8a6530; }
+    .athlete-sport-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+    .athlete-sport-group { border: 1px solid var(--line); border-radius: 16px; padding: 15px; background: #fff; }
+    .athlete-sport-group h4 { margin: 0 0 10px; color: var(--ink); font-size: 16px; }
+    .athlete-sport-options { display: grid; gap: 8px; }
+    .athlete-sport-option { margin: 0; align-items: center; font-size: 15px; }
+    .placement-summary-pill { border-color: #d9e6dc !important; background: var(--sage-soft) !important; color: #355a43 !important; }
+    .new-setup-danger { color: #8a3f48; }
+    @media (max-width: 860px) {
+      .placement-results-grid, .athlete-sport-groups { grid-template-columns: 1fr; }
+      .ap-add-row { grid-template-columns: 1fr; }
+    }
+
   </style>
 </head>
 <body>
@@ -1511,6 +1566,9 @@
         <h1>Degreefy</h1>
         <p>A clear path for building a Spring Hill College degree plan.</p>
       </div>
+    </div>
+    <div class="header-actions">
+      <button type="button" id="globalNewSetupBtn">Start new setup</button>
     </div>
   </header>
 
@@ -1524,7 +1582,10 @@
       </div>
       <div class="wizard-content" id="wizardContent"></div>
       <div class="wizard-nav" id="wizardNav">
-        <button type="button" id="wizardBackBtn">Back</button>
+        <div class="left">
+          <button type="button" id="wizardBackBtn">Back</button>
+          <button type="button" class="new-setup-danger" id="wizardNewSetupBtn">Start new setup</button>
+        </div>
         <div class="right">
           <button type="button" id="wizardSaveExitBtn">Save and view planner</button>
           <button type="button" class="primary" id="wizardNextBtn">Continue</button>
@@ -1951,8 +2012,13 @@ let COURSE_CATALOG = {
   "BUS 263": { title: "Business Statistics", credits: 3 },
   "PSY 263": { title: "Statistics for the Social Sciences", credits: 3 },
 
+  "ENG 105": { title: "College Composition", credits: 3 },
   "ENG 121": { title: "Composition I", credits: 3 },
   "ENG 123": { title: "Composition II (Writing with Research)", credits: 3, prereq: ["ENG 121"] },
+  "CIS 221": { title: "Computer Science A Equivalent", credits: 3 },
+  "GER 101": { title: "Elementary German I", credits: 3 },
+  "GER 102": { title: "Elementary German II", credits: 3, prereq: ["GER 101"] },
+  "LAT 101": { title: "Elementary Latin I", credits: 3 },
   "PTH 101": { title: "Community and Well-Being", credits: 1 },
   "PTH 102": { title: "Engagement and Outreach", credits: 1 },
   "PHL 101": { title: "Introductory Logic", credits: 3 },
@@ -2008,7 +2074,7 @@ const CRITERIA = {
   mthCore: { type: "choice", prefixes: ["MTH"], minLevel: 100, maxLevel: 499, minCredits: 3 },
   logicCore: { type: "choice", choices: ["PHL 101", "PHL 190"], minCredits: 3 },
   introTheologyCore: { type: "choice", choices: ["THL 101", "THL 190"], minCredits: 3 },
-  languageCore: { type: "choice", choices: ["SPA 101", "SPA 102", "FRE 101", "FRE 102", "ITA 101", "ITA 102", "LAN 301"], minCredits: 3 },
+  languageCore: { type: "choice", choices: ["SPA 101", "SPA 102", "FRE 101", "FRE 102", "ITA 101", "ITA 102", "GER 101", "GER 102", "LAT 101", "LAN 301"], minCredits: 3 },
   americanCore: { type: "choice", choices: ["HIS 120", "HIS 213", "HIS 214", "POL 112"], minCredits: 3 },
   globalCore: { type: "choice", choices: ["HIS 110", "HIS 211", "HIS 212", "HIS 290", "POL 151", "POL 161"], minCredits: 3 },
   naturalScienceCore: { type: "choice", prefixes: ["BIO", "CHM", "CSC", "PHY"], minLevel: 100, maxLevel: 499, minCredits: 3 },
@@ -2128,7 +2194,9 @@ const $ = id => document.getElementById(id);
 function defaultState() {
   return {
     majors: [], minors: [], grad: "Spring 2030", gradYear: 2030, gradTerm: "Spring", mathPlacement: "",
-    mathPlacementTaken: "", planningScope: "degree", workflowVersion: 2,
+    englishPlacement: "", languagePlacementTaken: "", languageName: "", languagePlacement: "",
+    mathPlacementTaken: "", planningScope: "degree", workflowVersion: 3,
+    athleteStatus: "", sports: [], apExams: [],
     profileRole: "", studentType: "", setupStep: 1, setupComplete: false,
     githubBaseUrl: "./data", dataStatus: "",
     checked: {}, checkedCore: {}, checkedCourses: {}, planned: {}, satisfied: {}, satisfiedCore: {},
@@ -2148,14 +2216,21 @@ function loadState() {
     state.checkedCourses = state.checkedCourses || {};
     state.planned = state.planned || {};
     state.mathPlacement = state.mathPlacement || "";
+    state.englishPlacement = state.englishPlacement || "";
+    state.languagePlacementTaken = state.languagePlacementTaken || "";
+    state.languageName = state.languageName || "";
+    state.languagePlacement = state.languagePlacement || "";
     state.mathPlacementTaken = state.mathPlacementTaken || (state.mathPlacement ? "yes" : "");
+    state.athleteStatus = state.athleteStatus || "";
+    state.sports = Array.isArray(state.sports) ? state.sports : [];
+    state.apExams = Array.isArray(state.apExams) ? state.apExams : [];
     state.planningScope = state.planningScope || "degree";
     state.routineBlocks = Array.isArray(state.routineBlocks) ? state.routineBlocks : [];
     state.semesterSelections = Array.isArray(state.semesterSelections) ? state.semesterSelections : [];
     state.semesterCourseTypes = state.semesterCourseTypes || {};
     state.semesterCourseView = state.semesterCourseView || "needed";
-    const oldWorkflow = Number(state.workflowVersion || 0) < 2;
-    state.workflowVersion = 2;
+    const oldWorkflow = Number(state.workflowVersion || 0) < 3;
+    state.workflowVersion = 3;
     state.gradYear = Number(state.gradYear || parseTerm(state.grad || "Spring 2030").year || 2030);
     state.gradTerm = state.gradTerm || parseTerm(state.grad || "Spring 2030").term || "Spring";
     state.profileRole = state.profileRole || "";
@@ -2194,10 +2269,59 @@ function renderMathPlacementControl() {
   select.value = state.mathPlacement || "";
 }
 
+function selectedLanguageCourse() {
+  if (state.languagePlacementTaken !== "yes" || !state.languageName || !state.languagePlacement || state.languagePlacement === "cleared") return "";
+  return `${state.languageName} ${state.languagePlacement}`;
+}
+
+function apPolicyForScore(examId, score) {
+  return (AP_CREDIT_POLICY || [])
+    .filter(row => row.exam_id === examId && Number(score) >= Number(row.minimum_score || 0))
+    .sort((a, b) => Number(b.minimum_score || 0) - Number(a.minimum_score || 0))[0] || null;
+}
+
+function apAwardDetails() {
+  return (state.apExams || []).map(entry => {
+    const policy = apPolicyForScore(entry.exam_id, Number(entry.score));
+    const examTitle = (AP_CREDIT_POLICY || []).find(row => row.exam_id === entry.exam_id)?.exam_title || entry.exam_id;
+    return { ...entry, exam_title: examTitle, policy, courses: splitList(policy?.equivalent_courses), core: policy?.core_requirement || "", credits: Number(policy?.credits || 0), note: policy?.note || "" };
+  });
+}
+
+function apAwardCourseCodes() {
+  return Array.from(new Set(apAwardDetails().flatMap(award => award.courses || [])));
+}
+
+function apAwardCoreIds() {
+  return new Set(apAwardDetails().map(award => award.core).filter(Boolean));
+}
+
+function placementClearedCoreIds() {
+  const ids = new Set();
+  if (state.englishPlacement === "ENG 123") ids.add("CORE ENG 121");
+  if (state.englishPlacement === "clear_all") { ids.add("CORE ENG 121"); ids.add("CORE ENG 123"); }
+  if (state.languagePlacementTaken === "yes" && state.languagePlacement === "cleared") ids.add("CORE LANGUAGE");
+  return ids;
+}
+
+function placementSupplementalCourses() {
+  const courses = [];
+  if (state.englishPlacement === "ENG 105") courses.push("ENG 105");
+  return courses;
+}
+
 function placementCompletedCodes() {
-  if (state.mathPlacement === "MTH 111") return ["MTH 100"];
-  if (state.mathPlacement === "MTH 121") return ["MTH 100", "MTH 111"];
-  return [];
+  const codes = [];
+  if (state.mathPlacement === "MTH 111") codes.push("MTH 100");
+  if (state.mathPlacement === "MTH 121") codes.push("MTH 100", "MTH 111");
+  if (state.englishPlacement === "ENG 121") codes.push("ENG 105");
+  if (state.englishPlacement === "ENG 123") codes.push("ENG 105", "ENG 121");
+  if (state.englishPlacement === "clear_all") codes.push("ENG 105", "ENG 121", "ENG 123");
+  const languageCourse = selectedLanguageCourse();
+  if (languageCourse.endsWith(" 102")) codes.push(languageCourse.replace(/ 102$/, " 101"));
+  if (state.languagePlacementTaken === "yes" && state.languagePlacement === "cleared" && state.languageName) codes.push(`${state.languageName} 101`, `${state.languageName} 102`);
+  codes.push(...apAwardCourseCodes());
+  return Array.from(new Set(codes));
 }
 
 function isPlacementSatisfied(rawCode) {
@@ -2291,16 +2415,19 @@ function isPlanned(courseId) { return Object.values(state.planned || {}).some(li
 function normalizedCourseKey(id) { return isOfferedCourseId(id) ? offeredCodeFromId(id) : id; }
 function isCourseDone(code) {
   const offeredId = offeredCourseId(code);
-  return !!state.checked[code] || !!(state.checkedCourses || {})[offeredId] || isPlanned(code) || isPlanned(offeredId) || Object.values(state.satisfied || {}).includes(offeredId) || Object.values(state.satisfiedCore || {}).includes(offeredId);
+  return isPlacementSatisfied(code) || !!state.checked[code] || !!(state.checkedCourses || {})[offeredId] || isPlanned(code) || isPlanned(offeredId) || Object.values(state.satisfied || {}).includes(offeredId) || Object.values(state.satisfiedCore || {}).includes(offeredId);
 }
 function isRequirementChecked(item) {
   if (!!state.checked[item.id] || !!(state.satisfied || {})[item.id]) return true;
-  if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) return isPlanned(item.id) || isPlanned(offeredCourseId(item.code)) || !!(state.checkedCourses || {})[offeredCourseId(item.code)];
+  if (apAwardCourseCodes().some(code => canSatisfyRequirement(makeOfferedItem(code), item))) return true;
+  if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) return isPlanned(item.id) || isPlanned(offeredCourseId(item.code)) || !!(state.checkedCourses || {})[offeredCourseId(item.code)] || isPlacementSatisfied(item.code);
   return isPlanned(item.id);
 }
 function isCoreRequirementChecked(item) {
   if (!!state.checkedCore[item.id] || !!(state.satisfiedCore || {})[item.id]) return true;
-  if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) return isPlanned(item.id) || isPlanned(offeredCourseId(item.code)) || !!(state.checkedCourses || {})[offeredCourseId(item.code)];
+  if (placementClearedCoreIds().has(item.id) || apAwardCoreIds().has(item.id)) return true;
+  if (apAwardCourseCodes().some(code => canSatisfyRequirement(makeOfferedItem(code), item))) return true;
+  if (!isCriteriaRequirement(item) && COURSE_CATALOG[item.code]) return isPlanned(item.id) || isPlanned(offeredCourseId(item.code)) || !!(state.checkedCourses || {})[offeredCourseId(item.code)] || isPlacementSatisfied(item.code);
   if (item.id === "CORE MTH") return getDoneCourseCodes().some(code => canSatisfyRequirement(makeOfferedItem(code), item));
   return false;
 }
@@ -2333,6 +2460,7 @@ function checkedRequirementCompletionCodes() {
 
 function getDoneCourseCodes() {
   const codes = new Set();
+  placementCompletedCodes().forEach(code => addRepresentedCodesToSet(codes, code));
   Object.entries(state.checked || {}).forEach(([id, checked]) => { if (checked) addRepresentedCodesToSet(codes, id); });
   checkedRequirementCompletionCodes().forEach(code => addRepresentedCodesToSet(codes, code));
   Object.entries(state.checkedCourses || {}).forEach(([id, checked]) => {
@@ -2972,6 +3100,7 @@ function isRawDone(rawCode, plan = state.planned) {
 }
 
 function getPrereqGroups(rawCode) {
+  if (rawCode === "ENG 121" && state.englishPlacement === "ENG 105") return [["ENG 105"]];
   const info = courseInfo(rawCode);
   if (info.prereqGroups?.length) return info.prereqGroups;
   const prereqs = [...(info.prereq || [])];
@@ -3102,6 +3231,10 @@ function candidateCodesForRequirement(req) {
 
 function chooseCandidateForRequirement(req) {
   const candidates = candidateCodesForRequirement(req).sort((a, b) => candidatePreferenceScore(a, req) - candidatePreferenceScore(b, req));
+  if (req?.id === "CORE LANGUAGE") {
+    const preferred = selectedLanguageCourse();
+    if (preferred && candidates.includes(preferred) && !isRawDone(preferred)) return preferred;
+  }
   const done = candidates.find(code => isRawDone(code) && (req.category === "Core" ? canAssignCoreCourseToReq(makeOfferedItem(code), req) : canAssignOfferedToReq(makeOfferedItem(code), req)));
   if (done) return done;
   const unused = candidates.find(code => !isRawDone(code) && !isRawPlanned(code));
@@ -3131,7 +3264,7 @@ function collectNeededCoreRawCourses() {
 }
 
 function collectNeededRawCourses() {
-  return Array.from(new Set([...collectNeededProgramRawCourses(), ...collectNeededCoreRawCourses()]));
+  return Array.from(new Set([...placementSupplementalCourses(), ...collectNeededProgramRawCourses(), ...collectNeededCoreRawCourses()]));
 }
 
 function orderedUnique(codes) {
@@ -3160,8 +3293,9 @@ function calculateTargetCredits(activeTerms, rawCodes) {
 }
 
 function firstYearNeededCourses(programCodes, coreCodes) {
-  const allNeeded = new Set([...programCodes, ...coreCodes, ...expandWithPrereqs([...programCodes, ...coreCodes])]);
-  const out = [];
+  const supplemental = placementSupplementalCourses();
+  const allNeeded = new Set([...supplemental, ...programCodes, ...coreCodes, ...expandWithPrereqs([...supplemental, ...programCodes, ...coreCodes])]);
+  const out = [...supplemental];
   FIRST_YEAR_EARLY_COURSES.forEach(code => {
     if (code === "MTH 100" && state.mathPlacement && state.mathPlacement !== "MTH 100") return;
     if (code === "MTH 101" && state.mathPlacement && state.mathPlacement !== "MTH 100") return;
@@ -3776,6 +3910,15 @@ function completedCreditTotal() {
     }
   });
 
+  const apEquivalentSeen = new Set();
+  apAwardDetails().forEach(award => {
+    if (!award.policy || !award.credits) return;
+    const overlapsExisting = (award.courses || []).some(code => units.has(code) || apEquivalentSeen.has(code));
+    if (overlapsExisting) return;
+    (award.courses || []).forEach(code => apEquivalentSeen.add(code));
+    addCreditUnit(units, `AP::${award.exam_id}`, award.credits);
+  });
+
   return Array.from(units.values()).reduce((sum, credits) => sum + credits, 0);
 }
 
@@ -3991,7 +4134,9 @@ const DATA_FILES = {
   courses: "courses.csv",
   offerings: "offerings.csv",
   core: "core_requirements.csv",
-  schedule: "semester_schedule.csv"
+  schedule: "semester_schedule.csv",
+  apCredits: "ap_credit_policy.csv",
+  sports: "sports.csv"
 };
 
 const ROLE_OPTIONS = [
@@ -4007,6 +4152,38 @@ const PLANNING_SCOPE_OPTIONS = [
 const MATH_TEST_OPTIONS = [
   { value: "yes", title: "Yes", description: "The student has completed the math placement test." },
   { value: "no", title: "No", description: "The student has not completed the math placement test yet." }
+];
+
+let AP_CREDIT_POLICY = [
+  { exam_id: "art-history", exam_title: "Art History", minimum_score: 3, credits: 3, equivalent_courses: "", core_requirement: "CORE ARTS", note: "Art Core" },
+  { exam_id: "biology", exam_title: "Biology", minimum_score: 3, credits: 3, equivalent_courses: "", core_requirement: "CORE SCIENCE", note: "Science Core" },
+  { exam_id: "calculus-ab", exam_title: "Calculus AB", minimum_score: 3, credits: 4, equivalent_courses: "MTH 121", core_requirement: "", note: "A score of 3 awards credit, but an individual student may still be required to complete MTH 121 before placement in MTH 122." },
+  { exam_id: "calculus-bc", exam_title: "Calculus BC", minimum_score: 3, credits: 4, equivalent_courses: "MTH 121|MTH 122", core_requirement: "", note: "" },
+  { exam_id: "chemistry", exam_title: "Chemistry", minimum_score: 3, credits: 3, equivalent_courses: "", core_requirement: "CORE SCIENCE", note: "Science Core" },
+  { exam_id: "comparative-government-politics", exam_title: "Comparative Government and Politics", minimum_score: 3, credits: 3, equivalent_courses: "POL 151", core_requirement: "", note: "" },
+  { exam_id: "computer-science-a", exam_title: "Computer Science A", minimum_score: 3, credits: 3, equivalent_courses: "CIS 221", core_requirement: "", note: "" },
+  { exam_id: "english-language-composition", exam_title: "English Language and Composition", minimum_score: 3, credits: 3, equivalent_courses: "ENG 121", core_requirement: "", note: "" },
+  { exam_id: "english-literature-composition", exam_title: "English Literature and Composition", minimum_score: 3, credits: 3, equivalent_courses: "ENG 121", core_requirement: "", note: "" },
+  { exam_id: "european-history", exam_title: "European History", minimum_score: 3, credits: 3, equivalent_courses: "HIS 212", core_requirement: "", note: "" },
+  { exam_id: "french-language-culture", exam_title: "French Language and Culture", minimum_score: 3, credits: 3, equivalent_courses: "FRE 101", core_requirement: "", note: "" },
+  { exam_id: "french-language-culture", exam_title: "French Language and Culture", minimum_score: 4, credits: 6, equivalent_courses: "FRE 101|FRE 102", core_requirement: "", note: "" },
+  { exam_id: "german-language-culture", exam_title: "German Language and Culture", minimum_score: 3, credits: 3, equivalent_courses: "GER 101", core_requirement: "", note: "" },
+  { exam_id: "german-language-culture", exam_title: "German Language and Culture", minimum_score: 4, credits: 6, equivalent_courses: "GER 101|GER 102", core_requirement: "", note: "" },
+  { exam_id: "latin", exam_title: "Latin", minimum_score: 3, credits: 3, equivalent_courses: "LAT 101", core_requirement: "", note: "" }
+];
+
+let ATHLETIC_SPORTS = [
+  { category: "Men's Sports", sport: "Baseball" }, { category: "Men's Sports", sport: "Basketball" },
+  { category: "Men's Sports", sport: "Cross Country" }, { category: "Men's Sports", sport: "Golf" },
+  { category: "Men's Sports", sport: "Soccer" }, { category: "Men's Sports", sport: "Tennis" },
+  { category: "Men's Sports", sport: "Outdoor Track & Field" },
+  { category: "Women's Sports", sport: "Basketball" }, { category: "Women's Sports", sport: "Cross Country" },
+  { category: "Women's Sports", sport: "Flag Football" }, { category: "Women's Sports", sport: "Golf" },
+  { category: "Women's Sports", sport: "Soccer" }, { category: "Women's Sports", sport: "Softball" },
+  { category: "Women's Sports", sport: "Tennis" }, { category: "Women's Sports", sport: "Outdoor Track & Field" },
+  { category: "Women's Sports", sport: "Volleyball" }, { category: "Women's Sports", sport: "Beach Volleyball" },
+  { category: "Club Sports", sport: "Men's Bowling" }, { category: "Club Sports", sport: "Women's Bowling" },
+  { category: "Spirit Squads", sport: "Cheerleading" }
 ];
 
 const STUDENT_TYPE_OPTIONS = [
@@ -4171,11 +4348,13 @@ async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = f
   if (status) { status.className = "data-status"; status.textContent = "Loading CSV files…"; }
   try {
     const programs = await fetchCSV(base, DATA_FILES.programs);
-    const [courses, offerings, core, schedule] = await Promise.all([
+    const [courses, offerings, core, schedule, apPolicy, sports] = await Promise.all([
       fetchCSV(base, DATA_FILES.courses),
       fetchCSV(base, DATA_FILES.offerings),
       fetchCSV(base, DATA_FILES.core),
-      fetchCSV(base, DATA_FILES.schedule).catch(() => [])
+      fetchCSV(base, DATA_FILES.schedule).catch(() => []),
+      fetchCSV(base, DATA_FILES.apCredits).catch(() => []),
+      fetchCSV(base, DATA_FILES.sports).catch(() => [])
     ]);
     const programFiles = Array.from(new Set(programs.map(row => row.requirements_file).filter(Boolean)));
     let requirements = [];
@@ -4195,6 +4374,8 @@ async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = f
     CORE = built.core;
     OFFERINGS = built.offerings;
     CURRENT_OFFERINGS = built.current;
+    if (apPolicy.length) AP_CREDIT_POLICY = apPolicy.map(row => ({ ...row, minimum_score: Number(row.minimum_score || 0), credits: Number(row.credits || 0) }));
+    if (sports.length) ATHLETIC_SPORTS = sports.filter(row => row.category && row.sport);
     SEMESTER_SECTIONS = schedule.map(normalizeScheduleSection).filter(section => section.course_code);
     const primaryScheduleTerm = SEMESTER_SECTIONS.find(section => section.term_code === "FA")?.term || SEMESTER_SECTIONS[0]?.term;
     if (primaryScheduleTerm) {
@@ -4203,7 +4384,7 @@ async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = f
     }
     DATA_SOURCE_KIND = "csv";
     state.githubBaseUrl = base;
-    state.dataStatus = `Loaded ${programs.length} programs, ${courses.length} courses, and ${SEMESTER_SECTIONS.length} published sections from CSV.`;
+    state.dataStatus = `Loaded ${programs.length} programs, ${courses.length} courses, ${SEMESTER_SECTIONS.length} published sections, ${AP_CREDIT_POLICY.length} AP policy rows, and ${ATHLETIC_SPORTS.length} sports from CSV.`;
     state.majors = (state.majors || []).filter(key => REQUIREMENTS.majors[key]);
     state.minors = (state.minors || []).filter(key => REQUIREMENTS.minors[key]);
     refreshDerivedCollections();
@@ -4239,12 +4420,12 @@ function selectedProgramNames() {
 function wizardVisibleSteps() {
   const incoming = state.studentType === "incoming";
   const semesterOnly = state.planningScope === "semester";
-  const steps = [1, 2, 3, 4];
-  if (!semesterOnly) steps.push(5);
-  steps.push(6);
-  if (!incoming) steps.push(7, 8);
-  if (semesterOnly) steps.push(9);
-  steps.push(10);
+  const steps = [1, 2, 3, 4, 5];
+  if (!semesterOnly) steps.push(6);
+  steps.push(7);
+  if (!incoming) steps.push(8, 9);
+  if (semesterOnly) steps.push(10);
+  steps.push(11);
   return steps;
 }
 function normalizedWizardStep(step) {
@@ -4361,6 +4542,7 @@ function sectionWouldConflict(section, selectionIds = state.semesterSelections |
   return (semesterConflictMap(test).get(section.section_id) || []).length > 0;
 }
 function isCompletedCourseCode(code) {
+  if (apAwardCourseCodes().includes(code) || isPlacementSatisfied(code)) return true;
   if ((state.checkedCourses || {})[offeredCourseId(code)]) return true;
   if (state.checked?.[code]) return true;
   if (Object.values(state.satisfied || {}).includes(offeredCourseId(code))) return true;
@@ -4372,6 +4554,7 @@ function isCompletedCourseCode(code) {
 function semesterRequirementMatches(code) {
   const offered = makeOfferedItem(code);
   const matches = [];
+  if (placementSupplementalCourses().includes(code) && !isCompletedCourseCode(code)) matches.push({ type: "Core", req: { id: `PLACEMENT::${code}`, title: "Placement foundation" } });
   CORE.map(makeCoreItem).forEach(req => {
     if (!isCoreRequirementChecked(req) && canSatisfyRequirement(offered, req)) matches.push({ type: "Core", req });
   });
@@ -4570,15 +4753,18 @@ function renderSemesterStatus() {
   if (!strip) return;
   const term = schedulePrimaryTerm();
   const sectionCount = scheduleSectionsForPrimaryTerm().length;
-  const placementKnown = state.mathPlacementTaken === "yes" && !!state.mathPlacement;
-  const placementText = state.mathPlacementTaken === "no" ? "Math placement test not taken" : placementKnown ? `Math placement: ${state.mathPlacement}` : "Math placement result not entered";
-  strip.classList.toggle("warning-state", !placementKnown);
-  strip.innerHTML = `<span><strong>${term}</strong> · ${sectionCount} published sections loaded</span><span>${placementText}</span>`;
+  const mathKnown = state.mathPlacementTaken === "yes" && !!state.mathPlacement;
+  const englishKnown = !!state.englishPlacement && state.englishPlacement !== "not_taken";
+  const mathText = state.mathPlacementTaken === "no" ? "Math test not taken" : mathKnown ? `Math: ${state.mathPlacement}` : "Math result missing";
+  const englishText = state.englishPlacement === "clear_all" ? "English: cleared" : englishKnown ? `English: ${state.englishPlacement}` : "English result missing";
+  strip.classList.toggle("warning-state", !mathKnown || !englishKnown);
+  strip.innerHTML = `<span><strong>${term}</strong> · ${sectionCount} published sections loaded</span><span>${englishText} · ${mathText}${(state.apExams || []).length ? ` · ${(state.apExams || []).length} AP exam${state.apExams.length === 1 ? "" : "s"}` : ""}</span>`;
 }
 function renderSemesterProfile() {
   const title = $("semesterPlanTitle"), wrap = $("semesterProfileSummary");
   if (title) title.textContent = `Plan ${schedulePrimaryTerm()}`;
-  if (wrap) wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${selectedProgramNames().map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
+  const athlete = state.athleteStatus === "yes" && (state.sports || []).length ? `<span class="profile-pill placement-summary-pill">Athlete · ${(state.sports || []).map(athleticSportLabel).join(", ")}</span>` : "";
+  if (wrap) wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${selectedProgramNames().map(name => `<span class="profile-pill">${name}</span>`).join("")}${athlete}`;
 }
 function renderSemesterPlanner() {
   if (!$("semesterPlannerApp")) return;
@@ -4666,6 +4852,70 @@ function setupSemesterPlannerEvents() {
   $("weeklyScheduleBoard")?.addEventListener("drop", event => { event.preventDefault(); addSemesterSection(event.dataTransfer.getData("text/degreefy-section")); });
 }
 
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+}
+
+function athleticSportKey(item) { return `${item.category}::${item.sport}`; }
+function athleticSportLabel(key) {
+  const item = (ATHLETIC_SPORTS || []).find(row => athleticSportKey(row) === key);
+  return item ? item.sport : String(key || "").split("::").pop();
+}
+
+function renderAPCreditsMarkup() {
+  const exams = Array.from(new Map((AP_CREDIT_POLICY || []).map(row => [row.exam_id, row.exam_title])).entries())
+    .map(([id, title]) => ({ id, title })).sort((a, b) => a.title.localeCompare(b.title));
+  const awards = apAwardDetails();
+  const rows = awards.length ? awards.map(award => {
+    const equivalent = award.policy ? ([...(award.courses || []), award.core ? award.policy.note || award.core : ""].filter(Boolean).join(", ") || "General credit") : "No credit under the current policy";
+    return `<div class="ap-award-row"><div><h5>${escapeHTML(award.exam_title)} · score ${escapeHTML(award.score)}</h5><p class="${award.policy ? "" : "ap-no-credit"}">${award.policy ? `${award.credits} credit${award.credits === 1 ? "" : "s"} · ${escapeHTML(equivalent)}` : escapeHTML(equivalent)}</p>${award.note ? `<p>${escapeHTML(award.note)}</p>` : ""}</div><button type="button" data-remove-ap="${escapeHTML(award.exam_id)}">Remove</button></div>`;
+  }).join("") : '<div class="small">No AP exams added.</div>';
+  return `<details class="ap-credit-box" open><summary>AP exam credit</summary><div class="ap-credit-content"><p class="wizard-subtitle">Add any AP exams already completed. Degreefy will apply the equivalent course or core credit shown in the current policy file.</p><div class="ap-add-row"><label class="field-label">AP exam<select id="wizardAPExam"><option value="">Select an exam</option>${exams.map(exam => `<option value="${escapeHTML(exam.id)}">${escapeHTML(exam.title)}</option>`).join("")}</select></label><label class="field-label">Score<select id="wizardAPScore"><option value="">Select score</option>${[1,2,3,4,5].map(score => `<option value="${score}">${score}</option>`).join("")}</select></label><button type="button" id="addAPExamBtn">Add exam</button></div><div class="ap-award-list">${rows}</div><div class="placement-note">AP awards should be confirmed against the official transcript. The CSV can be expanded when the full policy is available.</div></div></details>`;
+}
+
+function renderPlacementResultsMarkup() {
+  const englishOptions = [
+    ["", "Select a result"], ["not_taken", "Not taken / result unavailable"], ["ENG 105", "Placed into ENG 105"],
+    ["ENG 121", "Placed into ENG 121"], ["ENG 123", "Placed into ENG 123"], ["clear_all", "Cleared all English composition requirements"]
+  ];
+  const languageNames = [["SPA", "Spanish"], ["FRE", "French"], ["ITA", "Italian"], ["GER", "German"], ["LAT", "Latin"]];
+  return `<div class="placement-results-grid">
+    <section class="placement-result-card"><h4>English placement</h4><p>Enter the course the student should begin with.</p><label class="field-label">Result<select id="wizardEnglishPlacement">${englishOptions.map(([value, label]) => `<option value="${value}" ${state.englishPlacement === value ? "selected" : ""}>${label}</option>`).join("")}</select></label>${state.englishPlacement === "ENG 123" ? '<div class="placement-note">ENG 121 will be treated as cleared for prerequisite and core planning.</div>' : state.englishPlacement === "clear_all" ? '<div class="placement-note">ENG 121 and ENG 123 will be treated as cleared without adding earned course credits.</div>' : state.englishPlacement === "not_taken" ? '<div class="placement-note">English recommendations remain provisional until a result is available.</div>' : ""}</section>
+    <section class="placement-result-card"><h4>Language placement</h4><p>Record whether a language placement test was completed.</p><label class="field-label">Test taken<select id="wizardLanguageTaken"><option value="">Select</option><option value="yes" ${state.languagePlacementTaken === "yes" ? "selected" : ""}>Yes</option><option value="no" ${state.languagePlacementTaken === "no" ? "selected" : ""}>No</option></select></label>${state.languagePlacementTaken === "yes" ? `<label class="field-label">Language<select id="wizardLanguageName"><option value="">Select language</option>${languageNames.map(([value, label]) => `<option value="${value}" ${state.languageName === value ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field-label">Placement result<select id="wizardLanguagePlacement"><option value="">Select result</option><option value="101" ${state.languagePlacement === "101" ? "selected" : ""}>Begin with 101</option><option value="102" ${state.languagePlacement === "102" ? "selected" : ""}>Begin with 102</option><option value="cleared" ${state.languagePlacement === "cleared" ? "selected" : ""}>Language requirement cleared</option></select></label>` : '<div class="placement-note">Degreefy will begin with an introductory language course unless another result is added later.</div>'}</section>
+    <section class="placement-result-card"><h4>Math placement</h4><p>This answer is required before Degreefy recommends math-dependent courses.</p><label class="field-label">Test taken<select id="wizardMathTaken"><option value="">Select</option><option value="yes" ${state.mathPlacementTaken === "yes" ? "selected" : ""}>Yes</option><option value="no" ${state.mathPlacementTaken === "no" ? "selected" : ""}>No</option></select></label>${state.mathPlacementTaken === "yes" ? `<label class="field-label">Placement result<select id="wizardMathPlacement"><option value="">Select result</option>${["MTH 100", "MTH 111", "MTH 121"].map(code => `<option value="${code}" ${state.mathPlacement === code ? "selected" : ""}>${code}</option>`).join("")}</select></label>` : state.mathPlacementTaken === "no" ? '<div class="placement-note">Math-dependent recommendations will remain limited until the test is completed.</div>' : ""}</section>
+  </div>${renderAPCreditsMarkup()}<div class="wizard-error" id="wizardError"></div>`;
+}
+
+function attachPlacementResultEvents(content) {
+  $("wizardEnglishPlacement")?.addEventListener("change", event => { state.englishPlacement = event.target.value; saveState(); renderAll(false); renderWizard(); });
+  $("wizardLanguageTaken")?.addEventListener("change", event => { state.languagePlacementTaken = event.target.value; if (event.target.value !== "yes") { state.languageName = ""; state.languagePlacement = ""; } saveState(); renderAll(false); renderWizard(); });
+  $("wizardLanguageName")?.addEventListener("change", event => { state.languageName = event.target.value; saveState(); renderAll(false); });
+  $("wizardLanguagePlacement")?.addEventListener("change", event => { state.languagePlacement = event.target.value; saveState(); renderAll(false); });
+  $("wizardMathTaken")?.addEventListener("change", event => { state.mathPlacementTaken = event.target.value; if (event.target.value !== "yes") state.mathPlacement = ""; saveState(); renderAll(false); renderWizard(); });
+  $("wizardMathPlacement")?.addEventListener("change", event => { state.mathPlacement = event.target.value; saveState(); renderAll(false); });
+  $("addAPExamBtn")?.addEventListener("click", () => {
+    const examId = $("wizardAPExam")?.value || "";
+    const score = Number($("wizardAPScore")?.value || 0);
+    if (!examId || !score) return;
+    state.apExams = (state.apExams || []).filter(entry => entry.exam_id !== examId);
+    state.apExams.push({ exam_id: examId, score });
+    saveState(); renderAll(false); renderWizard();
+  });
+  content.querySelectorAll("[data-remove-ap]").forEach(button => button.addEventListener("click", () => { state.apExams = (state.apExams || []).filter(entry => entry.exam_id !== button.dataset.removeAp); saveState(); renderAll(false); renderWizard(); }));
+}
+
+function renderAthleticsMarkup() {
+  const groups = new Map();
+  (ATHLETIC_SPORTS || []).forEach(item => { if (!groups.has(item.category)) groups.set(item.category, []); groups.get(item.category).push(item); });
+  const sports = Array.from(groups.entries()).map(([category, items]) => `<section class="athlete-sport-group"><h4>${escapeHTML(category)}</h4><div class="athlete-sport-options">${items.map(item => { const key = athleticSportKey(item); return `<label class="athlete-sport-option"><input type="checkbox" data-athlete-sport value="${escapeHTML(key)}" ${(state.sports || []).includes(key) ? "checked" : ""}> <span>${escapeHTML(item.sport)}</span></label>`; }).join("")}</div></section>`).join("");
+  return `<h3>Is the student an athlete?</h3><p class="wizard-subtitle">This helps the semester planner account for recurring practice and competition commitments. Practice times can be added to the weekly routine later.</p>${choiceCards([{ value: "yes", title: "Yes", description: "Select the student’s sport or sports." }, { value: "no", title: "No", description: "Continue without an athletics profile." }], state.athleteStatus, "athleteStatus")}${state.athleteStatus === "yes" ? `<div class="athlete-sport-groups">${sports}</div>` : ""}<div class="wizard-error" id="wizardError"></div>`;
+}
+
+function attachAthleticsEvents(content) {
+  content.querySelectorAll('input[name="athleteStatus"]').forEach(input => input.addEventListener("change", event => { state.athleteStatus = event.target.value; if (event.target.value === "no") state.sports = []; saveState(); renderWizard(); }));
+  content.querySelectorAll("[data-athlete-sport]").forEach(input => input.addEventListener("change", () => { state.sports = Array.from(content.querySelectorAll("[data-athlete-sport]:checked")).map(item => item.value); saveState(); }));
+}
+
 function renderWizard() {
   const wizard = $("setupWizard");
   if (!wizard) return;
@@ -4681,7 +4931,7 @@ function renderWizard() {
   const nav = $("wizardNav");
   $("wizardBackBtn").disabled = index === 0;
   $("wizardSaveExitBtn").classList.toggle("hidden", !state.setupComplete);
-  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 10);
+  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 11);
   nav.classList.remove("hidden");
 
   if (state.setupStep === 1) {
@@ -4701,37 +4951,38 @@ function renderWizard() {
     content.innerHTML = `<h3>What would you like to plan?</h3><p class="wizard-subtitle">Choose a complete degree path or focus only on the upcoming semester whose class schedule has been published.</p>${choiceCards(PLANNING_SCOPE_OPTIONS, state.planningScope, "planningScope")}<div class="planning-scope-note">The one-semester planner uses actual sections, meeting times, and weekly conflict detection.</div><div class="wizard-error" id="wizardError"></div>`;
     content.querySelectorAll('input[name="planningScope"]').forEach(input => input.addEventListener("change", event => { state.planningScope = event.target.value; saveState(); renderWizard(); }));
   } else if (state.setupStep === 4) {
-    $("wizardHeading").textContent = "Math placement";
-    content.innerHTML = `<h3>Has the student taken the math placement test?</h3><p class="wizard-subtitle">Degreefy needs this answer before it can evaluate math prerequisites and recommend a schedule.</p>${choiceCards(MATH_TEST_OPTIONS, state.mathPlacementTaken, "mathPlacementTaken")}
-      ${state.mathPlacementTaken === "yes" ? `<div class="wizard-form-grid" style="margin-top:18px"><label class="field-label">Placement result<select id="wizardMathPlacement"><option value="">Result not available yet</option>${["MTH 100", "MTH 111", "MTH 121"].map(code => `<option value="${code}" ${state.mathPlacement === code ? "selected" : ""}>${code}</option>`).join("")}</select></label></div>` : ""}
-      ${state.mathPlacementTaken === "no" ? '<div class="note">Math-dependent recommendations will remain limited until a placement result is available.</div>' : ""}<div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('input[name="mathPlacementTaken"]').forEach(input => input.addEventListener("change", event => { state.mathPlacementTaken = event.target.value; if (event.target.value === "no") state.mathPlacement = ""; saveState(); renderWizard(); }));
-    $("wizardMathPlacement")?.addEventListener("change", event => { state.mathPlacement = event.target.value; saveState(); renderAll(false); });
+    $("wizardHeading").textContent = "Placement and incoming credit";
+    content.innerHTML = `<h3>Add placement results</h3><p class="wizard-subtitle">Keep English, language, math, and AP information together so Degreefy can remove cleared requirements and choose the right starting courses.</p>${renderPlacementResultsMarkup()}`;
+    attachPlacementResultEvents(content);
   } else if (state.setupStep === 5) {
+    $("wizardHeading").textContent = "Athletics";
+    content.innerHTML = renderAthleticsMarkup();
+    attachAthleticsEvents(content);
+  } else if (state.setupStep === 6) {
     $("wizardHeading").textContent = "Set the graduation target";
     const currentYear = START_TERM.year;
     const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
     content.innerHTML = `<h3>When should the student graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p><div class="wizard-form-grid"><label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label><label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label></div><div class="note">Fall and Spring plans must stay between 12 and 18 credits. Summer is capped at 12 credits.</div><div class="wizard-error" id="wizardError"></div>`;
     const sync = () => { state.gradYear = Number($("wizardGradYear").value); state.gradTerm = $("wizardGradTerm").value; state.grad = `${state.gradTerm} ${state.gradYear}`; saveState(); generateGradOptions(); renderAll(false); };
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
-  } else if (state.setupStep === 6) {
+  } else if (state.setupStep === 7) {
     $("wizardHeading").textContent = "Choose majors and minors";
-    content.innerHTML = `<h3>Select majors and minors</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}<details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">The folder can include programs, requirements, courses, offerings, and semester_schedule.csv.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Select majors and minors</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}<details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">The folder can include programs, requirements, courses, offerings, semester_schedule.csv, ap_credit_policy.csv, and sports.csv.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
     content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => { const type = input.dataset.wizardProgram; state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(item => item.value); saveState(); renderAll(true); renderWizard(); }));
     $("loadDataBtn")?.addEventListener("click", async () => { state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data"; saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard(); });
-  } else if (state.setupStep === 7) {
+  } else if (state.setupStep === 8) {
     $("wizardHeading").textContent = "Review completed core courses";
     const items = CORE.map(makeCoreItem);
-    content.innerHTML = `<h3>Which core requirements are already complete?</h3><p class="wizard-subtitle">Mark courses completed at Spring Hill or accepted as transfer credit. Completed courses will not appear as courses still needed.</p>${renderHistoryRows(items, true)}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Which core requirements are already complete?</h3><p class="wizard-subtitle">Placement and AP awards are already reflected. Mark any additional Spring Hill or transfer courses completed.</p>${renderHistoryRows(items, true)}<div class="wizard-error" id="wizardError"></div>`;
     attachHistoryEvents(content);
-  } else if (state.setupStep === 8) {
+  } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Review completed program courses";
     const items = Array.from(getRequirementMap().values()).sort((a, b) => a.code.localeCompare(b.code));
     content.innerHTML = `<h3>Which major or minor requirements are already complete?</h3><p class="wizard-subtitle">Degreefy will recommend only the remaining requirements.</p>${items.length ? renderHistoryRows(items, false) : '<div class="warning">Select at least one program before reviewing program courses.</div>'}<div class="wizard-error" id="wizardError"></div>`;
     attachHistoryEvents(content);
-  } else if (state.setupStep === 9) {
+  } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Block unavailable times";
-    content.innerHTML = `<h3>What times are already part of the weekly routine?</h3><p class="wizard-subtitle">Add work, practice, commuting, standing appointments, or other times when a class cannot be scheduled. This step is optional.</p>${renderRoutineEditorMarkup("wizard")}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>What times are already part of the weekly routine?</h3><p class="wizard-subtitle">Add work, practice, commuting, standing appointments, or other times when a class cannot be scheduled. This step is optional.</p>${state.athleteStatus === "yes" ? `<div class="note">Athlete profile: ${(state.sports || []).map(athleticSportLabel).join(", ") || "sport not selected"}. Add known practice times below.</div>` : ""}${renderRoutineEditorMarkup("wizard")}<div class="wizard-error" id="wizardError"></div>`;
     attachRoutineEditorEvents(content, "wizard");
   } else {
     $("wizardHeading").textContent = "Ready to plan";
@@ -4773,9 +5024,15 @@ function validateWizardStep() {
   if (state.setupStep === 1 && !state.profileRole) message = "Select student, faculty, or staff.";
   if (state.setupStep === 2 && !state.studentType) message = "Select the student’s planning status.";
   if (state.setupStep === 3 && !state.planningScope) message = "Choose what you would like to plan.";
-  if (state.setupStep === 4 && !state.mathPlacementTaken) message = "Answer whether the math placement test has been taken.";
-  if (state.setupStep === 5 && !state.gradYear) message = "Select a planned graduation year.";
-  if (state.setupStep === 6 && !(state.majors || []).length) message = "Select at least one major. Minors are optional.";
+  if (state.setupStep === 4 && !state.englishPlacement) message = "Select an English placement result or indicate that it is not available.";
+  if (state.setupStep === 4 && !message && !state.languagePlacementTaken) message = "Answer whether the language placement test has been taken.";
+  if (state.setupStep === 4 && !message && state.languagePlacementTaken === "yes" && (!state.languageName || !state.languagePlacement)) message = "Select the language and its placement result.";
+  if (state.setupStep === 4 && !message && !state.mathPlacementTaken) message = "Answer whether the math placement test has been taken.";
+  if (state.setupStep === 4 && !message && state.mathPlacementTaken === "yes" && !state.mathPlacement) message = "Select the math placement result.";
+  if (state.setupStep === 5 && !state.athleteStatus) message = "Answer whether the student is an athlete.";
+  if (state.setupStep === 5 && !message && state.athleteStatus === "yes" && !(state.sports || []).length) message = "Select at least one sport.";
+  if (state.setupStep === 6 && !state.gradYear) message = "Select a planned graduation year.";
+  if (state.setupStep === 7 && !(state.majors || []).length) message = "Select at least one major. Minors are optional.";
   if (error) error.textContent = message;
   return !message;
 }
@@ -4793,7 +5050,8 @@ function renderProfileBar() {
   const programs = selectedProgramNames();
   const title = $("planPageTitle");
   if (title) title.textContent = state.planningScope === "semester" ? `Plan ${schedulePrimaryTerm()}` : `Plan through ${state.grad}`;
-  wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${programs.map(name => `<span class="profile-pill">${name}</span>`).join("")}`;
+  const athlete = state.athleteStatus === "yes" && (state.sports || []).length ? `<span class="profile-pill placement-summary-pill">Athlete · ${(state.sports || []).map(athleticSportLabel).join(", ")}</span>` : "";
+  wrap.innerHTML = `<span class="profile-pill">${studentTypeLabel(state.studentType)}</span>${programs.map(name => `<span class="profile-pill">${name}</span>`).join("")}${athlete}`;
 }
 function showWizard(step = 1) {
   state.setupStep = normalizedWizardStep(step);
@@ -4814,7 +5072,7 @@ function showPlanner() {
   if (semesterOnly) renderSemesterPlanner(); else { renderProfileBar(); renderAll(true); }
 }
 function completeSetup(autoPlan = false) {
-  if (!(state.majors || []).length) { state.setupStep = 6; showWizard(6); return; }
+  if (!(state.majors || []).length) { state.setupStep = 7; showWizard(7); return; }
   state.setupComplete = true;
   saveState();
   showPlanner();
@@ -4857,10 +5115,19 @@ function showSharePlaceholder() {
   showSharePlaceholder.timer = window.setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
+function startNewSetup() {
+  if (!confirm("Start a new setup? This clears all setup answers, completed courses, AP exams, routine blocks, and plans stored in this browser.")) return;
+  localStorage.removeItem("degreefyState");
+  localStorage.removeItem("shcDegreePlannerState");
+  window.location.reload();
+}
+
 function setupDegreefyEvents() {
   $("wizardBackBtn")?.addEventListener("click", () => moveWizard(-1));
   $("wizardNextBtn")?.addEventListener("click", () => moveWizard(1));
   $("wizardSaveExitBtn")?.addEventListener("click", () => completeSetup(false));
+  $("globalNewSetupBtn")?.addEventListener("click", startNewSetup);
+  $("wizardNewSetupBtn")?.addEventListener("click", startNewSetup);
   ["headerEditSetupBtn", "profileEditSetupBtn"].forEach(id => $(id)?.addEventListener("click", () => showWizard(1)));
   ["headerPrintChecklistBtn", "profilePrintChecklistBtn"].forEach(id => $(id)?.addEventListener("click", printChecklist));
   ["headerPrintPlanBtn", "profilePrintPlanBtn"].forEach(id => $(id)?.addEventListener("click", printPlan));
@@ -4921,17 +5188,7 @@ function setupEvents() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = "degreefy-plan.json"; a.click(); URL.revokeObjectURL(url);
   });
-  $("resetBtn").addEventListener("click", () => {
-    if (!confirm("Reset Degreefy? This clears setup answers, completed courses, routine blocks, and all plans.")) return;
-    localStorage.removeItem("degreefyState");
-    localStorage.removeItem("shcDegreePlannerState");
-    state = defaultState();
-    summaryHasRendered = false;
-    lastFullyPlanned = false;
-    forceConfettiOnNextSummary = false;
-    lastConfettiAt = 0;
-    initialize();
-  });
+  $("resetBtn").addEventListener("click", startNewSetup);
   renderTabs();
   renderCourseFilterButtons();
 }
