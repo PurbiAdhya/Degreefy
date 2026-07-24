@@ -8,51 +8,60 @@
   <title>Degreefy | Spring Hill College Degree Planner</title>
   <style>
     :root {
-      --bg: #f7f6fb;
+      --bg: #f6f4fb;
       --panel: #ffffff;
-      --ink: #1f2937;
-      --muted: #667085;
-      --line: #d8d7e8;
-      --purple: #5f4bb6;
-      --purple-dark: #463b83;
-      --purple-soft: #ebe7ff;
-      --fall: #ffe6cc;
-      --spring: #dff4e7;
-      --summer: #fff2b8;
-      --green: #237a57;
-      --red: #b42318;
-      --shadow: 0 10px 28px rgba(45, 39, 84, 0.08);
-      --radius: 16px;
-      --floating-offset: 86px;
+      --ink: #2f2a45;
+      --muted: #6f6885;
+      --line: #e7e2ef;
+      --purple: #6d5bd0;
+      --purple-dark: #51439b;
+      --purple-soft: #f4f1fe;
+      --fall: #fbf2dc;
+      --spring: #edf6ef;
+      --summer: #fff7dd;
+      --green: #5f8d73;
+      --red: #b95a5a;
+      --gold: #c7a54d;
+      --gold-soft: #fbf6e7;
+      --sage-soft: #eef5f0;
+      --shadow: 0 10px 28px rgba(61, 48, 104, 0.06);
+      --radius: 18px;
+      --floating-offset: 92px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--ink);
-      line-height: 1.4;
+      line-height: 1.5;
+      font-weight: 400;
+      letter-spacing: -0.01em;
     }
 
+    strong { font-weight: 600; }
+
     header {
-      background: linear-gradient(135deg, #4f467f, #6757c8 62%, #7b68d8);
-      color: white;
-      padding: 26px 28px 20px;
-      border-bottom: 4px solid #d7ccff;
+      background: rgba(255,255,255,0.92);
+      color: var(--ink);
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
     }
 
     header h1 {
-      margin: 0 0 7px;
-      font-size: clamp(28px, 4vw, 42px);
+      margin: 0 0 4px;
+      font-size: clamp(28px, 4vw, 40px);
       letter-spacing: -0.04em;
+      font-weight: 560;
     }
 
     header p {
       margin: 0;
-      color: #f4f1ff;
-      font-size: 15px;
+      color: var(--muted);
+      font-size: 16px;
     }
 
     .app {
@@ -84,10 +93,10 @@
       gap: 12px;
     }
 
-    h2, h3, h4 { color: var(--purple-dark); }
-    h2 { margin: 0 0 10px; font-size: 20px; }
-    h3 { margin: 12px 0 8px; font-size: 15px; }
-    h4 { margin: 12px 0 8px; font-size: 14px; }
+    h2, h3, h4 { color: var(--purple-dark); font-weight: 520; }
+    h2 { margin: 0 0 10px; font-size: 22px; }
+    h3 { margin: 12px 0 8px; font-size: 16px; }
+    h4 { margin: 12px 0 8px; font-size: 15px; }
 
     label {
       display: flex;
@@ -101,24 +110,24 @@
 
     select, input[type="search"] {
       width: 100%;
-      padding: 10px 11px;
+      padding: 12px 14px;
       border: 1px solid var(--line);
-      border-radius: 10px;
+      border-radius: 14px;
       background: white;
       color: var(--ink);
-      font-size: 14px;
+      font-size: 15px;
     }
 
-    .small { color: var(--muted); font-size: 12px; }
+    .small { color: var(--muted); font-size: 14px; line-height: 1.45; }
 
     .note {
-      background: var(--purple-soft);
-      border-left: 4px solid var(--purple);
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: #344054;
-      font-size: 13px;
-      margin: 10px 0 0;
+      background: #faf8ff;
+      border: 1px solid #e6dff8;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: var(--ink);
+      font-size: 14px;
+      margin: 12px 0 0;
     }
 
     .toolbar {
@@ -132,16 +141,19 @@
       border: 1px solid var(--line);
       background: white;
       color: var(--purple-dark);
-      padding: 9px 11px;
-      border-radius: 10px;
+      padding: 11px 14px;
+      border-radius: 14px;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 500;
+      font-size: 15px;
+      transition: background .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease;
     }
 
     button.primary {
       background: var(--purple);
       color: white;
       border-color: var(--purple);
+      box-shadow: 0 6px 14px rgba(109, 91, 208, 0.18);
     }
 
     button:hover { filter: brightness(0.98); }
@@ -240,9 +252,10 @@
 
     .success, .warning {
       margin: 0 16px 16px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 700;
+      padding: 13px 15px;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 15px;
     }
 
     .success {
@@ -717,106 +730,111 @@
 
     /* Degreefy guided experience */
     :root {
-      --degreefy-navy: #29244f;
-      --degreefy-gold: #f2c94c;
-      --degreefy-teal: #2f7f78;
+      --degreefy-navy: #312a52;
+      --degreefy-gold: #c7a54d;
+      --degreefy-teal: #5f8d73;
     }
 
-    body.wizard-open { background: linear-gradient(180deg, #f0edff 0, var(--bg) 360px); }
+    body.wizard-open { background: linear-gradient(180deg, #faf8ff 0, var(--bg) 300px); }
     body.wizard-open .header-actions { display: none; }
     header.degreefy-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 18px;
-      padding: 18px 28px;
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 110;
     }
-    .brand-lockup { display: flex; align-items: center; gap: 13px; }
+    .brand-lockup { display: flex; align-items: center; gap: 14px; }
     .brand-mark {
-      width: 48px; height: 48px; border-radius: 15px;
+      width: 44px; height: 44px; border-radius: 14px;
       display: grid; place-items: center;
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.28);
-      font-size: 24px; font-weight: 900; letter-spacing: -.08em;
+      background: var(--purple-soft);
+      border: 1px solid #ddd5fb;
+      color: var(--purple-dark);
+      font-size: 21px; font-weight: 600; letter-spacing: -.04em;
+      box-shadow: 0 1px 2px rgba(61, 48, 104, 0.06);
     }
-    .brand-copy h1 { font-size: clamp(27px, 4vw, 38px); margin: 0; }
-    .brand-copy p { margin-top: 2px; }
+    .brand-copy h1 { font-size: clamp(27px, 4vw, 38px); margin: 0; font-weight: 560; }
+    .brand-copy p { margin-top: 2px; color: var(--muted); }
     .header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-    .header-actions button { background: rgba(255,255,255,.12); color: white; border-color: rgba(255,255,255,.35); }
+    .header-actions button { background: white; color: var(--ink); border-color: var(--line); }
 
-    .wizard-shell { max-width: 1040px; margin: 30px auto 54px; padding: 0 18px; }
+    .wizard-shell { max-width: 980px; margin: 24px auto 40px; padding: 0 18px; }
     .wizard-card { overflow: hidden; }
     .wizard-top {
-      padding: 22px 24px 18px;
+      padding: 26px 28px 16px;
       border-bottom: 1px solid var(--line);
-      background: linear-gradient(135deg, #fff, #faf9ff);
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
     }
-    .wizard-eyebrow { color: var(--purple); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
-    .wizard-top h2 { font-size: clamp(24px, 4vw, 34px); margin: 5px 0 4px; letter-spacing: -.03em; }
-    .wizard-progress { display: grid; grid-template-columns: repeat(var(--step-count, 7), 1fr); gap: 7px; margin-top: 18px; }
-    .wizard-progress span { height: 6px; border-radius: 999px; background: #e4e0f2; }
+    .wizard-eyebrow { color: var(--muted); font-weight: 500; font-size: 14px; letter-spacing: 0; }
+    .wizard-top h2 { font-size: clamp(26px, 4vw, 34px); margin: 6px 0 4px; letter-spacing: -.03em; font-weight: 540; line-height: 1.2; }
+    .wizard-progress { display: grid; grid-template-columns: repeat(var(--step-count, 7), 1fr); gap: 8px; margin-top: 18px; }
+    .wizard-progress span { height: 7px; border-radius: 999px; background: #ece7f7; }
     .wizard-progress span.active { background: var(--purple); }
     .wizard-progress span.done { background: var(--degreefy-teal); }
-    .wizard-content { padding: 24px; min-height: 360px; }
-    .wizard-content h3 { font-size: 22px; margin: 0 0 7px; }
-    .wizard-subtitle { color: var(--muted); margin: 0 0 20px; max-width: 720px; }
-    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+    .wizard-content { padding: 28px; min-height: 360px; }
+    .wizard-content h3 { font-size: 24px; margin: 0 0 8px; font-weight: 520; }
+    .wizard-subtitle { color: var(--muted); margin: 0 0 22px; max-width: 760px; font-size: 15px; }
+    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
     .choice-card {
       display: block; position: relative; cursor: pointer;
-      border: 1px solid var(--line); border-radius: 15px; padding: 17px;
-      background: white; min-height: 112px; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+      background: white; min-height: 112px; transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
     }
-    .choice-card:hover { transform: translateY(-2px); border-color: #bcb3e7; box-shadow: var(--shadow); }
-    .choice-card.selected { border: 2px solid var(--purple); background: var(--purple-soft); padding: 16px; }
+    .choice-card:hover { transform: translateY(-1px); border-color: #cfc4f3; box-shadow: 0 8px 20px rgba(61, 48, 104, 0.06); }
+    .choice-card.selected { border: 1.5px solid var(--purple); background: #faf8ff; padding: 20px; box-shadow: 0 0 0 4px rgba(109, 91, 208, 0.08); }
     .choice-card input { position: absolute; opacity: 0; pointer-events: none; }
-    .choice-icon { font-size: 25px; display: block; margin-bottom: 8px; }
-    .choice-title { font-weight: 850; font-size: 16px; color: var(--degreefy-navy); }
-    .choice-description { color: var(--muted); font-size: 12.5px; margin-top: 5px; }
-    .wizard-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-    .field-label { display: grid; gap: 6px; font-weight: 750; color: var(--degreefy-navy); }
+    .choice-icon { display: none; }
+    .choice-title { display: block; font-weight: 520; font-size: 18px; color: var(--degreefy-navy); margin-bottom: 6px; }
+    .choice-description { color: var(--muted); font-size: 15px; margin-top: 0; line-height: 1.45; }
+    .wizard-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .field-label { display: grid; gap: 8px; font-weight: 500; color: var(--degreefy-navy); font-size: 15px; }
     .field-label select, .field-label input { font-weight: 400; }
-    .program-area { margin-top: 18px; }
-    .program-area h4 { font-size: 15px; margin-bottom: 8px; }
-    .program-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 9px; }
+    .program-area { margin-top: 20px; }
+    .program-area h4 { font-size: 16px; margin-bottom: 10px; font-weight: 520; }
+    .program-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
     .program-chip {
-      display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 11px 12px;
-      border: 1px solid var(--line); border-radius: 12px; background: white;
+      display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 14px 15px;
+      border: 1px solid var(--line); border-radius: 16px; background: white;
     }
-    .program-chip:has(input:checked) { border-color: var(--purple); background: var(--purple-soft); }
-    .program-chip strong { color: var(--degreefy-navy); }
-    .source-box { margin-top: 22px; border: 1px dashed #b9b1dc; border-radius: 14px; padding: 13px; background: #fbfaff; }
-    .source-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; }
-    .data-status { margin-top: 8px; font-size: 12px; color: var(--muted); }
-    .data-status.good { color: var(--green); font-weight: 700; }
+    .program-chip:has(input:checked) { border-color: var(--purple); background: #faf8ff; box-shadow: 0 0 0 3px rgba(109, 91, 208, 0.06); }
+    .program-chip strong { color: var(--degreefy-navy); font-weight: 520; }
+    .source-box { margin-top: 24px; border: 1px solid var(--line); border-radius: 16px; padding: 16px; background: #fcfbff; }
+    .source-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+    .data-status { margin-top: 10px; font-size: 14px; color: var(--muted); }
+    .data-status.good { color: var(--green); font-weight: 500; }
     .data-status.bad { color: var(--red); }
-    .history-list { display: grid; gap: 9px; }
+    .history-list { display: grid; gap: 10px; }
     .history-row {
-      display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(190px, .8fr) auto;
-      gap: 10px; align-items: center; padding: 11px 12px;
-      border: 1px solid #e5e2f0; border-radius: 12px; background: white;
+      display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(210px, .85fr) auto;
+      gap: 12px; align-items: center; padding: 14px 15px;
+      border: 1px solid #e7e2ef; border-radius: 16px; background: white;
     }
-    .history-row.completed { background: #f2fbf6; border-color: #b8dfc8; }
-    .history-main strong { display: block; font-size: 13.5px; }
-    .history-main span { color: var(--muted); font-size: 12px; }
-    .history-check { display: flex; align-items: center; gap: 6px; margin: 0; white-space: nowrap; font-size: 12px; font-weight: 750; }
-    .wizard-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 11px; margin: 16px 0 22px; }
-    .wizard-summary-card { background: var(--purple-soft); border: 1px solid #dcd6ff; border-radius: 14px; padding: 14px; }
-    .wizard-summary-card strong { display: block; color: var(--purple-dark); font-size: 18px; }
+    .history-row.completed { background: var(--sage-soft); border-color: #cfe0d3; }
+    .history-main strong { display: block; font-size: 15px; font-weight: 520; }
+    .history-main span { color: var(--muted); font-size: 14px; }
+    .history-check { display: flex; align-items: center; gap: 8px; margin: 0; white-space: nowrap; font-size: 14px; font-weight: 500; }
+    .wizard-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 18px 0 22px; }
+    .wizard-summary-card { background: #faf8ff; border: 1px solid #e2daf8; border-radius: 16px; padding: 16px; }
+    .wizard-summary-card strong { display: block; color: var(--purple-dark); font-size: 20px; font-weight: 520; }
     .ready-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
     .ready-actions button { min-height: 54px; }
-    .wizard-error { margin-top: 10px; color: var(--red); font-size: 13px; font-weight: 700; }
-    .wizard-nav { display: flex; justify-content: space-between; gap: 10px; padding: 16px 24px 22px; border-top: 1px solid var(--line); }
+    .wizard-error { margin-top: 12px; color: var(--red); font-size: 14px; font-weight: 500; }
+    .wizard-nav { display: flex; justify-content: space-between; gap: 10px; padding: 18px 28px 24px; border-top: 1px solid var(--line); background: #fff; }
     .wizard-nav .right { display: flex; gap: 8px; }
     .planner-shell.hidden, .wizard-shell.hidden { display: none !important; }
     .legacy-controls { display: none !important; }
-    .profile-bar { padding: 12px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
-    .profile-summary { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
-    .profile-pill { border: 1px solid #dcd6ff; background: var(--purple-soft); color: var(--purple-dark); border-radius: 999px; padding: 5px 9px; font-size: 12px; font-weight: 750; }
+    .profile-bar { padding: 14px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .profile-summary { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .profile-pill { border: 1px solid #e0d8f7; background: var(--purple-soft); color: var(--purple-dark); border-radius: 999px; padding: 7px 11px; font-size: 13.5px; font-weight: 500; }
     .profile-actions { display: flex; gap: 7px; flex-wrap: wrap; }
-    .current-pill { display: inline-block; margin-top: 4px; border-radius: 999px; padding: 3px 6px; font-size: 10px; font-weight: 800; color: #14532d; background: #e7f8ef; border: 1px solid #addfc1; }
-    .plan-source-controls { display: grid; gap: 4px; margin-top: 6px; }
-    .plan-source-select { width: 100%; font-size: 10.5px; padding: 5px 6px; border-radius: 7px; }
-    .approval-check { display: flex; gap: 5px; align-items: center; margin: 0; font-size: 10.5px; color: #7a3e00; }
+    .current-pill { display: inline-block; margin-top: 6px; border-radius: 999px; padding: 4px 8px; font-size: 12px; font-weight: 500; color: #2f5d45; background: var(--sage-soft); border: 1px solid #cfe0d3; }
+    .plan-source-controls { display: grid; gap: 6px; margin-top: 8px; }
+    .plan-source-select { width: 100%; font-size: 13px; padding: 8px 9px; border-radius: 10px; }
+    .approval-check { display: flex; gap: 6px; align-items: center; margin: 0; font-size: 13px; color: #7a5b19; }
     .print-source { display: none; }
 
     @media (max-width: 720px) {
@@ -849,10 +867,10 @@
 <body>
   <header class="degreefy-header">
     <div class="brand-lockup">
-      <div class="brand-mark" aria-hidden="true">D✓</div>
+      <div class="brand-mark" aria-hidden="true">D</div>
       <div class="brand-copy">
         <h1>Degreefy</h1>
-        <p>A guided Spring Hill College degree-planning journey.</p>
+        <p>A clear path for building a Spring Hill College degree plan.</p>
       </div>
     </div>
     <div class="header-actions">
@@ -3115,12 +3133,8 @@ function triggerConfetti() {
     document.body.appendChild(layer);
   }
   layer.innerHTML = "";
-  const burst = document.createElement("div");
-  burst.className = "confetti-burst";
-  burst.textContent = "🎉";
-  layer.appendChild(burst);
-  const colors = ["#5f4bb6", "#f6ad55", "#68d391", "#f6e05e", "#b794f4", "#fc8181"];
-  const count = 90;
+  const colors = ["#6d5bd0", "#c7a54d", "#5f8d73", "#a08ff0", "#dccb94"];
+  const count = 54;
   for (let i = 0; i < count; i++) {
     const piece = document.createElement("span");
     piece.className = "confetti-piece";
@@ -3419,7 +3433,7 @@ function normalizedWizardStep(step) {
 function choiceCards(options, selected, inputName) {
   return `<div class="choice-grid">${options.map(option => `<label class="choice-card ${selected === option.value ? "selected" : ""}">
     <input type="radio" name="${inputName}" value="${option.value}" ${selected === option.value ? "checked" : ""}>
-    <span class="choice-icon">${option.icon}</span><span class="choice-title">${option.title}</span>
+    <span class="choice-title">${option.title}</span>
     <div class="choice-description">${option.description}</div></label>`).join("")}</div>`;
 }
 function renderProgramWizard() {
@@ -3471,7 +3485,7 @@ function renderWizard() {
   const visible = wizardVisibleSteps();
   const index = Math.max(0, visible.indexOf(state.setupStep));
   $("wizardEyebrow").textContent = `Step ${index + 1} of ${visible.length}`;
-  $("wizardStepLabel").textContent = "Your answers shape the checklist, course history, and semester plan.";
+  $("wizardStepLabel").textContent = "You can change these answers any time.";
   const progress = $("wizardProgress");
   progress.style.setProperty("--step-count", visible.length);
   progress.innerHTML = visible.map((step, i) => `<span class="${i < index ? "done" : i === index ? "active" : ""}"></span>`).join("");
@@ -3484,17 +3498,17 @@ function renderWizard() {
 
   if (state.setupStep === 1) {
     $("wizardHeading").textContent = "Who is using Degreefy?";
-    content.innerHTML = `<h3>I’m a…</h3><p class="wizard-subtitle">This helps Degreefy use the right advising language. It does not change degree requirements.</p>${choiceCards(ROLE_OPTIONS, state.profileRole, "profileRole")}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>I'm using Degreefy as…</h3><p class="wizard-subtitle">This only changes the language of the planner. It does not change degree requirements.</p>${choiceCards(ROLE_OPTIONS, state.profileRole, "profileRole")}<div class="wizard-error" id="wizardError"></div>`;
     content.querySelectorAll('input[name="profileRole"]').forEach(input => input.addEventListener("change", e => { state.profileRole = e.target.value; saveState(); renderWizard(); }));
   } else if (state.setupStep === 2) {
     $("wizardHeading").textContent = "Who are you planning for?";
-    content.innerHTML = `<h3>The student is a…</h3><p class="wizard-subtitle">Incoming students skip the completed-course review. Transfer, current, and returning students review core courses first, then program courses.</p>${choiceCards(STUDENT_TYPE_OPTIONS, state.studentType, "studentType")}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>The plan is for a…</h3><p class="wizard-subtitle">Incoming students skip the completed-course review. Transfer, current, and returning students review core courses first, then program courses.</p>${choiceCards(STUDENT_TYPE_OPTIONS, state.studentType, "studentType")}<div class="wizard-error" id="wizardError"></div>`;
     content.querySelectorAll('input[name="studentType"]').forEach(input => input.addEventListener("change", e => { state.studentType = e.target.value; saveState(); renderWizard(); }));
   } else if (state.setupStep === 3) {
     $("wizardHeading").textContent = "Set the graduation target";
     const currentYear = START_TERM.year;
     const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
-    content.innerHTML = `<h3>When does the student plan to graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p>
+    content.innerHTML = `<h3>When should the student graduate?</h3><p class="wizard-subtitle">Degreefy builds semesters from Fall ${START_TERM.year} through the selected graduation term.</p>
       <div class="wizard-form-grid">
         <label class="field-label">Planned graduation year<select id="wizardGradYear">${years.map(year => `<option value="${year}" ${Number(state.gradYear) === year ? "selected" : ""}>${year}</option>`).join("")}</select></label>
         <label class="field-label">Expected graduation term<select id="wizardGradTerm">${["Fall", "Spring", "Summer"].map(term => `<option value="${term}" ${state.gradTerm === term ? "selected" : ""}>${term}</option>`).join("")}</select></label>
@@ -3504,7 +3518,7 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm", "wizardMathPlacement"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 4) {
     $("wizardHeading").textContent = "Choose majors and minors";
-    content.innerHTML = `<h3>Select every program the student is considering</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}
+    content.innerHTML = `<h3>Select majors and minors</h3><p class="wizard-subtitle">Programs may span more than one academic area. Degreefy combines overlapping requirements and preserves distinct-credit checks.</p>${renderProgramWizard()}
       <details class="source-box"><summary><strong>GitHub CSV data source</strong></summary><div class="source-row" style="margin-top:10px"><label class="field-label">Folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="small" style="margin-top:7px">Use <code>./data</code> when the CSV folder is stored beside this HTML file on GitHub Pages.</div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
     content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => {
       const type = input.dataset.wizardProgram;
@@ -3530,7 +3544,7 @@ function renderWizard() {
     const programs = selectedProgramNames();
     const completedCore = CORE.map(makeCoreItem).filter(isCoreRequirementChecked).length;
     const completedProgram = Array.from(getRequirementMap().values()).filter(isRequirementChecked).length;
-    content.innerHTML = `<h3>Choose what to do next</h3><p class="wizard-subtitle">Degreefy will continue enforcing prerequisites, corequisites, typical offerings, the 12-credit minimum, and the 18-credit maximum.</p>
+    content.innerHTML = `<h3>Your plan is ready</h3><p class="wizard-subtitle">Degreefy will continue enforcing prerequisites, corequisites, typical offerings, the 12-credit minimum, and the 18-credit maximum.</p>
       <div class="wizard-summary">
         <div class="wizard-summary-card"><span class="small">Planning for</span><strong>${studentTypeLabel(state.studentType)}</strong></div>
         <div class="wizard-summary-card"><span class="small">Graduation target</span><strong>${state.grad}</strong></div>
