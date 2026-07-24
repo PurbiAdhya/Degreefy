@@ -1,0 +1,9 @@
+requirement_id,title,credits,category,course_code,criteria_type,choices,prefixes,min_level,max_level,min_credits
+CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
+CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
+STATISTICS,"Statistics: MTH 163, BUS 263, or PSY 263",3,Choice,,choice,MTH 163|BUS 263|PSY 263,,,,3
+CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
+DSC 240,Data Visualization,3,Required,DSC 240,,,,,,
+CSC 341,Data Science 1,3,Required,CSC 341,,,,,,
+DSC 442,Data Analysis,3,Required,DSC 442,,,,,,
+DSC 443,"AI, Machine Learning, and Deep Learning",3,Required,DSC 443,,,,,,

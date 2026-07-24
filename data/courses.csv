@@ -1,0 +1,113 @@
+code,display_code,title,credits,area,prerequisites,corequisites,is_bundle
+MTH 100,MTH 100,Intermediate Algebra,3,Mathematics,,MTH 101,false
+MTH 101,MTH 101,Intermediate Algebra Recitation,0,Mathematics,,MTH 100,false
+MTH 111,MTH 111,Precalculus with Trigonometry,3,Mathematics,MTH 100,,false
+MTH 121,MTH 121,Calculus I,4,Mathematics,MTH 111,,false
+MTH 122,MTH 122,Calculus II,4,Mathematics,MTH 121,,false
+MTH 163,MTH 163,Basic Statistics for the Sciences,3,Mathematics,MTH 100,,false
+MTH 221,MTH 221,Linear Algebra,3,Mathematics,MTH 121,,false
+MTH 223,MTH 223,Calculus III,4,Mathematics,MTH 122,,false
+MTH 261,MTH 261,Differential Equations,3,Mathematics,MTH 122,,false
+MTH 301,MTH 301,Introduction to Abstract Mathematics,3,Mathematics,MTH 121;PHL 101,,false
+MTH 322,MTH 322,Discrete Mathematics,3,Mathematics,MTH 121,,false
+MTH 365,MTH 365,Probability and Statistics,3,Mathematics,MTH 122,,false
+MTH 423,MTH 423,Cryptography,3,Mathematics,MTH 121,,false
+MTH 451,MTH 451,Basic Real Analysis,3,Mathematics,MTH 301;MTH 223,,false
+MTH 464,MTH 464,Complex Variables,3,Mathematics,MTH 301;MTH 223,,false
+MTH 482,MTH 482,Abstract Algebra,3,Mathematics,MTH 301,,false
+MTH 491,MTH 491,Seminar,1,Mathematics,MTH 451;MTH 464;MTH 482,,false
+CSC 100,CSC 100,Computer Science 0: Foundations,4,Computer Science,,MTH 111,false
+CSC 101,CSC 101,Computer Science 1: Principles,4,Computer Science,,MTH 111,false
+CSC 202,CSC 202,Computer Science 2: Data Structures,4,Computer Science,CSC 101,,false
+CSC 203,CSC 203,Computer Science 3: Algorithms,4,Computer Science,CSC 101,,false
+CSC 210,CSC 210,Computer Architecture,4,Computer Science,CSC 101,,false
+CSC 311,CSC 311,Operating Systems: Design and Implementation,4,Computer Science,CSC 210,,false
+CSC 312,CSC 312,Database Systems and Theory,3,Computer Science,CSC 202,,false
+CSC 313,CSC 313,Systems and Software Security,3,Computer Science,CSC 210,,false
+CSC 315,CSC 315,Cloud Computing and Development Operations,3,Computer Science,CSC 210,,false
+CSC 320,CSC 320,Automata,3,Computer Science,MTH 301;CSC 203,,false
+CSC 321,CSC 321,Programming Language Theory,3,Computer Science,CSC 203,,false
+CSC 330,CSC 330,Junior Software Engineering Seminar,2,Computer Science,CSC 203;CSC 210,,false
+CSC 341,CSC 341,Data Science 1,3,Computer Science,CSC 100;CSC 101;MTH 163,,false
+CSC 414,CSC 414,Networking and Network Security,3,Computer Science,CSC 210,,false
+CSC 431,CSC 431,Senior Software Architecture Seminar,1,Computer Science,CSC 330,,false
+DSC 240,DSC 240,Data Visualization,3,Data Science,CSC 100;CSC 101,,false
+DSC 442,DSC 442,Data Analysis,3,Data Science,DSC 240,,false
+DSC 443,DSC 443,"AI, Machine Learning, and Deep Learning",3,Data Science,CSC 341;DSC 442,,false
+DSC 499,DSC 499,Senior Seminar in AI and Data Science,1,Data Science,DSC 240;DSC 442;DSC 443,,false
+PHY 201,PHY 201,Algebra-Based Physics I,3,Physics,MTH 111,PHY 213,false
+PHY 202,PHY 202,Algebra-Based Physics II,3,Physics,PHY 201,PHY 214,false
+PHY 221,PHY 221,Physics with Calculus I,3,Physics,MTH 121,PHY 213,false
+PHY 213,PHY 213,Physics Laboratory I,1,Physics,,PHY 201;PHY 221,false
+PHY 222,PHY 222,Physics with Calculus II,3,Physics,PHY 221,PHY 214,false
+PHY 214,PHY 214,Physics Laboratory II,1,Physics,,PHY 202;PHY 222,false
+CHM 111,CHM 111,General Chemistry I,3,Chemistry,MTH 111;MTH 121,CHM 113;CHM 115,false
+CHM 113,CHM 113,General Chemistry I Laboratory,1,Chemistry,,CHM 111,false
+CHM 112,CHM 112,General Chemistry II,3,Chemistry,CHM 111,CHM 114,false
+CHM 114,CHM 114,General Chemistry II Laboratory,1,Chemistry,,CHM 112,false
+PHY 115,PHY 115,Introduction to Astronomy,3,Physics,,,false
+BIO 103,BIO 103,Principles of Biology Lab,1,Biology,,BIO 101,false
+BIO 120,BIO 120,Farms to Pharmaceuticals,3,Biology,,,false
+BIO 125,BIO 125,Pandemics,3,Biology,,,false
+BIO 140,BIO 140,STEM Community Service Seminar,1,Biology,,,false
+CHM 115,CHM 115,General Chemistry I Recitation,0,Chemistry,,CHM 111,false
+PSY 150,PSY 150,Careers in Psychology,1,Psychology,,,false
+SPA 102,SPA 102,Elementary Spanish II,3,Languages and Culture,SPA 101,,false
+FRE 102,FRE 102,Elementary French II,3,Languages and Culture,FRE 101,,false
+ITA 102,ITA 102,Elementary Italian II,3,Languages and Culture,ITA 101,,false
+ECO 102,ECO 102,Principles of Microeconomics,3,Economics,,,false
+ENG 240,ENG 240,Introduction to Poetry,3,English and Writing,ENG 123,,false
+ENG 241,ENG 241,Introduction to Fiction,3,English and Writing,ENG 123,,false
+ENG 242,ENG 242,Introduction to Drama and Theatre,3,English and Writing,ENG 123,,false
+ENG 243,ENG 243,Introduction to Non-Fiction Prose,3,English and Writing,ENG 123,,false
+ENG 276,ENG 276,Introduction to Creative Writing,3,English and Writing,ENG 123,,false
+PHL 210,PHL 210,Ethics,3,Philosophy,PHL 101,,false
+PHL 214,PHL 214,Environmental Ethics,3,Philosophy,PHL 101,BIO 110,false
+PHL 292,PHL 292,Honors Philosophy of Human Nature,3,Philosophy,PHL 190,,false
+THL 232,THL 232,Synoptic Gospels,3,Theology,THL 101;THL 190,,false
+THL 242,THL 242,Catholicism,3,Theology,THL 101;THL 190,,false
+THL 250,THL 250,The Good Life: Christian Ethics,3,Theology,THL 101;THL 190,,false
+THL 261,THL 261,World Religions,3,Theology,THL 101;THL 190,,false
+THR 245,THR 245,Theater Production I,3,Visual and Performing Arts,,,false
+THR 250,THR 250,Acting I,3,Visual and Performing Arts,,,false
+BUS 263,BUS 263,Business Statistics,3,Business,,,false
+PSY 263,PSY 263,Statistics for the Social Sciences,3,Psychology,,,false
+ENG 121,ENG 121,Composition I,3,English and Writing,,,false
+ENG 123,ENG 123,Composition II (Writing with Research),3,English and Writing,ENG 121,,false
+PTH 101,PTH 101,Community and Well-Being,1,Pathways,,,false
+PTH 102,PTH 102,Engagement and Outreach,1,Pathways,,,false
+PHL 101,PHL 101,Introductory Logic,3,Philosophy,,,false
+PHL 190,PHL 190,Honors Logic,3,Philosophy,,,false
+THL 101,THL 101,Intro to Christian Theology,3,Theology,,,false
+THL 190,THL 190,Honors Introduction to Christian Theology,3,Theology,,,false
+LAN 301,LAN 301,Language and Culture,3,Languages and Culture,,,false
+HIS 213,HIS 213,America to 1876,3,History,,,false
+POL 112,POL 112,Intro to American Politics,3,Political Science,,,false
+HIS 211,HIS 211,Western Civilization I,3,History,,,false
+POL 151,POL 151,Intro to Comparative Politics,3,Political Science,,,false
+BIO 101,BIO 101,Principles of Biology,3,Biology,,,false
+PSY 101,PSY 101,Intro to Psychology,3,Psychology,,,false
+ENG 2XX,ENG 2XX,Literature,3,English and Writing,,,false
+ART 100,ART 100,Visual/Performing Arts,3,Visual and Performing Arts,,,false
+ART 101,ART 101,Foundations of Art,3,Visual and Performing Arts,,,false
+ART 102,ART 102,Introduction to Drawing,3,Visual and Performing Arts,,,false
+ART 103,ART 103,Ceramics I,3,Visual and Performing Arts,,,false
+PHL 2XX,PHL 2XX,Philosophy 2XX/3XX,3,Philosophy,PHL 101;PHL 190,,false
+THL 2XX,THL 2XX,Theology 2XX/3XX,3,Theology,THL 101;THL 190,,false
+HIS 120,HIS 120,United States History I,3,History,,,false
+HIS 110,HIS 110,Western Civilization I,3,History,,,false
+HIS 212,HIS 212,Western Civilization II,3,History,,,false
+HIS 214,HIS 214,The United States Since 1876,3,History,,,false
+HIS 290,HIS 290,Global History Topics,3,History,,,false
+POL 161,POL 161,World Politics,3,Political Science,,,false
+SPA 101,SPA 101,Elementary Spanish I,3,Languages and Culture,,,false
+FRE 101,FRE 101,Elementary French I,3,Languages and Culture,,,false
+ITA 101,ITA 101,Elementary Italian I,3,Languages and Culture,,,false
+ECO 101,ECO 101,Principles of Macroeconomics,3,Economics,,,false
+SOC 101,SOC 101,Intro to Sociology,3,Sociology,,,false
+ARH 100,ARH 100,Art Appreciation,3,Visual and Performing Arts,,,false
+MUS 100,MUS 100,Music Appreciation,3,Visual and Performing Arts,,,false
+SCI PHY I,PHY 221 + PHY 213,Physics with Calculus I with Laboratory,4,Science Bundles,MTH 121,PHY 213,true
+SCI PHY II,PHY 222 + PHY 214,Physics with Calculus II with Laboratory,4,Science Bundles,PHY 221,PHY 214,true
+SCI CHM I,CHM 111 + CHM 113,General Chemistry I with Laboratory,4,Science Bundles,MTH 111;MTH 121,CHM 113,true
+SCI CHM II,CHM 112 + CHM 114,General Chemistry II with Laboratory,4,Science Bundles,CHM 111,CHM 114,true

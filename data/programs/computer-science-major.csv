@@ -1,0 +1,19 @@
+requirement_id,title,credits,category,course_code,criteria_type,choices,prefixes,min_level,max_level,min_credits
+MTH 121,Calculus I,4,Required,MTH 121,,,,,,
+MTH 122,Calculus II,4,Required,MTH 122,,,,,,
+MTH 221,Linear Algebra,3,Required,MTH 221,,,,,,
+CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
+CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
+CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
+CSC 203,Computer Science 3: Algorithms,4,Required,CSC 203,,,,,,
+CSC 210,Computer Architecture,4,Required,CSC 210,,,,,,
+CSC 311,Operating Systems: Design and Implementation,4,Required,CSC 311,,,,,,
+CSC 312,Database Systems and Theory,3,Required,CSC 312,,,,,,
+CSC 320,Automata,3,Required,CSC 320,,,,,,
+CSC 321,Programming Language Theory,3,Required,CSC 321,,,,,,
+CSC 431,Senior Software Architecture Seminar,1,Required,CSC 431,,,,,,
+MTH 301,Introduction to Abstract Mathematics,3,Required,MTH 301,,,,,,
+MTH 322,Discrete Mathematics,3,Required,MTH 322,,,,,,
+CS ELECTIVE 1,MTH/CSC/DSC 3XX Elective,3,Elective,,elective,,MTH|CSC|DSC,300,499,3
+CS ELECTIVE 2,MTH/CSC/DSC 3XX Elective,3,Elective,,elective,,MTH|CSC|DSC,300,499,3
+CS ELECTIVE 3,MTH/CSC/DSC 3XX Elective,3,Elective,,elective,,MTH|CSC|DSC,300,499,3

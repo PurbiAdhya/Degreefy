@@ -1,0 +1,18 @@
+requirement_id,label,title,credits,criteria_type,choices,prefixes,min_level,max_level,min_credits
+CORE PTH 101,PTH 101,Community and Well-Being,1,,,,,,
+CORE PTH 102,PTH 102,Engagement and Outreach,1,,,,,,
+CORE ENG 121,ENG 121,Composition I,3,,,,,,
+CORE ENG 123,ENG 123,Composition II,3,,,,,,
+CORE LOGIC,Logic,PHL 101 or PHL 190,3,choice,PHL 101|PHL 190,,,,3
+CORE INTRO THEOLOGY,Intro Theology,THL 101 or THL 190,3,choice,THL 101|THL 190,,,,3
+CORE MTH,MTH core,One MTH course,3,choice,,MTH,100,499,3
+CORE LANGUAGE,Language and Culture,"SPA, FRE, ITA, or LAN",3,choice,SPA 101|SPA 102|FRE 101|FRE 102|ITA 101|ITA 102|LAN 301,,,,3
+CORE AMERICAN,American national community,HIS 120/213/214 or POL 112,3,choice,HIS 120|HIS 213|HIS 214|POL 112,,,,3
+CORE GLOBAL,Global human community,HIS 110/211/212/290 or POL 151/161,3,choice,HIS 110|HIS 211|HIS 212|HIS 290|POL 151|POL 161,,,,3
+CORE SCIENCE,Natural Science,"BIO, CHM, CSC, or PHY",3,choice,,BIO|CHM|CSC|PHY,100,499,3
+CORE SOCIAL,Social Science,"PSY, POL, ECO, or SOC",3,choice,,PSY|POL|ECO|SOC,100,499,3
+CORE ARTS,Visual/Performing Arts,"ART, ARH, MUS, or THR",3,choice,ART 100|ART 101|ART 102|ART 103|ARH 100|MUS 100|THR 245|THR 250,,,,3
+CORE LITERATURE,Literature,ENG 2XX,3,choice,ENG 2XX|ENG 240|ENG 241|ENG 242|ENG 243|ENG 276,,,,3
+CORE PHL UPPER,PHL 2XX/3XX,Philosophy elective,3,choice,PHL 2XX|PHL 210|PHL 214|PHL 292,,,,3
+CORE THL UPPER,THL 2XX/3XX,Theology elective,3,choice,THL 2XX|THL 232|THL 242|THL 250|THL 261,,,,3
+CORE EXPLORATION,Exploration,Elective outside major knowledge area,3,choice,ARH 100|ART 100|ART 101|ART 102|ART 103|MUS 100|THR 245|THR 250|BIO 120|BIO 125|ECO 101|ECO 102|SOC 101|PSY 101|HIS 120|HIS 110|POL 112|POL 151|POL 161|ENG 240|ENG 241|ENG 242|ENG 243|ENG 276|PHL 210|PHL 214|THL 232|THL 242|THL 250|THL 261,,,,3

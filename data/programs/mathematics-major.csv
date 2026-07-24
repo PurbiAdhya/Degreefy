@@ -1,0 +1,15 @@
+requirement_id,title,credits,category,course_code,criteria_type,choices,prefixes,min_level,max_level,min_credits
+MTH 121,Calculus I,4,Required,MTH 121,,,,,,
+MTH 122,Calculus II,4,Required,MTH 122,,,,,,
+CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
+CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
+MATH LAB SCIENCE I,Laboratory Science I,4,Choice,,choice,SCI PHY I|SCI CHM I,,,,4
+MATH LAB SCIENCE II,Laboratory Science II,4,Choice,,choice,SCI PHY II|SCI CHM II,,,,4
+MTH 221,Linear Algebra,3,Required,MTH 221,,,,,,
+MTH 223,Calculus III,4,Required,MTH 223,,,,,,
+MTH 261,Differential Equations,3,Required,MTH 261,,,,,,
+MTH 301,Introduction to Abstract Mathematics,3,Required,MTH 301,,,,,,
+MATH MTH ELECTIVE 1,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
+MTH 491,Seminar,1,Required,MTH 491,,,,,,
+MATH PROGRAM ELECTIVE 1,"Choose MTH 451, MTH 464, or MTH 482",3,Choice,,choice,MTH 451|MTH 464|MTH 482,,,,3
+MATH PROGRAM ELECTIVE 2,"Choose MTH 451, MTH 464, or MTH 482",3,Choice,,choice,MTH 451|MTH 464|MTH 482,,,,3

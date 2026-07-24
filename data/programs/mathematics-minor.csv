@@ -1,0 +1,8 @@
+requirement_id,title,credits,category,course_code,criteria_type,choices,prefixes,min_level,max_level,min_credits
+MTH 121,Calculus I,4,Required,MTH 121,,,,,,
+MTH 122,Calculus II,4,Required,MTH 122,,,,,,
+MTH 223,Calculus III,4,Required,MTH 223,,,,,,
+MTH 301,Introduction to Abstract Mathematics,3,Required,MTH 301,,,,,,
+MATH MINOR ELECTIVE 1,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
+MATH MINOR ELECTIVE 2,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
+MATH MINOR ELECTIVE 3,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3

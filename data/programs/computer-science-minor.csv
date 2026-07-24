@@ -1,0 +1,8 @@
+requirement_id,title,credits,category,course_code,criteria_type,choices,prefixes,min_level,max_level,min_credits
+CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
+CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
+CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
+CSC 203,Computer Science 3: Algorithms,4,Required,CSC 203,,,,,,
+MTH 322,Discrete Mathematics,3,Required,MTH 322,,,,,,
+CS MINOR ELECTIVE 1,CSC 3XX/4XX Elective,3,Elective,,elective,,CSC,300,499,3
+CS MINOR ELECTIVE 2,CSC 3XX/4XX Elective,3,Elective,,elective,,CSC,300,499,3
