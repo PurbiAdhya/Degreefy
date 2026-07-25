@@ -5583,63 +5583,68 @@ const STUDENT_TYPE_OPTIONS = [
   { value: "continuing", icon: "📚", title: "Current, transfer, or returning student", description: "Already enrolled, returning after time away, or bringing completed coursework from another institution. The setup focuses on courses already completed or transferred." }
 ];
 
-const SHC_PROGRAM_CATALOG = [
-  { name: "Accounting", major: true, minor: true },
-  { name: "AI and Data Science", major: true, minor: false },
-  { name: "Biology", major: false, minor: true },
-  { name: "Business Administration", major: false, minor: true },
-  { name: "Business Analytics", major: true, minor: true },
-  { name: "Cellular and Molecular Biology", major: true, minor: false },
-  { name: "Chemistry", major: false, minor: true },
-  { name: "Computer Information Systems", major: false, minor: true },
-  { name: "Computer Science", major: true, minor: false },
-  { name: "Creative Writing", major: false, minor: true },
-  { name: "Criminology", major: true, minor: false },
-  { name: "Cybersecurity", major: true, minor: false },
-  { name: "Digital Communication and Social Influence", major: true, minor: false },
-  { name: "Digital Content Production", major: true, minor: true },
-  { name: "Digital Marketing", major: true, minor: false },
-  { name: "Education – Elementary Education", major: true, minor: false },
-  { name: "English", major: true, minor: true },
-  { name: "Entrepreneurship", major: true, minor: false },
-  { name: "Exercise Science", major: true, minor: false },
-  { name: "Finance", major: false, minor: true },
-  { name: "Financial Economics", major: true, minor: false },
-  { name: "Forensics", major: false, minor: true },
-  { name: "Graphic Design", major: true, minor: true },
-  { name: "Health Care Management", major: true, minor: true },
-  { name: "Health Science", major: true, minor: true },
-  { name: "History", major: false, minor: true },
-  { name: "Interdisciplinary Studies", major: true, minor: false },
-  { name: "International Studies", major: false, minor: true },
-  { name: "Latin American Studies", major: false, minor: true },
-  { name: "Management Information Systems", major: true, minor: false },
-  { name: "Management Marketing", major: false, minor: true },
-  { name: "Marine & Organismal Biology", major: true, minor: false },
-  { name: "Mathematics", major: true, minor: true },
-  { name: "Multimedia Journalism", major: true, minor: true },
-  { name: "Nursing", major: true, minor: false },
-  { name: "Organizational Leadership", major: true, minor: false },
-  { name: "Performing and Media Arts", major: true, minor: true },
-  { name: "Philosophy", major: false, minor: true },
-  { name: "Philosophy, Politics and Economics", major: true, minor: false },
-  { name: "Political Science", major: true, minor: true },
-  { name: "Pre-Engineering", major: true, minor: false },
-  { name: "Pre-Health", major: true, minor: false },
-  { name: "Pre-Law", major: false, minor: true },
-  { name: "Psychology", major: true, minor: true },
-  { name: "Public Relations and Advertising", major: true, minor: true },
-  { name: "Religious Education", major: false, minor: true },
-  { name: "Social Science", major: true, minor: false },
-  { name: "Sociology", major: true, minor: true },
-  { name: "Spanish", major: false, minor: true },
-  { name: "Sport Management", major: true, minor: false },
-  { name: "Strategic Communication", major: true, minor: false },
-  { name: "Studio Art", major: false, minor: true },
-  { name: "Supply Chain Management", major: true, minor: true },
-  { name: "Theology", major: true, minor: true },
-  { name: "Writing", major: true, minor: false }
+const SUPPORTED_PROGRAMS = [
+  {
+    ids: ["ai", "aiDataScience", "ai-data-science"],
+    name: "AI and Data Science",
+    aliases: ["AI and Data Science"],
+    major: true,
+    minor: false
+  },
+  {
+    ids: ["cs", "computerScience", "computer-science"],
+    name: "Computer Science",
+    aliases: ["Computer Science"],
+    major: true,
+    minor: false
+  },
+  {
+    ids: ["math", "mathMinor", "mathematics", "mathematics-minor"],
+    name: "Mathematics",
+    aliases: ["Mathematics"],
+    major: true,
+    minor: true
+  },
+  {
+    ids: ["engineering", "dualDegreeEngineering", "dual-degree-engineering", "preEngineering", "pre-engineering"],
+    name: "Dual Degree Engineering",
+    aliases: ["Dual Degree Engineering", "Engineering Dual Degree", "Engineering Dual-Degree", "Pre-Engineering"],
+    major: true,
+    minor: false
+  }
 ];
+
+const SHC_PROGRAM_CATALOG = SUPPORTED_PROGRAMS.map(({ name, major, minor }) => ({
+  name,
+  major,
+  minor
+}));
+
+function normalizeSupportedProgramName(value) {
+  return String(value || "")
+    .replace(/&/g, " and ")
+    .replace(/(major|minor|bachelor of science|bachelor of arts)/gi, " ")
+    .replace(/[–—-]/g, " ")
+    .replace(/[^a-z0-9]+/gi, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function supportedProgramForRow(row) {
+  const id = String(row?.program_id || "").trim();
+  const name = normalizeSupportedProgramName(row?.name);
+  const type = String(row?.type || "major").toLowerCase().startsWith("minor") ? "minor" : "major";
+
+  const match = SUPPORTED_PROGRAMS.find(program =>
+    program.ids.includes(id) ||
+    program.aliases.some(alias => normalizeSupportedProgramName(alias) === name)
+  );
+
+  if (!match) return null;
+  if (type === "major" && !match.major) return null;
+  if (type === "minor" && !match.minor) return null;
+  return match;
+}
 
 
 function parseCSV(text) {
@@ -5796,7 +5801,13 @@ function normalizeScheduleSection(row) {
 
 async function loadDegreeData(base = DATA_BASE_URL) {
   try {
-    const programs = await fetchCSV(base, DATA_FILES.programs);
+    const rawPrograms = await fetchCSV(base, DATA_FILES.programs);
+    const programs = rawPrograms
+      .map(row => {
+        const supported = supportedProgramForRow(row);
+        return supported ? { ...row, name: supported.name } : null;
+      })
+      .filter(Boolean);
     const [courses, offerings, core, schedule, apPolicy, sports] = await Promise.all([
       fetchCSV(base, DATA_FILES.courses),
       fetchCSV(base, DATA_FILES.offerings),
@@ -5823,7 +5834,7 @@ async function loadDegreeData(base = DATA_BASE_URL) {
     }
 
     if (!programs.length || !courses.length) {
-      throw new Error("Programs or courses CSV is empty.");
+      throw new Error("No supported programs or courses were found in the CSV files.");
     }
 
     const built = buildDataFromCSV({
@@ -5881,6 +5892,8 @@ async function loadDegreeData(base = DATA_BASE_URL) {
       `${AP_CREDIT_POLICY.length} AP policy rows, and ` +
       `${ATHLETIC_SPORTS.length} sports from the repository data folder.`;
 
+    // Remove programs saved by older versions of the planner. Only the four
+    // supported catalogue programs may remain selected.
     state.majors = (state.majors || []).filter(key => REQUIREMENTS.majors[key]);
     state.minors = (state.minors || []).filter(key => REQUIREMENTS.minors[key]);
 
@@ -6980,7 +6993,7 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Browse the Spring Hill catalogue and add at least one major. Many programs are available as both a major and a minor, while some are available only as a minor. The available buttons come from programs.csv.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Choose from the programs currently supported by Degreefy: AI and Data Science, Computer Science, Mathematics, and Dual Degree Engineering. Mathematics is available as both a major and a minor; the other programs are majors only. Requirements are loaded automatically from programs.csv and the associated requirement CSV files.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
     attachProgramPickerEvents(content);
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
