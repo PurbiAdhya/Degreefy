@@ -2128,7 +2128,7 @@
 
       <div class="drawer-panel hidden" id="drawerAvailabilityPanel">
         <section class="offerings-panel">
-          <p class="panel-intro">Current-semester and typical offerings come from the CSV data. Confirm final availability in BadgerWeb.</p>
+          <p class="panel-intro">Current-semester and typical offerings load automatically from the repository data files. Confirm final availability in BadgerWeb.</p>
           <table class="offering-table" aria-label="Typical course offerings">
             <thead><tr><th>Area</th><th id="currentOfferingHeading">Current</th><th>Fall</th><th>Spring</th><th>Summer</th></tr></thead>
             <tbody id="offeringRows"></tbody>
@@ -4772,13 +4772,19 @@ const DATA_FILES = {
   sports: "sports.csv"
 };
 
+/*
+  Degreefy automatically loads its data from the repository's /data folder.
+  The data path is intentionally not exposed in the user interface.
+*/
+const DATA_BASE_URL = "./data";
+
 const ROLE_OPTIONS = [
   { value: "student", title: "Student or prospective student", description: "Build a plan for yourself, whether you are exploring Spring Hill or already enrolled." },
   { value: "advisor", title: "Faculty or staff", description: "Build or review a plan for a student you are advising." }
 ];
 
 const PLANNING_SCOPE_OPTIONS = [
-  { value: "semester", title: "Plan the upcoming semester", description: "Use the built-in class schedule, section times, preferences, and a weekly conflict checker." },
+  { value: "semester", title: "Plan the upcoming semester", description: "Use the published class schedule, section times, preferences, and a weekly conflict checker." },
   { value: "degree", title: "Plan the full degree path", description: "Build a semester-by-semester path through graduation." }
 ];
 const MATH_TEST_OPTIONS = [
@@ -4861,9 +4867,11 @@ function criteriaFromRow(row) {
   criteria.minCredits = Number(row.min_credits || row.credits || 0);
   return criteria;
 }
-function dataUrl(base, file) { return `${String(base || "./data").replace(/\/$/, "")}/${file}`; }
-async function fetchCSV() {
-  throw new Error("External data loading is disabled. Degreefy uses its built-in course data.");
+function dataUrl(base, file) { return `${String(base || DATA_BASE_URL).replace(/\/$/, "")}/${file}`; }
+async function fetchCSV(base, file) {
+  const response = await fetch(dataUrl(base, file), { cache: "no-store" });
+  if (!response.ok) throw new Error(`${file}: HTTP ${response.status}`);
+  return parseCSV(await response.text());
 }
 
 function refreshDerivedCollections() {
@@ -4974,93 +4982,131 @@ function normalizeScheduleSection(row) {
 }
 
 
-function internalSectionPatterns() {
-  return [
-    ["MWF", "08:00 AM", "08:50 AM"], ["TR", "08:15 AM", "09:30 AM"],
-    ["MWF", "09:00 AM", "09:50 AM"], ["TR", "09:45 AM", "11:00 AM"],
-    ["MWF", "10:00 AM", "10:50 AM"], ["TR", "11:15 AM", "12:30 PM"],
-    ["MWF", "11:00 AM", "11:50 AM"], ["TR", "12:45 PM", "02:00 PM"],
-    ["MWF", "12:15 PM", "01:05 PM"], ["TR", "02:15 PM", "03:30 PM"],
-    ["MW", "01:45 PM", "03:00 PM"], ["TR", "03:45 PM", "05:00 PM"],
-    ["MW", "03:15 PM", "04:30 PM"], ["TR", "05:15 PM", "06:30 PM"],
-    ["WF", "12:15 PM", "01:30 PM"], ["MW", "05:00 PM", "06:15 PM"],
-    ["T", "06:00 PM", "08:30 PM"], ["R", "06:00 PM", "08:30 PM"]
-  ];
-}
+async function loadDegreeData(base = DATA_BASE_URL) {
+  try {
+    const programs = await fetchCSV(base, DATA_FILES.programs);
+    const [courses, offerings, core, schedule, apPolicy, sports] = await Promise.all([
+      fetchCSV(base, DATA_FILES.courses),
+      fetchCSV(base, DATA_FILES.offerings),
+      fetchCSV(base, DATA_FILES.core),
+      fetchCSV(base, DATA_FILES.schedule).catch(() => []),
+      fetchCSV(base, DATA_FILES.apCredits).catch(() => []),
+      fetchCSV(base, DATA_FILES.sports).catch(() => [])
+    ]);
 
-function buildInternalSemesterSections() {
-  const termSpecs = [
-    { term: "Fall 2026", termCode: "FA", sourceTerm: "Fall", start: "2026-08-24", end: "2026-12-11" },
-    { term: "Spring 2027", termCode: "SP", sourceTerm: "Spring", start: "2027-01-11", end: "2027-05-07" },
-    { term: "Summer 2027", termCode: "SU", sourceTerm: "Summer", start: "2027-05-17", end: "2027-07-30" }
-  ];
-  const patterns = internalSectionPatterns();
-  const multipleSectionCodes = new Set([
-    "PTH 101", "PTH 102", "ENG 105", "ENG 121", "ENG 123", "PHL 101", "PHL 190", "THL 101", "THL 190",
-    "MTH 100", "MTH 111", "MTH 121", "MTH 122", "MTH 163", "CSC 100", "CSC 101", "BIO 101", "CHM 111", "PHY 221"
-  ]);
-  const supplementalByTerm = {
-    Fall: ["ENG 105"], Spring: ["ENG 105"], Summer: []
-  };
-  const sections = [];
-  CURRENT_OFFERINGS = {};
-  termSpecs.forEach((spec, termIndex) => {
-    const codes = Array.from(new Set([
-      ...Object.values(OFFERINGS).flatMap(terms => terms[spec.sourceTerm] || []),
-      ...(supplementalByTerm[spec.sourceTerm] || [])
-    ])).filter(code => COURSE_CATALOG[code]).sort((a, b) => a.localeCompare(b));
-    CURRENT_OFFERINGS[spec.term] = codes;
-    codes.forEach((code, index) => {
-      const sectionCount = multipleSectionCodes.has(code) ? 2 : 1;
-      for (let sectionIndex = 0; sectionIndex < sectionCount; sectionIndex++) {
-        const pattern = patterns[(index * 2 + sectionIndex * 5 + termIndex * 3) % patterns.length];
-        const sectionNumber = String(sectionIndex + 1).padStart(2, "0");
-        const prefix = getPrefix(code);
-        const building = ["CSC", "DSC", "MTH", "PHY", "CHM", "BIO"].includes(prefix) ? "BL" : "LEH";
-        const roomNumber = String(100 + ((index * 7 + sectionIndex * 13) % 28)).padStart(3, "0");
-        sections.push(normalizeScheduleSection({
-          term: spec.term,
-          term_code: spec.termCode,
-          start_date: spec.start,
-          end_date: spec.end,
-          section_id: `${spec.termCode}27-${code.replace(/\s/g, "")}-${sectionNumber}`,
-          course_code: code,
-          section: sectionNumber,
-          course_title: COURSE_CATALOG[code]?.title || code,
-          credit_hours: COURSE_CATALOG[code]?.credits || 3,
-          days: pattern[0],
-          begin_time: pattern[1],
-          end_time: pattern[2],
-          modality: "In person",
-          building,
-          room: roomNumber,
-          location: `${building} ${roomNumber}`,
-          instructor: "Staff",
-          comments: sectionIndex === 0 ? "Recommended section pattern" : "Alternate section",
-          capacity: 30
-        }));
-      }
+    const programFiles = Array.from(new Set(
+      programs.map(row => row.requirements_file).filter(Boolean)
+    ));
+
+    let requirements = [];
+    if (programFiles.length) {
+      const byFile = await Promise.all(programFiles.map(file => fetchCSV(base, file)));
+      requirements = byFile.flatMap((rows, index) => {
+        const file = programFiles[index];
+        const owner = programs.find(row => row.requirements_file === file)?.program_id || "";
+        return rows.map(row => ({ ...row, program_id: row.program_id || owner }));
+      });
+    } else {
+      requirements = await fetchCSV(base, DATA_FILES.requirements);
+    }
+
+    if (!programs.length || !courses.length) {
+      throw new Error("Programs or courses CSV is empty.");
+    }
+
+    const built = buildDataFromCSV({
+      programs,
+      requirements,
+      courses,
+      offerings,
+      core
     });
-  });
-  return sections;
+
+    COURSE_CATALOG = built.courses;
+    BUNDLES = built.bundles;
+    REQUIREMENTS = built.programs;
+    CORE = built.core;
+    OFFERINGS = built.offerings;
+    CURRENT_OFFERINGS = built.current;
+
+    if (apPolicy.length) {
+      AP_CREDIT_POLICY = apPolicy.map(row => ({
+        ...row,
+        minimum_score: Number(row.minimum_score || 0),
+        credits: Number(row.credits || 0)
+      }));
+    }
+
+    if (sports.length) {
+      ATHLETIC_SPORTS = sports.filter(row => row.category && row.sport);
+    }
+
+    SEMESTER_SECTIONS = schedule
+      .map(normalizeScheduleSection)
+      .filter(section => section.course_code);
+
+    const primaryScheduleTerm =
+      SEMESTER_SECTIONS.find(section => section.term_code === "FA")?.term ||
+      SEMESTER_SECTIONS[0]?.term;
+
+    if (primaryScheduleTerm) {
+      const scheduledCodes = Array.from(new Set(
+        SEMESTER_SECTIONS
+          .filter(section => section.term === primaryScheduleTerm)
+          .map(section => section.course_code)
+      ));
+      CURRENT_OFFERINGS[primaryScheduleTerm] = Array.from(new Set([
+        ...(CURRENT_OFFERINGS[primaryScheduleTerm] || []),
+        ...scheduledCodes
+      ])).sort();
+    }
+
+    DATA_SOURCE_KIND = "csv";
+    state.githubBaseUrl = base;
+    state.dataStatus =
+      `Loaded ${programs.length} programs, ${courses.length} courses, ` +
+      `${SEMESTER_SECTIONS.length} published sections, ` +
+      `${AP_CREDIT_POLICY.length} AP policy rows, and ` +
+      `${ATHLETIC_SPORTS.length} sports from the repository data folder.`;
+
+    state.majors = (state.majors || []).filter(key => REQUIREMENTS.majors[key]);
+    state.minors = (state.minors || []).filter(key => REQUIREMENTS.minors[key]);
+
+    refreshDerivedCollections();
+    saveState();
+    return true;
+  } catch (error) {
+    DATA_SOURCE_KIND = "error";
+    state.dataStatus = `Required CSV data could not be loaded: ${error.message}`;
+    console.error("Degreefy data load failed:", error);
+    return false;
+  }
 }
 
-function initializeInternalDegreeData() {
-  SEMESTER_SECTIONS = buildInternalSemesterSections();
-  DATA_SOURCE_KIND = "internal";
-  state.dataStatus = `Using built-in degree data and ${SEMESTER_SECTIONS.length} in-file class sections. No external files are required.`;
-  refreshDerivedCollections();
-}
+function showDataLoadError() {
+  document.body.classList.add("wizard-open");
+  $("plannerApp")?.classList.add("hidden");
+  $("semesterPlannerApp")?.classList.add("hidden");
+  $("setupWizard")?.classList.remove("hidden");
 
-async function loadDegreeData() {
-  initializeInternalDegreeData();
-  renderCourseFilterButtons();
-  saveState();
-  renderAll(true);
-  renderWizard();
-  renderProfileBar();
-  renderSemesterPlanner();
-  return true;
+  if ($("wizardEyebrow")) $("wizardEyebrow").textContent = "Data error";
+  if ($("wizardHeading")) $("wizardHeading").textContent = "Course data unavailable";
+  if ($("wizardStepLabel")) $("wizardStepLabel").textContent = "";
+  if ($("wizardProgress")) $("wizardProgress").innerHTML = "";
+  if ($("wizardNav")) $("wizardNav").classList.add("hidden");
+
+  if ($("wizardContent")) {
+    $("wizardContent").innerHTML = `
+      <div class="warning" style="margin:0">
+        <strong>Degreefy could not load the required CSV files.</strong>
+        <p style="margin:8px 0 0">
+          Keep this HTML file at the repository root with the <code>data</code>
+          folder beside it, then open the app through GitHub Pages. The data
+          folder is loaded automatically and is not selected by the user.
+        </p>
+        <p class="small" style="margin:8px 0 0">${escapeHTML(state.dataStatus || "")}</p>
+      </div>`;
+  }
 }
 
 function isCurrentlyOffered(rawCode) {
@@ -6042,7 +6088,7 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Search the internal catalog, add at least one major, and add any minors under consideration.</p>${renderProgramWizard()}<div class="source-box"><strong>Internal data</strong><div class="data-status good">Degree requirements, course offerings, and class sections are built into this HTML file.</div></div><div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Search the course catalog, add at least one major, and add any minors under consideration.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
     attachProgramPickerEvents(content);
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
@@ -6294,13 +6340,22 @@ function setupEvents() {
 
 async function initialize() {
   START_TERM = parseTerm(state.startTerm || "Fall 2026");
-  initializeInternalDegreeData();
   generateGradOptions();
-  refreshDerivedCollections();
+
+  const dataLoaded = await loadDegreeData(DATA_BASE_URL);
+  if (!dataLoaded) {
+    showDataLoadError();
+    return;
+  }
+
   renderAll(true);
   setupDegreefyEvents();
-  if (state.setupComplete && (state.majors || []).length) showPlanner();
-  else showWizard(state.setupStep || 1);
+
+  if (state.setupComplete && (state.majors || []).length) {
+    showPlanner();
+  } else {
+    showWizard(state.setupStep || 1);
+  }
 }
 loadState(); setupEvents(); initialize();
 </script>
