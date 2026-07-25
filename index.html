@@ -1638,8 +1638,13 @@
       border-radius: 18px;
       background: #fcfbff;
     }
-    .routine-entry-top { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(280px, 1.35fr); gap: 16px; align-items: end; }
+    .routine-entry-top { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: end; }
     .routine-entry-form label { display: grid; gap: 7px; margin: 0; color: var(--ink); font-size: 14px; }
+    .routine-kind-row { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(260px, 1.1fr); gap: 16px; align-items: end; }
+    .routine-kind-field { display: grid; gap: 7px; }
+    .routine-kind-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .routine-kind-options label { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 13px; background: white; }
+    .routine-kind-options label:has(input:checked) { border-color: var(--purple); background: var(--purple-soft); color: var(--purple-dark); }
     .routine-day-options { display: flex; flex-wrap: wrap; gap: 7px; }
     .routine-day-options label { display: flex; align-items: center; gap: 6px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 999px; background: white; }
     .routine-time-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
@@ -1688,6 +1693,7 @@
       .semester-catalog-panel { position: static; max-height: none; }
       .routine-entry-top, .routine-time-row { grid-template-columns: 1fr; }
       .class-time-preference .choice-grid { grid-template-columns: 1fr; }
+      .routine-kind-row, .routine-kind-options { grid-template-columns: 1fr; }
     }
     @media (max-width: 620px) {
       .semester-planner-shell { width: calc(100% - 18px); margin-top: 10px; }
@@ -2732,7 +2738,7 @@ function defaultState() {
     majors: [], minors: [], grad: "Spring 2030", gradYear: 2030, gradTerm: "Spring", startTerm: "Fall 2026", mathPlacement: "",
     englishPlacement: "", languagePlacementTaken: "", languageName: "", languagePlacement: "",
     programPickerTab: "majors", programPickerSearch: "", programPickerArea: "all",
-    mathPlacementTaken: "", planningScope: "", preferredClassTime: "", workflowVersion: 5,
+    mathPlacementTaken: "", planningScope: "", preferredClassTime: "", workflowVersion: 6,
     athleteStatus: "", sports: [], apExams: [],
     profileRole: "", studentType: "", setupStep: 1, setupComplete: false,
     githubBaseUrl: "./data", dataStatus: "",
@@ -2777,7 +2783,7 @@ function loadState() {
     state.programPickerSearch = String(state.programPickerSearch || "");
     state.programPickerArea = String(state.programPickerArea || "all");
     const oldWorkflow = Number(state.workflowVersion || 0) < 5;
-    state.workflowVersion = 5;
+    state.workflowVersion = 6;
     if (state.profileRole === "prospective") { state.profileRole = "student"; state.studentType = "incoming"; }
     if (["faculty", "staff"].includes(state.profileRole)) state.profileRole = "advisor";
     state.startTerm = state.startTerm || "Fall 2026";
@@ -3185,8 +3191,24 @@ function shouldKeepAiCsElectivesSeparate(req, otherReq) {
   return (reqAi && otherCs) || (reqCs && otherAi);
 }
 
+function isExplicitProgramRequirementForCourse(req, offeredOrCode) {
+  if (!req) return false;
+  const offered = typeof offeredOrCode === "string" ? makeOfferedItem(offeredOrCode) : offeredOrCode;
+  const rawCode = offered?.rawCode || offered?.code || "";
+  if (!rawCode || !canSatisfyRequirement(offered, req)) return false;
+  if (!isCriteriaRequirement(req)) return true;
+  const explicitChoices = req.criteria?.choices || [];
+  const isElective = req.category === "Elective" || /elective/i.test(req.title || "");
+  return explicitChoices.includes(rawCode) && !isElective;
+}
+
 function canAssignOfferedToReq(offered, req) {
   if (!canSatisfyRequirement(offered, req)) return false;
+  const rawCode = offered.rawCode || offered.code;
+  // Placement-foundation courses may count toward a program only when the
+  // program explicitly names that course. This keeps ENG 105 in Core while
+  // still allowing MTH 100 to count for a program that directly requires it.
+  if ((rawCode === "ENG 105" || placementSupplementalCourses().includes(rawCode)) && !isExplicitProgramRequirementForCourse(req, offered)) return false;
   const courseId = offered.id;
   return !Object.entries(state.satisfied || {}).some(([otherReqId, matchedCourseId]) => {
     if (otherReqId === req.id || matchedCourseId !== courseId) return false;
@@ -3804,6 +3826,16 @@ function enforceAiCsElectiveSeparation() {
 }
 
 function reconcileSatisfiedRequirements() {
+  const reqMap = getRequirementMap();
+  // Remove stale assignments created by older versions that allowed a
+  // placement-foundation course to fill a broad program elective.
+  Object.entries(state.satisfied || {}).forEach(([reqId, courseId]) => {
+    const req = reqMap.get(reqId);
+    const rawCode = normalizedCourseKey(courseId);
+    if ((rawCode === "ENG 105" || placementSupplementalCourses().includes(rawCode)) && !isExplicitProgramRequirementForCourse(req, rawCode)) {
+      delete state.satisfied[reqId];
+    }
+  });
   getCourseBankItems().forEach(item => {
     if (isRawDone(item.rawCode || item.code)) satisfyMatchingRequirementsWithCourse(item);
   });
@@ -4215,6 +4247,40 @@ function placeRawSequence(rawCodes, activeTerms, scheduledIndexes, targetCredits
   });
 }
 
+function pthCompletedBeforePlanning(code) {
+  const requirementId = code === "PTH 101" ? "CORE PTH 101" : "CORE PTH 102";
+  return !!state.checkedCore?.[requirementId]
+    || !!state.checkedCourses?.[offeredCourseId(code)]
+    || !!state.checked?.[code]
+    || isPlacementSatisfied(code);
+}
+
+function placeMandatoryFirstYearPTH(activeTerms, scheduledIndexes, skipped) {
+  if (!isFirstYearStudent()) return false;
+  const assignments = [
+    { code: "PTH 101", term: activeTerms[0] },
+    { code: "PTH 102", term: activeTerms[1] }
+  ];
+  assignments.forEach(({ code, term }) => {
+    if (pthCompletedBeforePlanning(code)) return;
+    // Auto-population enforces the first- and second-semester positions even if a
+    // previous draft had one of these courses in a later term.
+    removeRawFromScheduledTerms(code, activeTerms);
+    if (!term || !canAutoScheduleRawInTerm(code, parseTerm(term).term)) { skipped.add(code); return; }
+    if (!addRawToTermIfPossible(code, term, scheduledIndexes, activeTerms)) skipped.add(code);
+  });
+  return true;
+}
+
+function placeMathPlacementFoundation(activeTerms, scheduledIndexes, targetCredits, skipped) {
+  if (effectiveMathPlacement() !== "MTH 100" || isRawDone("MTH 100") || isPlacementSatisfied("MTH 100")) return;
+  placeRawSequence(["MTH 100"], activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
+}
+
+function majorCourseClearedFromHistory(rawCode) {
+  return getPrereqGroups(rawCode).every(group => relationGroupAlreadySatisfied(group));
+}
+
 function courseHasAutoPlacementProblem(courseId, semesterKey) {
   return isOffCycle(courseId, semesterKey) || prereqCoreqWarningsForPlanned(courseId, semesterKey).length > 0;
 }
@@ -4391,12 +4457,30 @@ function populateAllUnchecked(options = {}) {
   let targetCredits = calculateTargetCredits(activeTerms, allNeededExpanded);
   let scheduledIndexes = existingScheduledIndexes(activeTerms);
 
-  // 1. PTH is mandatory and belongs at the beginning of the degree journey.
-  const pthSequence = coreSequenceCoursesByIds(PTH_CORE_REQUIREMENT_IDS, false);
-  placeRawSequence(pthSequence, activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
+  // 1. First-year students must take PTH 101 in semester one and PTH 102 in
+  // semester two, before any other scheduling priorities are considered.
+  if (!placeMandatoryFirstYearPTH(activeTerms, scheduledIndexes, skipped)) {
+    const pthSequence = coreSequenceCoursesByIds(PTH_CORE_REQUIREMENT_IDS, false);
+    placeRawSequence(pthSequence, activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
+  }
 
-  // 2. Give outstanding major requirements first preference, including the prerequisites
-  // that unlock the major sequence. Seminar/capstone courses remain reserved for later.
+  // A student placed in MTH 100 begins the mathematics sequence with MTH 100
+  // (and its required same-term recitation) before later mathematics courses.
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeMathPlacementFoundation(activeTerms, scheduledIndexes, targetCredits, skipped);
+
+  // 2. Place major courses that are already cleared, beginning at the bottom of
+  // the prerequisite ladder. Then build the rest of the major pathway, inserting
+  // prerequisites before the major courses they unlock.
+  reconcileSatisfiedRequirements();
+  majorNeeded = collectNeededProgramRawCourses("major");
+  const clearedMajor = sortMajorCoursesByPrerequisiteLevel(
+    nonSeminarCodes(majorNeeded).filter(majorCourseClearedFromHistory)
+  );
+  targetCredits = calculateTargetCredits(activeTerms, [...clearedMajor, ...coreNeeded, ...minorNeeded]);
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeRawSequence(clearedMajor, activeTerms, scheduledIndexes, targetCredits, skipped, "program");
+
   reconcileSatisfiedRequirements();
   majorNeeded = collectNeededProgramRawCourses("major");
   const majorMain = sortMajorCoursesByPrerequisiteLevel(
@@ -4480,13 +4564,85 @@ function setPrintMode(mode) {
 function printChecklist() { setPrintMode("checklist"); }
 function printPlan() { setPrintMode("plan"); }
 
+function fullJourneyRawCode(id, item) {
+  if (item?.rawCode) return item.rawCode;
+  if (isOfferedCourseId(id)) return offeredCodeFromId(id);
+  return item?.code || id;
+}
+
+function fullJourneyCoreRequirementIds(id, item) {
+  const rawCode = fullJourneyRawCode(id, item);
+  const offered = makeOfferedItem(rawCode);
+  const ids = new Set();
+  Object.entries(state.satisfiedCore || {}).forEach(([reqId, courseId]) => {
+    if (normalizedCourseKey(courseId) === rawCode) ids.add(reqId);
+  });
+  CORE.map(makeCoreItem).filter(Boolean).forEach(req => {
+    if (canSatisfyRequirement(offered, req)) ids.add(req.id);
+  });
+  // ENG 105 is a placement foundation that leads into Composition I. It does
+  // not directly satisfy ENG 121, but it belongs with the Skills Core courses.
+  if (rawCode === "ENG 105") ids.add("CORE ENG 121");
+  return Array.from(ids);
+}
+
+function fullJourneyProgramRequirementInfo(id, item) {
+  const rawCode = fullJourneyRawCode(id, item);
+  const offered = makeOfferedItem(rawCode);
+  const requirements = Array.from(getRequirementMap().values()).filter(req => canSatisfyRequirement(offered, req));
+  return {
+    any: requirements.length > 0,
+    explicit: requirements.some(req => isExplicitProgramRequirementForCourse(req, offered))
+  };
+}
+
 function fullJourneyCourseBucket(id, item) {
-  const offered = item || getAllCourseById().get(id) || { id, code: id, title: id };
-  const programMatch = Array.from(getRequirementMap().values()).some(req => canSatisfyRequirement(offered, req));
-  const coreMatch = CORE.map(makeCoreItem).some(req => canSatisfyRequirement(offered, req));
-  if (programMatch) return "program";
+  const program = fullJourneyProgramRequirementInfo(id, item);
+  const coreMatch = fullJourneyCoreRequirementIds(id, item).length > 0;
+  // An explicitly required program course takes precedence over Core. A course
+  // that merely qualifies for a broad program elective remains in Core.
+  if (program.explicit) return "program";
   if (coreMatch) return "core";
+  if (program.any) return "program";
   return "program";
+}
+
+function fullJourneyCourseNumber(code) {
+  const match = String(code || "").match(/\b(\d{3})\b/);
+  return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
+}
+
+function fullJourneyCoursePrefix(code) {
+  const match = String(code || "").match(/^([A-Z]+)/i);
+  return match ? match[1].toUpperCase() : String(code || "").toUpperCase();
+}
+
+function compareFullJourneyProgramCourses(aId, bId, all) {
+  const a = all.get(aId) || { code: aId, title: aId };
+  const b = all.get(bId) || { code: bId, title: bId };
+  const aCode = fullJourneyRawCode(aId, a);
+  const bCode = fullJourneyRawCode(bId, b);
+  return fullJourneyCourseNumber(aCode) - fullJourneyCourseNumber(bCode)
+    || fullJourneyCoursePrefix(aCode).localeCompare(fullJourneyCoursePrefix(bCode))
+    || String(aCode).localeCompare(String(bCode))
+    || String(a.title || "").localeCompare(String(b.title || ""));
+}
+
+function fullJourneyCoreRank(id, item) {
+  const rawCode = fullJourneyRawCode(id, item);
+  const ranks = fullJourneyCoreRequirementIds(id, item).map(reqId =>
+    CORE_REQUIREMENT_ORDER[reqId] ?? (10000 + Math.max(0, CORE.findIndex(row => row[0] === reqId)))
+  );
+  let rank = ranks.length ? Math.min(...ranks) : 99999;
+  if (rawCode === "ENG 105" && rank === CORE_REQUIREMENT_ORDER["CORE ENG 121"]) rank -= 1;
+  return rank;
+}
+
+function compareFullJourneyCoreCourses(aId, bId, all) {
+  const a = all.get(aId) || { code: aId, title: aId };
+  const b = all.get(bId) || { code: bId, title: bId };
+  const rankDifference = fullJourneyCoreRank(aId, a) - fullJourneyCoreRank(bId, b);
+  return rankDifference || compareFullJourneyProgramCourses(aId, bId, all);
 }
 
 function renderPlanner() {
@@ -4501,12 +4657,6 @@ function renderPlanner() {
   $("printBtn")?.classList.toggle("hidden", !hasScheduledPlan);
   $("clearPlanBtn")?.classList.toggle("hidden", !hasScheduledPlan);
   if ($("toggleSummerBtn")) $("toggleSummerBtn").textContent = showSummerTerms ? "Hide summer terms" : "Show summer terms";
-
-  const courseSort = (a, b) => {
-    const aItem = all.get(a) || { code: a, title: a };
-    const bItem = all.get(b) || { code: b, title: b };
-    return String(aItem.code).localeCompare(String(bItem.code)) || String(aItem.title).localeCompare(String(bItem.title));
-  };
 
   activeTerms.forEach(key => {
     if (!state.planned[key]) state.planned[key] = [];
@@ -4528,10 +4678,12 @@ function renderPlanner() {
       program: sem.querySelector('[data-semester-bucket="program"] .bucket-course-list')
     };
     const grouped = { core: [], program: [] };
-    [...state.planned[key]].sort(courseSort).forEach(id => {
+    [...state.planned[key]].forEach(id => {
       const item = all.get(id) || { code: id, title: "Unknown course", credits: 0 };
       grouped[fullJourneyCourseBucket(id, item)].push(id);
     });
+    grouped.core.sort((a, b) => compareFullJourneyCoreCourses(a, b, all));
+    grouped.program.sort((a, b) => compareFullJourneyProgramCourses(a, b, all));
 
     const appendCourse = (id, zone) => {
       const item = all.get(id) || { code: id, title: "Unknown course", credits: 0 };
@@ -5037,8 +5189,8 @@ function buildDataFromCSV(datasets) {
     const prereqGroups = parseRelationGroups(row.prerequisites);
     const coreqGroups = parseRelationGroups(row.corequisites);
     const info = {
-      title: row.title || row.code,
-      credits: Number(row.credits || 0),
+      title: row.title || row.course_title || row.course_name || row.name || row.long_title || row.code,
+      credits: Number(row.credits || row.credit_hours || 0),
       area: row.area || getPrefix(row.code) || "Other",
       prereq: prereqGroups.flat(), coreq: coreqGroups.flat(), prereqGroups, coreqGroups
     };
@@ -5060,8 +5212,8 @@ function buildDataFromCSV(datasets) {
     const code = row.requirement_id || row.course_code;
     target.courses.push([
       code,
-      row.title || courses[row.course_code]?.title || row.course_code || code,
-      Number(row.credits || courses[row.course_code]?.credits || 0),
+      row.title || row.course_title || row.course_name || row.name || courses[row.course_code]?.title || row.course_code || code,
+      Number(row.credits || row.credit_hours || courses[row.course_code]?.credits || 0),
       row.category || (criteria ? "Choice" : "Required"),
       criteria
     ]);
@@ -5269,8 +5421,8 @@ function wizardVisibleSteps() {
   if (!semesterOnly) steps.push(8);
   steps.push(9);
   if (!incoming) steps.push(10, 11);
-  if (semesterOnly) steps.push(12);
-  steps.push(13);
+  if (semesterOnly) steps.push(12, 13);
+  steps.push(14);
   return steps;
 }
 function normalizedWizardStep(step) {
@@ -5331,12 +5483,18 @@ function renderProgramWizard() {
     : '<div class="selected-program-empty">No programs selected yet. At least one major is required.</div>';
 
   const selectionCell = (catalogItem, type) => {
-    const allowed = type === "majors" ? catalogItem.major : catalogItem.minor;
-    if (!allowed) return '<span class="program-catalog-dash" aria-label="Not offered">—</span>';
     const loadedEntry = findLoaded(catalogItem.name, type);
-    if (!loadedEntry) return '<span class="program-catalog-unavailable" title="The catalogue lists this program, but its requirements are not currently present in programs.csv.">Not loaded</span>';
-    const selected = (state[type] || []).includes(loadedEntry.key);
-    return `<button type="button" class="program-catalog-action ${selected ? "selected" : ""}" data-program-toggle="${type}" data-program-key="${escapeHTML(loadedEntry.key)}">${selected ? "Remove" : "Add"}</button>`;
+    // programs.csv is the source of truth. A program can therefore appear in both
+    // columns whenever both a major and a minor record are present, even if the
+    // static catalogue reference is more limited.
+    if (loadedEntry) {
+      const selected = (state[type] || []).includes(loadedEntry.key);
+      return `<button type="button" class="program-catalog-action ${selected ? "selected" : ""}" data-program-toggle="${type}" data-program-key="${escapeHTML(loadedEntry.key)}">${selected ? "Remove" : "Add"}</button>`;
+    }
+    const listed = type === "majors" ? catalogItem.major : catalogItem.minor;
+    return listed
+      ? '<span class="program-catalog-unavailable" title="This option is listed in the catalogue but its requirements are not currently present in programs.csv.">Not loaded</span>'
+      : '<span class="program-catalog-dash" aria-label="Not offered">—</span>';
   };
 
   const rows = SHC_PROGRAM_CATALOG.map(item => `<div class="program-catalog-row" data-program-catalog-row data-program-search="${escapeHTML(item.name.toLowerCase())}">
@@ -5555,11 +5713,20 @@ function semesterRequirementMatches(code) {
   });
   return matches;
 }
+function isFirstYearStudent() { return state.studentType === "incoming"; }
+function requiredPTHCodesForUpcomingSemester() {
+  const available = new Set(scheduleSectionsForPrimaryTerm().map(section => section.course_code));
+  const isOutstandingAndAvailable = code =>
+    !isCompletedCourseCode(code) && available.has(code) && semesterRequirementMatches(code).some(match => match.type === "Core");
+  if (!isFirstYearStudent()) return ["PTH 101", "PTH 102"].filter(isOutstandingAndAvailable);
+  // First-year students take PTH 101 in semester one and PTH 102 in semester two.
+  // Do not substitute PTH 102 when PTH 101 is still outstanding but unavailable.
+  if (!isCompletedCourseCode("PTH 101")) return isOutstandingAndAvailable("PTH 101") ? ["PTH 101"] : [];
+  if (!isCompletedCourseCode("PTH 102")) return isOutstandingAndAvailable("PTH 102") ? ["PTH 102"] : [];
+  return [];
+}
 function isRequiredPTHForUpcomingSemester(code) {
-  return ["PTH 101", "PTH 102"].includes(code)
-    && !isCompletedCourseCode(code)
-    && scheduleSectionsForPrimaryTerm().some(section => section.course_code === code)
-    && semesterRequirementMatches(code).some(match => match.type === "Core");
+  return requiredPTHCodesForUpcomingSemester().includes(code);
 }
 function selectedProgramIsNursing() {
   return selectedProgramNames().some(name => /nurs/i.test(name));
@@ -5594,24 +5761,26 @@ function firstYearCorePreferenceRank(code) {
   if (code === "ENG 105" && placementSupplementalCourses().includes(code)) return coreRequirementPreferenceRank(code);
   return matchesFirstYear ? coreRequirementPreferenceRank(code) : Number.POSITIVE_INFINITY;
 }
+function mathPlacementRequiresMTH100(code = "MTH 100") {
+  return code === "MTH 100" && effectiveMathPlacement() === "MTH 100" && !isCompletedCourseCode("MTH 100");
+}
 function semesterPlanningPriority(code) {
   if (isRequiredPTHForUpcomingSemester(code)) return 0;
+  if (mathPlacementRequiresMTH100(code)) return 1;
   const matches = semesterRequirementMatches(code);
-  // Major requirements remain the first preference after the required PTH course.
-  if (matches.some(match => match.type === "Major")) return 1;
-  if (Number.isFinite(firstYearCorePreferenceRank(code))) return 2;
-  if (matches.some(match => match.type === "Core")) return 3;
-  if (matches.some(match => match.type === "Minor")) return 4;
-  return 5;
+  if (matches.some(match => match.type === "Major")) {
+    // Cleared gateway courses at the bottom of the major prerequisite ladder go first;
+    // other cleared major courses follow before Core is considered.
+    return coursePrerequisiteLevel(code) <= 1 ? 2 : 3;
+  }
+  if (Number.isFinite(firstYearCorePreferenceRank(code))) return 4;
+  if (matches.some(match => match.type === "Core")) return 5;
+  if (matches.some(match => match.type === "Minor")) return 6;
+  return 7;
 }
 function semesterPlanningScore(code) {
   const priority = semesterPlanningPriority(code);
-  if (priority === 1) {
-    // Within the major group, begin with courses at the bottom of the prerequisite
-    // graph and move upward. This prevents an upper-level course from outranking
-    // the gateway course that opens its sequence.
-    return priority * 1000000 + majorPrerequisiteSortScore(code);
-  }
+  if (priority === 2 || priority === 3) return priority * 1000000 + majorPrerequisiteSortScore(code);
   const coreRank = coreRequirementPreferenceRank(code);
   const withinGroup = Number.isFinite(coreRank) ? coreRank * 1000 + courseSortScore(code) * 0.001 : courseSortScore(code);
   return priority * 1000000 + withinGroup;
@@ -5623,7 +5792,11 @@ function defaultSemesterCourseType(code) {
   return matches.find(match => match.type === "Major")?.type || matches.find(match => match.type === "Core")?.type || matches.find(match => match.type === "Minor")?.type || "";
 }
 function neededSemesterCodes() {
-  return new Set(scheduleSectionsForPrimaryTerm().map(section => section.course_code).filter(code => !isCompletedCourseCode(code) && semesterRequirementMatches(code).length));
+  return new Set(scheduleSectionsForPrimaryTerm().map(section => section.course_code).filter(code => {
+    if (isCompletedCourseCode(code) || !semesterRequirementMatches(code).length) return false;
+    if (isFirstYearStudent() && ["PTH 101", "PTH 102"].includes(code)) return isRequiredPTHForUpcomingSemester(code);
+    return true;
+  }));
 }
 function displayRoutineDays(days) {
   const labels = { M: "Mon", T: "Tue", W: "Wed", R: "Thu", F: "Fri" };
@@ -5634,10 +5807,16 @@ function renderRoutineEditorMarkup(context = "wizard") {
   const blocks = state.routineBlocks || [];
   const dayOptions = [["M", "Mon"], ["T", "Tue"], ["W", "Wed"], ["R", "Thu"], ["F", "Fri"]]
     .map(([value, label]) => `<label><input type="checkbox" data-routine-day value="${value}"> ${label}</label>`).join("");
+  const kindOptions = ["Work", "Practice", "Other"].map((label, index) =>
+    `<label><input type="radio" name="${prefix}-kind" data-routine-kind value="${label}" ${index === 0 ? "checked" : ""}> ${label}</label>`
+  ).join("");
   return `<div class="routine-builder" data-routine-context="${context}">
     <div class="routine-entry-form">
+      <div class="routine-kind-row">
+        <div class="routine-kind-field"><span class="field-label">Unavailable block</span><div class="routine-kind-options">${kindOptions}</div></div>
+        <label class="routine-custom-field hidden" id="${prefix}-custom-wrap">Name the other block<input id="${prefix}-label" type="text" placeholder="Commute, appointment, family responsibility…"></label>
+      </div>
       <div class="routine-entry-top">
-        <label class="routine-label-field">What is already scheduled?<input id="${prefix}-label" type="text" placeholder="Work, practice, commute, appointment…"></label>
         <div class="routine-days-field"><span class="field-label">Repeats on</span><div class="routine-day-options">${dayOptions}</div></div>
       </div>
       <div class="routine-time-row">
@@ -5646,20 +5825,30 @@ function renderRoutineEditorMarkup(context = "wizard") {
         <button type="button" class="primary" data-routine-add>Add unavailable time</button>
       </div>
     </div>
-    <div class="routine-list">${blocks.length ? blocks.map(block => `<div class="routine-row"><div><strong>${block.label}</strong><div class="small">${displayRoutineDays(block.days)} · ${block.start}-${block.end}</div></div><button type="button" data-routine-remove="${block.id}">Remove</button></div>`).join("") : '<div class="routine-empty">No unavailable times added. Add only the blocks that should prevent a class from being scheduled.</div>'}</div>
+    <div class="routine-list">${blocks.length ? blocks.map(block => `<div class="routine-row"><div><strong>${escapeHTML(block.label)}</strong><div class="small">${displayRoutineDays(block.days)} · ${block.start}-${block.end}</div></div><button type="button" data-routine-remove="${block.id}">Remove</button></div>`).join("") : '<div class="routine-empty">No unavailable times added. Add only the blocks that should prevent a class from being scheduled.</div>'}</div>
   </div>`;
 }
 function attachRoutineEditorEvents(container, context = "wizard") {
   const prefix = `routine-${context}`;
+  const syncCustomField = () => {
+    const kind = container.querySelector(`[name="${prefix}-kind"]:checked`)?.value || "Work";
+    container.querySelector(`#${prefix}-custom-wrap`)?.classList.toggle("hidden", kind !== "Other");
+  };
+  container.querySelectorAll("[data-routine-kind]").forEach(input => input.addEventListener("change", syncCustomField));
+  syncCustomField();
   container.querySelector("[data-routine-add]")?.addEventListener("click", () => {
-    const label = container.querySelector(`#${prefix}-label`)?.value.trim() || "Unavailable";
+    const kind = container.querySelector(`[name="${prefix}-kind"]:checked`)?.value || "Work";
+    const customLabel = container.querySelector(`#${prefix}-label`)?.value.trim() || "";
+    const label = kind === "Other" ? customLabel : kind;
     const days = Array.from(container.querySelectorAll("[data-routine-day]:checked")).map(input => input.value).join("");
     const startValue = container.querySelector(`#${prefix}-start`)?.value || "";
     const endValue = container.querySelector(`#${prefix}-end`)?.value || "";
-    if (!days || !startValue || !endValue || startValue >= endValue) {
+    if ((kind === "Other" && !customLabel) || !days || !startValue || !endValue || startValue >= endValue) {
       const error = container.querySelector(".routine-error") || document.createElement("div");
       error.className = "wizard-error routine-error";
-      error.textContent = "Choose at least one day and a valid start and end time.";
+      error.textContent = kind === "Other" && !customLabel
+        ? "Enter a name for the other unavailable block."
+        : "Choose at least one day and a valid start and end time.";
       container.appendChild(error);
       return;
     }
@@ -5668,7 +5857,7 @@ function attachRoutineEditorEvents(container, context = "wizard") {
       const hour = Number(hourText), suffix = hour >= 12 ? "PM" : "AM";
       return `${hour % 12 || 12}:${minute} ${suffix}`;
     };
-    state.routineBlocks.push({ id: `routine-${Date.now()}-${Math.random().toString(16).slice(2)}`, label, days, start: formatTime(startValue), end: formatTime(endValue) });
+    state.routineBlocks.push({ id: `routine-${Date.now()}-${Math.random().toString(16).slice(2)}`, kind, label, days, start: formatTime(startValue), end: formatTime(endValue) });
     saveState();
     if (context === "wizard") renderWizard(); else renderRoutineDialog();
     renderSemesterPlanner();
@@ -5998,7 +6187,9 @@ function planOneSemesterForMe(options = {}) {
   if (!SEMESTER_SECTIONS.length) { alert("No published semester schedule was loaded."); return; }
   if (!skipConfirm && (state.semesterSelections || []).length && !confirm("Replace the current semester selections with a new suggested schedule?")) return;
   const needed = neededSemesterCodes();
-  const codes = Array.from(needed).sort((a, b) => semesterPlanningScore(a) - semesterPlanningScore(b));
+  const codes = Array.from(needed)
+    .filter(code => isRequiredPTHForUpcomingSemester(code) || courseEligibleForUpcomingSemester(code))
+    .sort((a, b) => semesterPlanningScore(a) - semesterPlanningScore(b));
   const selected = [];
   const selectedCodes = new Set();
   const claimedRequirements = new Set();
@@ -6209,7 +6400,7 @@ function renderWizard() {
   const nav = $("wizardNav");
   $("wizardBackBtn").disabled = index === 0;
   $("wizardSaveExitBtn").classList.toggle("hidden", !state.setupComplete);
-  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 13);
+  $("wizardNextBtn").classList.toggle("hidden", state.setupStep === 14);
   nav.classList.remove("hidden");
 
   if (state.setupStep === 1) {
@@ -6270,7 +6461,7 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Browse the Spring Hill catalogue, add at least one major, and add any minors under consideration.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Browse the Spring Hill catalogue and add at least one major. Many programs are available as both a major and a minor, while some are available only as a minor. The available buttons come from programs.csv.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
     attachProgramPickerEvents(content);
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
@@ -6289,8 +6480,11 @@ function renderWizard() {
       { value: "afternoon", title: "Afternoon classes", description: "Prefer sections that begin at noon or later when a suitable section is available." },
       { value: "none", title: "No preference", description: "Choose sections based on requirements and conflicts without favoring a time of day." }
     ];
-    content.innerHTML = `<section class="class-time-preference"><h3>When would the student prefer to take classes?</h3>${choiceCards(timeOptions, state.preferredClassTime, "preferredClassTime")}<p class="class-time-preference-note">This is a soft preference. Degreefy uses another section whenever the preferred time is unavailable or creates a conflict.</p></section><h3>When can the student not take a class?</h3>${state.athleteStatus === "yes" ? `<div class="note">Student athlete: the schedule must contain at least 12 credits in Fall and Spring. Add known unavailable practice or competition times below.</div>` : ""}${renderRoutineEditorMarkup("wizard")}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<section class="class-time-preference"><h3>When would the student prefer to take classes?</h3>${choiceCards(timeOptions, state.preferredClassTime, "preferredClassTime")}<p class="class-time-preference-note">This is a soft preference. Degreefy uses another section whenever the preferred time is unavailable or creates a conflict.</p></section><div class="wizard-error" id="wizardError"></div>`;
     content.querySelectorAll('input[name="preferredClassTime"]').forEach(input => input.addEventListener("change", event => { state.preferredClassTime = event.target.value; saveState(); renderWizard(); }));
+  } else if (state.setupStep === 13) {
+    $("wizardHeading").textContent = "Unavailable time blocks";
+    content.innerHTML = `<h3>When can the student not take a class?</h3><p class="wizard-subtitle">Add recurring work, practice, or other commitments. These blocks prevent Degreefy from placing a class at the same time.</p>${state.athleteStatus === "yes" ? `<div class="note">Student athlete: the schedule must contain at least 12 credits in Fall and Spring. Add known practice or competition blocks below.</div>` : ""}${renderRoutineEditorMarkup("wizard")}<div class="wizard-error" id="wizardError"></div>`;
     attachRoutineEditorEvents(content, "wizard");
   } else {
     $("wizardHeading").textContent = "Ready to plan";
