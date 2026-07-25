@@ -1,74 +1,77 @@
-program_id,requirement_id,title,credits,category,course_code,criteria_type,choices,prefixes,min_level,max_level,min_credits
-ai,CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
-ai,CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
-ai,CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
-ai,CSC 203,Computer Science 3: Algorithms,4,Required,CSC 203,,,,,,
-ai,MTH 121,Calculus I,4,Required,MTH 121,,,,,,
-ai,MTH 122,Calculus II,4,Required,MTH 122,,,,,,
-ai,MTH 221,Linear Algebra,3,Required,MTH 221,,,,,,
-ai,STATISTICS,"Statistics: MTH 163, BUS 263, or PSY 263",3,Choice,,choice,MTH 163|BUS 263|PSY 263,,,,3
-ai,DSC 240,Data Visualization,3,Required,DSC 240,,,,,,
-ai,MTH 322,Discrete Mathematics,3,Required,MTH 322,,,,,,
-ai,MTH 365,Probability and Statistics,3,Required,MTH 365,,,,,,
-ai,CSC 312,Database Systems and Theory,3,Required,CSC 312,,,,,,
-ai,CSC 341,Data Science 1,3,Required,CSC 341,,,,,,
-ai,DSC 442,Data Analysis,3,Required,DSC 442,,,,,,
-ai,DSC 443,"AI, Machine Learning, and Deep Learning",3,Required,DSC 443,,,,,,
-ai,DSC 499,Senior Seminar in AI and Data Science,1,Required,DSC 499,,,,,,
-ai,AI CSC ELECTIVE 1,CSC 3XX/4XX Elective,3,Elective,,elective,,CSC,300,499,3
-ai,AI CSC ELECTIVE 2,CSC 3XX/4XX Elective,3,Elective,,elective,,CSC,300,499,3
-ai,AI MTH ELECTIVE 1,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
-cs,MTH 121,Calculus I,4,Required,MTH 121,,,,,,
-cs,MTH 122,Calculus II,4,Required,MTH 122,,,,,,
-cs,MTH 221,Linear Algebra,3,Required,MTH 221,,,,,,
-cs,CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
-cs,CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
-cs,CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
-cs,CSC 203,Computer Science 3: Algorithms,4,Required,CSC 203,,,,,,
-cs,CSC 210,Computer Architecture,4,Required,CSC 210,,,,,,
-cs,CSC 311,Operating Systems: Design and Implementation,4,Required,CSC 311,,,,,,
-cs,CSC 312,Database Systems and Theory,3,Required,CSC 312,,,,,,
-cs,CSC 320,Automata,3,Required,CSC 320,,,,,,
-cs,CSC 321,Programming Language Theory,3,Required,CSC 321,,,,,,
-cs,CSC 431,Senior Software Architecture Seminar,1,Required,CSC 431,,,,,,
-cs,MTH 301,Introduction to Abstract Mathematics,3,Required,MTH 301,,,,,,
-cs,MTH 322,Discrete Mathematics,3,Required,MTH 322,,,,,,
-cs,CS ELECTIVE 1,MTH/CSC/DSC 3XX Elective,3,Elective,,elective,,MTH|CSC|DSC,300,499,3
-cs,CS ELECTIVE 2,MTH/CSC/DSC 3XX Elective,3,Elective,,elective,,MTH|CSC|DSC,300,499,3
-cs,CS ELECTIVE 3,MTH/CSC/DSC 3XX Elective,3,Elective,,elective,,MTH|CSC|DSC,300,499,3
-math,MTH 121,Calculus I,4,Required,MTH 121,,,,,,
-math,MTH 122,Calculus II,4,Required,MTH 122,,,,,,
-math,CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
-math,CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
-math,MATH LAB SCIENCE I,Laboratory Science I,4,Choice,,choice,SCI PHY I|SCI CHM I,,,,4
-math,MATH LAB SCIENCE II,Laboratory Science II,4,Choice,,choice,SCI PHY II|SCI CHM II,,,,4
-math,MTH 221,Linear Algebra,3,Required,MTH 221,,,,,,
-math,MTH 223,Calculus III,4,Required,MTH 223,,,,,,
-math,MTH 261,Differential Equations,3,Required,MTH 261,,,,,,
-math,MTH 301,Introduction to Abstract Mathematics,3,Required,MTH 301,,,,,,
-math,MATH MTH ELECTIVE 1,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
-math,MTH 491,Seminar,1,Required,MTH 491,,,,,,
-math,MATH PROGRAM ELECTIVE 1,"Choose MTH 451, MTH 464, or MTH 482",3,Choice,,choice,MTH 451|MTH 464|MTH 482,,,,3
-math,MATH PROGRAM ELECTIVE 2,"Choose MTH 451, MTH 464, or MTH 482",3,Choice,,choice,MTH 451|MTH 464|MTH 482,,,,3
-aiMinor,CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
-aiMinor,CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
-aiMinor,STATISTICS,"Statistics: MTH 163, BUS 263, or PSY 263",3,Choice,,choice,MTH 163|BUS 263|PSY 263,,,,3
-aiMinor,CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
-aiMinor,DSC 240,Data Visualization,3,Required,DSC 240,,,,,,
-aiMinor,CSC 341,Data Science 1,3,Required,CSC 341,,,,,,
-aiMinor,DSC 442,Data Analysis,3,Required,DSC 442,,,,,,
-aiMinor,DSC 443,"AI, Machine Learning, and Deep Learning",3,Required,DSC 443,,,,,,
-csMinor,CSC 100,Computer Science 0: Foundations,4,Required,CSC 100,,,,,,
-csMinor,CSC 101,Computer Science 1: Principles,4,Required,CSC 101,,,,,,
-csMinor,CSC 202,Computer Science 2: Data Structures,4,Required,CSC 202,,,,,,
-csMinor,CSC 203,Computer Science 3: Algorithms,4,Required,CSC 203,,,,,,
-csMinor,MTH 322,Discrete Mathematics,3,Required,MTH 322,,,,,,
-csMinor,CS MINOR ELECTIVE 1,CSC 3XX/4XX Elective,3,Elective,,elective,,CSC,300,499,3
-csMinor,CS MINOR ELECTIVE 2,CSC 3XX/4XX Elective,3,Elective,,elective,,CSC,300,499,3
-mathMinor,MTH 121,Calculus I,4,Required,MTH 121,,,,,,
-mathMinor,MTH 122,Calculus II,4,Required,MTH 122,,,,,,
-mathMinor,MTH 223,Calculus III,4,Required,MTH 223,,,,,,
-mathMinor,MTH 301,Introduction to Abstract Mathematics,3,Required,MTH 301,,,,,,
-mathMinor,MATH MINOR ELECTIVE 1,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
-mathMinor,MATH MINOR ELECTIVE 2,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
-mathMinor,MATH MINOR ELECTIVE 3,MTH 3XX/4XX Elective,3,Elective,,elective,,MTH,300,499,3
+program_id,requirement_id,course_code,title,credits,category,criteria_type,choices,prefixes,min_level,max_level,min_credits
+ai,CSC 100,CSC 100,Computer Science 0: Foundations,4,Required,,,,,,
+ai,CSC 101,CSC 101,Computer Science 1: Principles,4,Required,,,,,,
+ai,CSC 202,CSC 202,Computer Science 2: Data Structures,4,Required,,,,,,
+ai,CSC 203,CSC 203,Computer Science 3: Algorithms,4,Required,,,,,,
+ai,MTH 121,MTH 121,Calculus I,4,Required,,,,,,
+ai,MTH 122,MTH 122,Calculus II,4,Required,,,,,,
+ai,MTH 221,MTH 221,Linear Algebra,3,Required,,,,,,
+ai,STATISTICS,,"Statistics: MTH 163, BUS 263, or PSY 263",3,Choice,choice,MTH 163|BUS 263|PSY 263,,,,3
+ai,DSC 240,DSC 240,Data Visualization,3,Required,,,,,,
+ai,MTH 322,MTH 322,Discrete Mathematics,3,Required,,,,,,
+ai,MTH 365,MTH 365,Probability and Statistics,3,Required,,,,,,
+ai,CSC 312,CSC 312,Database Systems and Theory,3,Required,,,,,,
+ai,CSC 341,CSC 341,Data Science 1,3,Required,,,,,,
+ai,DSC 442,DSC 442,Data Analysis,3,Required,,,,,,
+ai,DSC 443,DSC 443,"AI, Machine Learning, and Deep Learning",3,Required,,,,,,
+ai,DSC 499,DSC 499,Senior Seminar in AI and Data Science,1,Required,,,,,,
+ai,AI CSC ELECTIVE 1,,CSC 3XX/4XX Elective,3,Elective,elective,,CSC,300,499,3
+ai,AI CSC ELECTIVE 2,,CSC 3XX/4XX Elective,3,Elective,elective,,CSC,300,499,3
+ai,AI MTH ELECTIVE 1,,MTH 3XX/4XX Elective,3,Elective,elective,,MTH,300,499,3
+cs,MTH 121,MTH 121,Calculus I,4,Required,,,,,,
+cs,MTH 122,MTH 122,Calculus II,4,Required,,,,,,
+cs,MTH 221,MTH 221,Linear Algebra,3,Required,,,,,,
+cs,CSC 100,CSC 100,Computer Science 0: Foundations,4,Required,,,,,,
+cs,CSC 101,CSC 101,Computer Science 1: Principles,4,Required,,,,,,
+cs,CSC 202,CSC 202,Computer Science 2: Data Structures,4,Required,,,,,,
+cs,CSC 203,CSC 203,Computer Science 3: Algorithms,4,Required,,,,,,
+cs,CSC 210,CSC 210,Computer Architecture,4,Required,,,,,,
+cs,CSC 311,CSC 311,Operating Systems: Design and Implementation,4,Required,,,,,,
+cs,CSC 312,CSC 312,Database Systems and Theory,3,Required,,,,,,
+cs,CSC 320,CSC 320,Automata,3,Required,,,,,,
+cs,CSC 321,CSC 321,Programming Language Theory,3,Required,,,,,,
+cs,CSC 431,CSC 431,Senior Software Architecture Seminar,1,Required,,,,,,
+cs,MTH 301,MTH 301,Introduction to Abstract Mathematics,3,Required,,,,,,
+cs,MTH 322,MTH 322,Discrete Mathematics,3,Required,,,,,,
+cs,CS ELECTIVE 1,,MTH/CSC/DSC 3XX/4XX Elective,3,Elective,elective,,MTH|CSC|DSC,300,499,3
+cs,CS ELECTIVE 2,,MTH/CSC/DSC 3XX/4XX Elective,3,Elective,elective,,MTH|CSC|DSC,300,499,3
+cs,CS ELECTIVE 3,,MTH/CSC/DSC 3XX/4XX Elective,3,Elective,elective,,MTH|CSC|DSC,300,499,3
+math,MTH 121,MTH 121,Calculus I,4,Required,,,,,,
+math,MTH 122,MTH 122,Calculus II,4,Required,,,,,,
+math,CSC 100,CSC 100,Computer Science 0: Foundations,4,Required,,,,,,
+math,CSC 101,CSC 101,Computer Science 1: Principles,4,Required,,,,,,
+math,MATH LAB SCIENCE I,,Laboratory Science I,4,Choice,choice,SCI PHY I|SCI CHM I,,,,4
+math,MATH LAB SCIENCE II,,Laboratory Science II,4,Choice,choice,SCI PHY II|SCI CHM II,,,,4
+math,MTH 221,MTH 221,Linear Algebra,3,Required,,,,,,
+math,MTH 223,MTH 223,Calculus III,4,Required,,,,,,
+math,MTH 261,MTH 261,Differential Equations,3,Required,,,,,,
+math,MTH 301,MTH 301,Introduction to Abstract Mathematics,3,Required,,,,,,
+math,MATH MTH ELECTIVE 1,,MTH 3XX/4XX Elective,3,Elective,elective,,MTH,300,499,3
+math,MTH 491,MTH 491,Seminar,1,Required,,,,,,
+math,MATH PROGRAM ELECTIVE 1,,"Choose MTH 451, MTH 464, or MTH 482",3,Choice,choice,MTH 451|MTH 464|MTH 482,,,,3
+math,MATH PROGRAM ELECTIVE 2,,"Choose MTH 451, MTH 464, or MTH 482",3,Choice,choice,MTH 451|MTH 464|MTH 482,,,,3
+mathMinor,MTH 121,MTH 121,Calculus I,4,Required,,,,,,
+mathMinor,MTH 122,MTH 122,Calculus II,4,Required,,,,,,
+mathMinor,MTH 223,MTH 223,Calculus III,4,Required,,,,,,
+mathMinor,MTH 301,MTH 301,Introduction to Abstract Mathematics,3,Required,,,,,,
+mathMinor,MATH MINOR ELECTIVE 1,,MTH 3XX/4XX Elective,3,Elective,elective,,MTH,300,499,3
+mathMinor,MATH MINOR ELECTIVE 2,,MTH 3XX/4XX Elective,3,Elective,elective,,MTH,300,499,3
+mathMinor,MATH MINOR ELECTIVE 3,,MTH 3XX/4XX Elective,3,Elective,elective,,MTH,300,499,3
+engineering,PEN 101,PEN 101,Pre-Engineering Seminar,0,Required,,,,,,
+engineering,CSC 101,CSC 101,Computer Science 1: Principles,4,Required,,,,,,
+engineering,CHM 111,CHM 111,General Chemistry I,3,Required,,,,,,
+engineering,CHM 113,CHM 113,General Chemistry I Laboratory,1,Required,,,,,,
+engineering,CHM 112,CHM 112,General Chemistry II,3,Required,,,,,,
+engineering,CHM 114,CHM 114,General Chemistry II Laboratory,1,Required,,,,,,
+engineering,MTH 121,MTH 121,Calculus I,4,Required,,,,,,
+engineering,MTH 122,MTH 122,Calculus II,4,Required,,,,,,
+engineering,PHY 221,PHY 221,Physics with Calculus I,3,Required,,,,,,
+engineering,PHY 213,PHY 213,Physics Laboratory I,1,Required,,,,,,
+engineering,PHY 222,PHY 222,Physics with Calculus II,3,Required,,,,,,
+engineering,PHY 214,PHY 214,Physics Laboratory II,1,Required,,,,,,
+engineering,MTH 223,MTH 223,Calculus III,4,Required,,,,,,
+engineering,MTH 261,MTH 261,Differential Equations,3,Required,,,,,,
+engineering,ENGINEERING PROGRAM ELECTIVE 1,,"Program Elective: BIO, CHM, CSC, MTH, PHY, or approved USA engineering course",3,Elective,elective,,BIO|CHM|CSC|MTH|PHY,100,499,3
+engineering,ENGINEERING PROGRAM ELECTIVE 2,,"Program Elective: BIO, CHM, CSC, MTH, PHY, or approved USA engineering course",3,Elective,elective,,BIO|CHM|CSC|MTH|PHY,100,499,3
+engineering,ENGINEERING MTH ELECTIVE,,MTH 3XX/4XX Mathematics Elective,3,Elective,elective,,MTH,300,499,3
+engineering,PEN 201,PEN 201,Dual-enrollment Engineering,3,Required,,,,,,

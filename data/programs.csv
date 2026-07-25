@@ -1,7 +1,6 @@
-program_id,type,name,area,total_credits,requirements_file
-ai,major,AI and Data Science Major,Computing and Data Science,61,programs/ai-and-data-science-major.csv
-cs,major,Computer Science Major,Computing and Data Science,56,programs/computer-science-major.csv
-math,major,Mathematics Major,Mathematics and Natural Sciences,47,programs/mathematics-major.csv
-aiMinor,minor,AI and Data Science Minor,Computing and Data Science,27,programs/ai-and-data-science-minor.csv
-csMinor,minor,Computer Science Minor,Computing and Data Science,25,programs/computer-science-minor.csv
-mathMinor,minor,Mathematics Minor,Mathematics and Natural Sciences,24,programs/mathematics-minor.csv
+program_id,name,type,area,total_credits,requirements_file
+ai,AI and Data Science,major,STEM,61,
+cs,Computer Science,major,STEM,56,
+math,Mathematics,major,STEM,47,
+mathMinor,Mathematics,minor,STEM,24,
+engineering,Dual Degree Engineering,major,STEM,47,
