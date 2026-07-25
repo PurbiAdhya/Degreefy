@@ -660,6 +660,18 @@
 
     .print-footer { display: none; margin-top: 16px; color: var(--muted); font-size: 12px; }
 
+
+    .core-group-heading {
+      margin: 14px -2px 4px;
+      padding: 8px 6px 6px;
+      border-bottom: 1px solid var(--line);
+      color: var(--purple-dark);
+      font-size: 14px;
+      font-weight: 560;
+      line-height: 1.35;
+    }
+    .core-group-heading:first-child { margin-top: 0; }
+
     @media (max-width: 1180px) {
       .setup-grid, .workspace { grid-template-columns: 1fr; }
       .side-stack { position: static; max-height: none; overflow: visible; padding-right: 0; }
@@ -1879,7 +1891,7 @@
         <div class="semester-panel-head">
           <span class="panel-kicker">Published schedule</span>
           <h2>Available sections</h2>
-          <p class="panel-intro" id="semesterCatalogIntro">Degreefy places the required PTH course first, then prioritizes unfinished major requirements and first-year core skills. Drag any section into the weekly schedule to adjust the plan.</p>
+          <p class="panel-intro" id="semesterCatalogIntro">Degreefy places the required PTH course first, then takes major courses from the lowest prerequisite level upward. Core requirements follow the live priority list, skipping anything already completed or cleared.</p>
         </div>
         <div class="semester-panel-body">
           <div class="semester-catalog-tools">
@@ -2124,6 +2136,13 @@ let COURSE_CATALOG = {
   "THR 250": { title: "Acting I", credits: 3 },
   "BUS 263": { title: "Business Statistics", credits: 3 },
   "PSY 263": { title: "Statistics for the Social Sciences", credits: 3 },
+  "PSY 204": { title: "Developmental Psychology", credits: 3 },
+  "HSC 136": { title: "HSC 136", credits: 3 },
+  "HSC 138": { title: "HSC 138", credits: 3 },
+  "EDU 270": { title: "EDU 270", credits: 3 },
+  "EDU 271": { title: "EDU 271", credits: 3 },
+  "EDU 401": { title: "EDU 401", credits: 3 },
+  "PHL 318": { title: "Christian Medical Ethics for Nurses", credits: 3, prereq: ["PHL 101", "PHL 190"] },
 
   "ENG 105": { title: "College Composition", credits: 3 },
   "ENG 121": { title: "Composition I", credits: 3 },
@@ -2194,7 +2213,7 @@ const CRITERIA = {
   languageCore: { type: "choice", choices: ["SPA 101", "SPA 102", "FRE 101", "FRE 102", "ITA 101", "ITA 102", "GER 101", "GER 102", "LAT 101", "LAN 301"], minCredits: 3 },
   americanCore: { type: "choice", choices: ["HIS 120", "HIS 213", "HIS 214", "POL 112"], minCredits: 3 },
   globalCore: { type: "choice", choices: ["HIS 110", "HIS 211", "HIS 212", "HIS 290", "POL 151", "POL 161"], minCredits: 3 },
-  naturalScienceCore: { type: "choice", prefixes: ["BIO", "CHM", "CSC", "PHY"], minLevel: 100, maxLevel: 499, minCredits: 3 },
+  naturalScienceCore: { type: "choice", prefixes: ["BIO", "CHM", "PHY"], minLevel: 100, maxLevel: 499, minCredits: 3 },
   socialScienceCore: { type: "choice", prefixes: ["PSY", "POL", "ECO", "SOC"], minLevel: 100, maxLevel: 499, minCredits: 3 },
   artsCore: { type: "choice", choices: ["ART 100", "ART 101", "ART 102", "ART 103", "ARH 100", "MUS 100", "THR 245", "THR 250"], minCredits: 3 },
   literatureCore: { type: "choice", choices: ["ENG 2XX", "ENG 240", "ENG 241", "ENG 242", "ENG 243", "ENG 276"], minCredits: 3 },
@@ -2279,7 +2298,7 @@ let CORE = [
   ["CORE LANGUAGE", "Language and Culture", "SPA, FRE, ITA, or LAN", 3, CRITERIA.languageCore],
   ["CORE AMERICAN", "American national community", "HIS 120/213/214 or POL 112", 3, CRITERIA.americanCore],
   ["CORE GLOBAL", "Global human community", "HIS 110/211/212/290 or POL 151/161", 3, CRITERIA.globalCore],
-  ["CORE SCIENCE", "Natural Science", "BIO, CHM, CSC, or PHY", 3, CRITERIA.naturalScienceCore],
+  ["CORE SCIENCE", "Natural Science", "BIO, CHM, or PHY", 3, CRITERIA.naturalScienceCore],
   ["CORE SOCIAL", "Social Science", "PSY, POL, ECO, or SOC", 3, CRITERIA.socialScienceCore],
   ["CORE ARTS", "Visual/Performing Arts", "ART, ARH, MUS, or THR", 3, CRITERIA.artsCore],
   ["CORE LITERATURE", "Literature", "ENG 2XX", 3, CRITERIA.literatureCore],
@@ -2287,6 +2306,39 @@ let CORE = [
   ["CORE THL UPPER", "THL 2XX/3XX", "Theology elective", 3, CRITERIA.thlUpperCore],
   ["CORE EXPLORATION", "Exploration", "Elective outside major knowledge area", 3, CRITERIA.explorationCore]
 ];
+
+const CORE_GROUPS = [
+  { label: "First-Year Experience", ids: ["CORE PTH 101", "CORE PTH 102"] },
+  { label: "Skills", ids: ["CORE ENG 121", "CORE ENG 123", "CORE LOGIC", "CORE INTRO THEOLOGY", "CORE MTH", "CORE LANGUAGE"] },
+  { label: "Foundations I · National and global human communities", ids: ["CORE AMERICAN", "CORE GLOBAL"] },
+  { label: "Foundations II · Nature and the human being", ids: ["CORE SCIENCE", "CORE SOCIAL"] },
+  { label: "Foundations III · Creative imagination", ids: ["CORE ARTS", "CORE LITERATURE"] },
+  { label: "Foundations IV · Philosophical and theological reflection", ids: ["CORE PHL UPPER", "CORE THL UPPER"] },
+  { label: "Explorations", ids: ["CORE EXPLORATION"] }
+];
+
+const CORE_REQUIREMENT_ORDER = {
+  "CORE PTH 101": 0,
+  "CORE PTH 102": 1,
+  "CORE ENG 121": 10,
+  "CORE ENG 123": 20,
+  "CORE LOGIC": 30,
+  "CORE INTRO THEOLOGY": 40,
+  "CORE MTH": 50,
+  "CORE LANGUAGE": 60,
+  "CORE AMERICAN": 100,
+  "CORE GLOBAL": 110,
+  "CORE SCIENCE": 200,
+  "CORE SOCIAL": 210,
+  "CORE ARTS": 300,
+  "CORE LITERATURE": 310,
+  "CORE PHL UPPER": 400,
+  "CORE THL UPPER": 410,
+  "CORE EXPLORATION": 500
+};
+const PTH_CORE_REQUIREMENT_IDS = ["CORE PTH 101", "CORE PTH 102"];
+const FIRST_YEAR_SKILLS_REQUIREMENT_IDS = ["CORE ENG 121", "CORE ENG 123", "CORE LOGIC", "CORE INTRO THEOLOGY", "CORE MTH", "CORE LANGUAGE"];
+const REMAINING_CORE_REQUIREMENT_IDS = ["CORE AMERICAN", "CORE GLOBAL", "CORE SCIENCE", "CORE SOCIAL", "CORE ARTS", "CORE LITERATURE", "CORE PHL UPPER", "CORE THL UPPER", "CORE EXPLORATION"];
 
 let OFFERED_CODES = Array.from(new Set([
   ...Object.values(OFFERINGS).flatMap(terms => [...(terms.Fall || []), ...(terms.Spring || []), ...(terms.Summer || [])]),
@@ -2297,7 +2349,8 @@ let OFFERED_CODES = Array.from(new Set([
   "CHM 111", "CHM 112", "CHM 113", "CHM 114", "CHM 115",
   "BIO 101", "BIO 103", "BIO 120", "BIO 125", "BIO 140",
   "BUS 263", "PSY 263", "SCI PHY I", "SCI PHY II", "SCI CHM I", "SCI CHM II",
-  "LAN 301", "ART 100", "ARH 100", "MUS 100", "ENG 2XX", "PHL 2XX", "THL 2XX"
+  "LAN 301", "ART 100", "ARH 100", "MUS 100", "ENG 2XX", "PHL 2XX", "THL 2XX",
+  "PSY 204", "HSC 136", "HSC 138", "EDU 270", "EDU 271", "EDU 401", "PHL 318"
 ]));
 
 let state;
@@ -2829,11 +2882,38 @@ function satisfyMatchingCoreRequirementsWithCourse(offered) {
   });
 }
 
+function selectedProgramIsElementaryEducation() {
+  return selectedProgramNames().some(name => /elementary education|elementary ed/i.test(name));
+}
+
+function coreCriteriaForStudent(id, defaultCriteria) {
+  if (selectedProgramIsNursing()) {
+    const nursingOverrides = {
+      "CORE MTH": { type: "choice", choices: ["MTH 163"], minCredits: 3 },
+      "CORE AMERICAN": { type: "choice", choices: ["SOC 101"], minCredits: 3 },
+      "CORE GLOBAL": { type: "choice", prefixes: ["HIS", "POL"], minLevel: 100, maxLevel: 499, minCredits: 3 },
+      "CORE SCIENCE": { type: "choice", choices: ["HSC 136", "HSC 138"], minCredits: 3 },
+      "CORE SOCIAL": { type: "choice", choices: ["PSY 101"], minCredits: 3 },
+      "CORE PHL UPPER": { type: "choice", choices: ["PHL 318"], minCredits: 3 },
+      "CORE EXPLORATION": { type: "choice", choices: ["PSY 204"], minCredits: 3 }
+    };
+    if (nursingOverrides[id]) return nursingOverrides[id];
+  }
+  if (selectedProgramIsElementaryEducation()) {
+    const elementaryOverrides = {
+      "CORE ARTS": { type: "choice", choices: ["EDU 270", "EDU 271"], minCredits: 3 },
+      "CORE PHL UPPER": { type: "choice", choices: ["EDU 401"], minCredits: 3 }
+    };
+    if (elementaryOverrides[id]) return elementaryOverrides[id];
+  }
+  return defaultCriteria;
+}
+
 function makeCoreItem(c) {
   if (!c) return null;
   const [id, code, title, credits, extra] = c;
   const info = COURSE_CATALOG[code] || {};
-  return { id, code, title, credits, category: "Core", criteria: extra, prereq: info.prereq || [], coreq: info.coreq || [], sources: ["Core Curriculum"], sourceKeys: ["core"] };
+  return { id, code, title, credits, category: "Core", criteria: coreCriteriaForStudent(id, extra), prereq: info.prereq || [], coreq: info.coreq || [], sources: ["Core Curriculum"], sourceKeys: ["core"] };
 }
 
 function getAllCourseById() {
@@ -3076,10 +3156,18 @@ function renderRequirementList() {
     appendCard(electiveList, item, checked, { draggable: false, checkable: true, dropTarget: true, hideCompletedId: "programUncheckedOnly" });
   });
 
-  CORE.forEach(c => {
-    const item = makeCoreItem(c);
-    const checked = isCoreRequirementChecked(item);
-    appendCard(coreList, item, checked, { core: true, draggable: false, checkable: true, dropTarget: true, hideCompletedId: "coreUncheckedOnly" });
+  CORE_GROUPS.forEach(group => {
+    const heading = document.createElement("div");
+    heading.className = "core-group-heading";
+    heading.textContent = group.label;
+    coreList.appendChild(heading);
+    group.ids.forEach(id => {
+      const row = CORE.find(core => core[0] === id);
+      if (!row) return;
+      const item = makeCoreItem(row);
+      const checked = isCoreRequirementChecked(item);
+      appendCard(coreList, item, checked, { core: true, draggable: false, checkable: true, dropTarget: true, hideCompletedId: "coreUncheckedOnly" });
+    });
   });
 }
 
@@ -3286,6 +3374,41 @@ function getPrereqCodes(rawCode) {
     .filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
 }
 
+// The prerequisite level is the course's position in the dependency graph.
+// A course with no prerequisites is level 0; a course whose deepest prerequisite
+// is level 0 is level 1, and so on. For an OR prerequisite group, the shortest
+// valid branch determines the group's level.
+function coursePrerequisiteLevel(rawCode, memo = new Map(), visiting = new Set()) {
+  if (!rawCode) return 0;
+  if (memo.has(rawCode)) return memo.get(rawCode);
+  if (visiting.has(rawCode)) return 0;
+  visiting.add(rawCode);
+  const groups = getPrereqGroups(rawCode)
+    .map(group => group.filter(code => COURSE_CATALOG[code] || BUNDLES[code]))
+    .filter(group => group.length);
+  if (!groups.length) {
+    visiting.delete(rawCode);
+    memo.set(rawCode, 0);
+    return 0;
+  }
+  const groupLevels = groups.map(group => Math.min(...group.map(code => coursePrerequisiteLevel(code, memo, visiting))));
+  const level = 1 + Math.max(...groupLevels);
+  visiting.delete(rawCode);
+  memo.set(rawCode, level);
+  return level;
+}
+
+function majorPrerequisiteSortScore(rawCode) {
+  const seminarPenalty = SEMINAR_COURSES.includes(rawCode) ? 1000000 : 0;
+  const level = coursePrerequisiteLevel(rawCode);
+  const catalogLevel = getLevel(rawCode) || 999;
+  return seminarPenalty + level * 100000 + catalogLevel * 10 + courseSortScore(rawCode) * 0.001;
+}
+
+function sortMajorCoursesByPrerequisiteLevel(rawCodes) {
+  return orderedUnique(rawCodes).sort((a, b) => majorPrerequisiteSortScore(a) - majorPrerequisiteSortScore(b) || a.localeCompare(b));
+}
+
 function enforceAiCsElectiveSeparation() {
   if (!isAiCsDoubleMajor()) return;
   const reqMap = getRequirementMap();
@@ -3369,8 +3492,20 @@ function candidateCodesForRequirement(req) {
   return OFFERED_CODES.filter(code => canSatisfyRequirement(makeOfferedItem(code), req));
 }
 
+function hasCompletedOrPlannedFoundationsHistory() {
+  return getDoneCourseCodes().some(code => getPrefix(code) === "HIS" && ["CORE AMERICAN", "CORE GLOBAL"].some(id => {
+    const row = CORE.find(core => core[0] === id);
+    return row && canSatisfyRequirement(makeOfferedItem(code), makeCoreItem(row));
+  }));
+}
+
 function chooseCandidateForRequirement(req) {
-  const candidates = candidateCodesForRequirement(req).sort((a, b) => candidatePreferenceScore(a, req) - candidatePreferenceScore(b, req));
+  let candidates = candidateCodesForRequirement(req).sort((a, b) => candidatePreferenceScore(a, req) - candidatePreferenceScore(b, req));
+  // Non-Nursing students must complete at least one History course across Foundations I.
+  // Until that condition is met, prefer a History option for either national or global community.
+  if (!selectedProgramIsNursing() && ["CORE AMERICAN", "CORE GLOBAL"].includes(req?.id) && !hasCompletedOrPlannedFoundationsHistory()) {
+    candidates = [...candidates].sort((a, b) => (getPrefix(a) === "HIS" ? 0 : 1) - (getPrefix(b) === "HIS" ? 0 : 1) || candidatePreferenceScore(a, req) - candidatePreferenceScore(b, req));
+  }
   if (req?.id === "CORE LANGUAGE") {
     const preferred = selectedLanguageCourse();
     if (preferred && candidates.includes(preferred) && !isRawDone(preferred)) return preferred;
@@ -3381,11 +3516,15 @@ function chooseCandidateForRequirement(req) {
   return unused || candidates[0] || null;
 }
 
-function collectNeededProgramRawCourses() {
+function collectNeededProgramRawCourses(sourceType = "all") {
   reconcileSatisfiedRequirements();
   const needed = [];
   Array.from(getRequirementMap().values()).forEach(req => {
     if (isRequirementChecked(req)) return;
+    const hasMajor = (req.sourceKeys || []).some(key => key.startsWith("major:"));
+    const hasMinor = (req.sourceKeys || []).some(key => key.startsWith("minor:"));
+    if (sourceType === "major" && !hasMajor) return;
+    if (sourceType === "minor" && (!hasMinor || hasMajor)) return;
     const code = chooseCandidateForRequirement(req);
     if (code) needed.push(code);
   });
@@ -3393,14 +3532,7 @@ function collectNeededProgramRawCourses() {
 }
 
 function collectNeededCoreRawCourses() {
-  reconcileSatisfiedRequirements();
-  const needed = [];
-  CORE.map(makeCoreItem).forEach(req => {
-    if (isCoreRequirementChecked(req)) return;
-    const code = chooseCandidateForRequirement(req);
-    if (code) needed.push(code);
-  });
-  return Array.from(new Set(needed));
+  return collectNeededCoreRawCoursesByIds(CORE.map(row => row[0]));
 }
 
 function collectNeededRawCourses() {
@@ -3432,20 +3564,53 @@ function calculateTargetCredits(activeTerms, rawCodes) {
   return Math.min(18, Math.max(12, average));
 }
 
-function firstYearNeededCourses(programCodes, coreCodes) {
-  const supplemental = placementSupplementalCourses();
-  const allNeeded = new Set([...supplemental, ...programCodes, ...coreCodes, ...expandWithPrereqs([...supplemental, ...programCodes, ...coreCodes])]);
-  const out = [...supplemental];
-  FIRST_YEAR_EARLY_COURSES.forEach(code => {
-    const mathPlacement = effectiveMathPlacement();
-    if (code === "MTH 100" && mathPlacement && mathPlacement !== "MTH 100") return;
-    if (code === "MTH 101" && mathPlacement && mathPlacement !== "MTH 100") return;
-    if (code === "MTH 111" && mathPlacement && mathPlacement !== "MTH 111") return;
-    if (code === "MTH 121" && mathPlacement && mathPlacement !== "MTH 121") return;
-    if (allNeeded.has(code) || code === mathPlacement) out.push(code);
+function orderedCoreRequirementIds(ids = CORE.map(row => row[0])) {
+  const available = new Set(CORE.map(row => row[0]));
+  return orderedUnique(ids)
+    .filter(id => available.has(id))
+    .sort((a, b) => {
+      const aRank = CORE_REQUIREMENT_ORDER[a] ?? (10000 + CORE.findIndex(row => row[0] === a));
+      const bRank = CORE_REQUIREMENT_ORDER[b] ?? (10000 + CORE.findIndex(row => row[0] === b));
+      return aRank - bRank;
+    });
+}
+
+function remainingCoreRequirementIds(ids = CORE.map(row => row[0])) {
+  return orderedCoreRequirementIds(ids).filter(id => {
+    const row = CORE.find(core => core[0] === id);
+    return row && !isCoreRequirementChecked(makeCoreItem(row));
   });
-  GATEWAY_COURSES.forEach(code => { if (allNeeded.has(code)) out.push(code); });
-  return orderedUnique(expandWithPrereqs(out));
+}
+
+function dynamicCoreRequirementRank(requirementId, ids = CORE.map(row => row[0])) {
+  const index = remainingCoreRequirementIds(ids).indexOf(requirementId);
+  return index < 0 ? Number.POSITIVE_INFINITY : index * 10;
+}
+
+function collectNeededCoreRawCoursesByIds(ids) {
+  reconcileSatisfiedRequirements();
+  const needed = [];
+  // Treat the published Core list as a ranked queue. Completed, transferred,
+  // placement-cleared, and AP-cleared requirements drop out, so every remaining
+  // requirement automatically moves up in priority.
+  remainingCoreRequirementIds(ids || CORE.map(row => row[0])).forEach(id => {
+    const row = CORE.find(core => core[0] === id);
+    if (!row) return;
+    const req = makeCoreItem(row);
+    const code = chooseCandidateForRequirement(req);
+    if (code) needed.push(code);
+  });
+  return orderedUnique(needed);
+}
+
+function coreSequenceCoursesByIds(ids, includePlacement = false) {
+  const out = includePlacement ? [...placementSupplementalCourses()] : [];
+  collectNeededCoreRawCoursesByIds(ids).forEach(code => {
+    // Any prerequisite introduced by placement or course selection is inserted
+    // immediately before the ranked Core course that requires it.
+    expandWithPrereqs([code]).forEach(requiredCode => out.push(requiredCode));
+  });
+  return orderedUnique(out);
 }
 
 function nonSeminarCodes(codes) { return (codes || []).filter(code => !SEMINAR_COURSES.includes(code)); }
@@ -3844,44 +4009,62 @@ function populateAllUnchecked(options = {}) {
   Object.keys(state.planned).forEach(key => { if (!allTerms.includes(key)) delete state.planned[key]; });
 
   const skipped = new Set();
-  let programNeeded = collectNeededProgramRawCourses();
+  let majorNeeded = collectNeededProgramRawCourses("major");
+  let minorNeeded = collectNeededProgramRawCourses("minor");
   let coreNeeded = collectNeededCoreRawCourses();
-  let allNeededExpanded = expandWithPrereqs([...programNeeded, ...coreNeeded]);
+  let allNeededExpanded = expandWithPrereqs([...majorNeeded, ...coreNeeded, ...minorNeeded]);
   let targetCredits = calculateTargetCredits(activeTerms, allNeededExpanded);
   let scheduledIndexes = existingScheduledIndexes(activeTerms);
 
-  // 1. Place early first-year and gateway courses first, because they unlock the rest of the plan.
-  const earlyAndGateway = firstYearNeededCourses(programNeeded, coreNeeded);
-  placeRawSequence(earlyAndGateway, activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
+  // 1. PTH is mandatory and belongs at the beginning of the degree journey.
+  const pthSequence = coreSequenceCoursesByIds(PTH_CORE_REQUIREMENT_IDS, false);
+  placeRawSequence(pthSequence, activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
 
-  // 2. Then place program requirements and their prerequisites, excluding seminar/capstone courses.
+  // 2. Give outstanding major requirements first preference, including the prerequisites
+  // that unlock the major sequence. Seminar/capstone courses remain reserved for later.
   reconcileSatisfiedRequirements();
-  programNeeded = collectNeededProgramRawCourses();
-  const programMain = nonSeminarCodes(expandWithPrereqs(programNeeded)).filter(code => !SEMINAR_COURSES.includes(code));
-  targetCredits = calculateTargetCredits(activeTerms, [...programMain, ...coreNeeded]);
+  majorNeeded = collectNeededProgramRawCourses("major");
+  const majorMain = sortMajorCoursesByPrerequisiteLevel(
+    nonSeminarCodes(expandWithPrereqs(majorNeeded)).filter(code => !SEMINAR_COURSES.includes(code))
+  );
+  targetCredits = calculateTargetCredits(activeTerms, [...majorMain, ...coreNeeded, ...minorNeeded]);
   scheduledIndexes = existingScheduledIndexes(activeTerms);
-  placeRawSequence(programMain, activeTerms, scheduledIndexes, targetCredits, skipped, "program");
+  placeRawSequence(majorMain, activeTerms, scheduledIndexes, targetCredits, skipped, "program");
 
-  // 3. Fill remaining core requirements into the leftover space as evenly as possible.
+  // 3. Fill the rest of the first-year core in its published order: composition,
+  // logic, theology, mathematics, and language and culture.
   reconcileSatisfiedRequirements();
-  coreNeeded = collectNeededCoreRawCourses();
-  const coreMain = nonSeminarCodes(expandWithPrereqs(coreNeeded));
-  targetCredits = calculateTargetCredits(activeTerms, coreMain);
+  const firstYearCore = coreSequenceCoursesByIds(FIRST_YEAR_SKILLS_REQUIREMENT_IDS, true);
+  targetCredits = calculateTargetCredits(activeTerms, firstYearCore);
   scheduledIndexes = existingScheduledIndexes(activeTerms);
-  placeRawSequence(coreMain, activeTerms, scheduledIndexes, targetCredits, skipped, "core");
+  placeRawSequence(firstYearCore, activeTerms, scheduledIndexes, targetCredits, skipped, "foundation");
 
-  // 4. Put project/seminar courses in the last Spring semester when possible.
+  // 4. Continue through Foundations I, II, III, IV, and Explorations in order.
   reconcileSatisfiedRequirements();
-  programNeeded = collectNeededProgramRawCourses();
-  const seminars = seminarCodes(expandWithPrereqs(programNeeded));
+  const remainingCore = coreSequenceCoursesByIds(REMAINING_CORE_REQUIREMENT_IDS, false);
+  targetCredits = calculateTargetCredits(activeTerms, remainingCore);
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeRawSequence(remainingCore, activeTerms, scheduledIndexes, targetCredits, skipped, "core");
+
+  // 5. Add minor-only requirements after major and core needs have been addressed.
+  reconcileSatisfiedRequirements();
+  minorNeeded = collectNeededProgramRawCourses("minor");
+  const minorMain = nonSeminarCodes(expandWithPrereqs(minorNeeded)).filter(code => !SEMINAR_COURSES.includes(code));
+  targetCredits = calculateTargetCredits(activeTerms, minorMain);
+  scheduledIndexes = existingScheduledIndexes(activeTerms);
+  placeRawSequence(minorMain, activeTerms, scheduledIndexes, targetCredits, skipped, "program");
+
+  // 6. Put project/seminar courses in the last Spring semester when possible.
+  reconcileSatisfiedRequirements();
+  const seminars = seminarCodes(expandWithPrereqs(collectNeededProgramRawCourses("all")));
   scheduledIndexes = existingScheduledIndexes(activeTerms);
   placeRawSequence(seminars, activeTerms, scheduledIndexes, 15, skipped, "seminar");
 
-  // 5. Repair any course that still violates term offering, prerequisite, or corequisite rules.
+  // 7. Repair any course that still violates term offering, prerequisite, or corequisite rules.
   targetCredits = calculateTargetCredits(activeTerms, collectNeededRawCourses());
   repairUntilWarningsClear(activeTerms, allTerms, targetCredits, skipped);
 
-  // 6. If requirements are planned but the total is still below 120 credits, add easier extra courses
+  // 8. If requirements are planned but the total is still below 120 credits, add easier extra courses
   // to the lightest Fall/Spring semesters first. If Fall/Spring cannot reach 120, use Summer as needed.
   reconcileSatisfiedRequirements();
   fillRemainingCreditsTo120(activeTerms, skipped);
@@ -3893,7 +4076,7 @@ function populateAllUnchecked(options = {}) {
   }
   repairUntilWarningsClear(activeTerms, allTerms, calculateTargetCredits(activeTerms, collectNeededRawCourses()), skipped);
 
-  // 7. One final cleanup pass catches requirements satisfied by newly placed courses.
+  // 9. One final cleanup pass catches requirements satisfied by newly placed courses.
   reconcileSatisfiedRequirements();
   Array.from(skipped).forEach(code => {
     if (isRawDone(code) || isRawPlanned(code) || isPlacementSatisfied(code)) skipped.delete(code);
@@ -4171,6 +4354,12 @@ function collectPlannerWarnings() {
       prereqCoreqWarningsForPlanned(id, key).forEach(msg => warnings.push(`${key}: ${item.code} — ${msg}.`));
     });
   });
+
+  const americanReq = makeCoreItem(CORE.find(row => row[0] === "CORE AMERICAN"));
+  const globalReq = makeCoreItem(CORE.find(row => row[0] === "CORE GLOBAL"));
+  if (!selectedProgramIsNursing() && americanReq && globalReq && isCoreRequirementChecked(americanReq) && isCoreRequirementChecked(globalReq) && !hasCompletedOrPlannedFoundationsHistory()) {
+    warnings.push("Foundations I requires at least one History course for non-Nursing students. Replace one political science selection with an eligible HIS course.");
+  }
 
   const overlap = majorOverlapStatus();
   if (overlap.required && !overlap.ok) warnings.push(`Double-major distinct-credit check needs attention: ${overlap.messages.join(" ")}`);
@@ -4821,39 +5010,38 @@ function isRequiredPTHForUpcomingSemester(code) {
     && scheduleSectionsForPrimaryTerm().some(section => section.course_code === code)
     && semesterRequirementMatches(code).some(match => match.type === "Core");
 }
-const FIRST_YEAR_CORE_REQUIREMENT_ORDER = {
-  "CORE PTH 101": 0,
-  "CORE PTH 102": 1,
-  "CORE ENG 121": 10,
-  "CORE ENG 123": 20,
-  "CORE LOGIC": 30,
-  "CORE INTRO THEOLOGY": 40,
-  "CORE MTH": 50,
-  "CORE LANGUAGE": 60
-};
 function selectedProgramIsNursing() {
   return selectedProgramNames().some(name => /nurs/i.test(name));
 }
-function firstYearCorePreferenceRank(code) {
-  // Placement foundation courses must come before the composition or math course
-  // they unlock, even though they are not themselves listed in the core table.
-  if (code === "ENG 105" && placementSupplementalCourses().includes(code)) return 5;
+function coreRequirementPreferenceRank(code) {
   const matches = semesterRequirementMatches(code).filter(match => match.type === "Core");
+  // Placement foundation courses enter immediately ahead of the Core requirement
+  // they unlock. If an earlier Core item is already complete, every later item
+  // moves up because dynamicCoreRequirementRank uses only remaining requirements.
+  if (code === "ENG 105" && placementSupplementalCourses().includes(code)) {
+    const compositionRank = dynamicCoreRequirementRank("CORE ENG 121");
+    return Number.isFinite(compositionRank) ? compositionRank - 1 : 0;
+  }
   let rank = Number.POSITIVE_INFINITY;
   matches.forEach(match => {
-    let candidate = FIRST_YEAR_CORE_REQUIREMENT_ORDER[match.req.id];
-    if (candidate === undefined) return;
+    let candidate = dynamicCoreRequirementRank(match.req.id);
+    if (!Number.isFinite(candidate)) return;
     if (match.req.id === "CORE ENG 121" && code === "ENG 190") candidate += 0.25;
     if (match.req.id === "CORE ENG 123" && code === "ENG 290") candidate += 0.25;
     if (match.req.id === "CORE MTH") {
       if (selectedProgramIsNursing() && code === "MTH 163") candidate -= 3;
       else if (effectiveMathPlacement() && code === effectiveMathPlacement()) candidate -= 2;
-      else if (placementSupplementalCourses().includes(code)) candidate -= 1;
       else candidate += Math.min(getLevel(code) || 999, 999) / 10000;
     }
+    if (match.req.id === "CORE LANGUAGE" && code === selectedLanguageCourse()) candidate -= 2;
     rank = Math.min(rank, candidate);
   });
   return rank;
+}
+function firstYearCorePreferenceRank(code) {
+  const matchesFirstYear = semesterRequirementMatches(code).some(match => match.type === "Core" && FIRST_YEAR_SKILLS_REQUIREMENT_IDS.includes(match.req.id));
+  if (code === "ENG 105" && placementSupplementalCourses().includes(code)) return coreRequirementPreferenceRank(code);
+  return matchesFirstYear ? coreRequirementPreferenceRank(code) : Number.POSITIVE_INFINITY;
 }
 function semesterPlanningPriority(code) {
   if (isRequiredPTHForUpcomingSemester(code)) return 0;
@@ -4866,9 +5054,16 @@ function semesterPlanningPriority(code) {
   return 5;
 }
 function semesterPlanningScore(code) {
-  const firstYearRank = firstYearCorePreferenceRank(code);
-  const withinGroup = Number.isFinite(firstYearRank) ? firstYearRank * 1000 : courseSortScore(code);
-  return semesterPlanningPriority(code) * 1000000 + withinGroup;
+  const priority = semesterPlanningPriority(code);
+  if (priority === 1) {
+    // Within the major group, begin with courses at the bottom of the prerequisite
+    // graph and move upward. This prevents an upper-level course from outranking
+    // the gateway course that opens its sequence.
+    return priority * 1000000 + majorPrerequisiteSortScore(code);
+  }
+  const coreRank = coreRequirementPreferenceRank(code);
+  const withinGroup = Number.isFinite(coreRank) ? coreRank * 1000 + courseSortScore(code) * 0.001 : courseSortScore(code);
+  return priority * 1000000 + withinGroup;
 }
 function defaultSemesterCourseType(code) {
   if (isCompletedCourseCode(code)) return "Retake";
@@ -5134,9 +5329,9 @@ function planOneSemesterForMe() {
     tryAddSection(conflictFree || sections[0], !conflictFree);
   });
 
-  // After PTH, unfinished major requirements receive first preference. The
-  // first-year core sequence follows next: composition, logic, theology, math,
-  // and language, before other core and minor requirements.
+  // After the mandatory PTH course, unfinished major requirements are ranked by
+  // prerequisite level. Core requirements then follow the live published priority
+  // queue, with completed or cleared items removed, before minor-only choices.
   for (const code of codes.filter(code => !isRequiredPTHForUpcomingSemester(code))) {
     if (semesterCreditsTotal(currentIds()) >= 15) break;
     if (!courseEligibleForUpcomingSemester(code)) continue;
@@ -5166,7 +5361,7 @@ function planOneSemesterForMe() {
   state.semesterSelections = selected.map(section => section.section_id);
   state.semesterCourseTypes = Object.fromEntries(selected.map(section => [section.section_id, defaultSemesterCourseType(section.course_code)]));
   saveState(); renderSemesterPlanner();
-  if (semesterCreditsTotal() < 12) showSemesterToast("Degreefy included the required PTH course, prioritized major courses, and followed the first-year core sequence where possible. Review placement, prerequisites, and routine blocks to reach 12 credits.");
+  if (semesterCreditsTotal() < 12) showSemesterToast("Degreefy included the required PTH course, ranked major courses from lower prerequisite levels upward, followed the remaining Core priority list, and then added minor-only courses where possible. Review placement, prerequisites, and routine blocks to reach 12 credits.");
 }
 function showSemesterToast(message) {
   let toast = document.querySelector(".degreefy-toast");
