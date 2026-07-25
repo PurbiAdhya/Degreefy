@@ -1791,6 +1791,180 @@
       .ap-add-row { grid-template-columns: 1fr; }
     }
 
+
+
+    /* Schedule-first semester planner and grouped full-journey terms */
+    .semester-schedule-only {
+      display: grid;
+      gap: 14px;
+      align-items: start;
+    }
+    .semester-schedule-only .weekly-schedule-panel { width: 100%; }
+    .semester-schedule-only .weekly-panel-toolbar { align-items: center; }
+    .semester-schedule-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+    .semester-credit-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+      min-height: 42px;
+      padding: 8px 12px;
+      border: 1px solid #ded5f7;
+      border-radius: 13px;
+      background: var(--purple-soft);
+      color: var(--purple-dark);
+    }
+    .semester-credit-pill strong { font-size: 20px; font-weight: 560; }
+    .semester-screen-conflicts { padding: 0 18px; margin: 14px 0 0; }
+    .semester-screen-conflicts:empty { display: none; }
+    .semester-print-summary { display: none; }
+    .semester-toolbar-actions.reviewing { display: flex; }
+    .semester-review-note {
+      padding: 12px 14px;
+      border: 1px solid #cfe0d3;
+      border-radius: 14px;
+      background: var(--sage-soft);
+      color: #355a43;
+      font-size: 14px;
+    }
+    .weekly-block.course {
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .weekly-block.course:hover,
+    .weekly-block.course:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(61,48,104,.16);
+      outline: 2px solid rgba(109,91,208,.28);
+      outline-offset: 1px;
+    }
+    body.semester-reviewing .weekly-block.course { cursor: default; }
+    body.semester-reviewing .weekly-block.course:hover,
+    body.semester-reviewing .weekly-block.course:focus-visible {
+      transform: none;
+      box-shadow: none;
+      outline: none;
+    }
+
+    .course-change-dialog {
+      width: min(760px, calc(100vw - 28px));
+      max-height: min(86vh, 820px);
+      border: 0;
+      border-radius: 22px;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 26px 80px rgba(35,29,55,.28);
+    }
+    .course-change-dialog::backdrop { background: rgba(35,29,55,.38); }
+    .course-change-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.98);
+    }
+    .course-change-head h2 { margin: 3px 0 0; color: var(--ink); }
+    .course-change-body { padding: 20px; overflow: auto; max-height: calc(86vh - 76px); }
+    .course-change-current,
+    .recommended-change-card,
+    .any-class-picker {
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+    }
+    .course-change-current { padding: 15px 16px; margin-bottom: 16px; background: #fbfaff; }
+    .course-change-current h3 { margin: 0 0 5px; color: var(--ink); }
+    .course-change-current p { margin: 3px 0; color: var(--muted); font-size: 14px; }
+    .course-change-actions { display: flex; justify-content: flex-end; gap: 9px; flex-wrap: wrap; margin-top: 16px; }
+    .recommended-change-card { padding: 16px; margin-bottom: 14px; border-color: #d8cff4; background: linear-gradient(135deg, #faf8ff, #f8fbf8); }
+    .recommended-change-card h3 { margin: 3px 0 7px; color: var(--ink); }
+    .recommended-change-card p { margin: 3px 0; color: var(--muted); font-size: 14px; }
+    .recommended-change-card button { width: 100%; margin-top: 13px; }
+    .any-class-picker { overflow: hidden; }
+    .any-class-picker summary {
+      cursor: pointer;
+      padding: 14px 16px;
+      color: var(--purple-dark);
+      font-weight: 520;
+      list-style: none;
+    }
+    .any-class-picker summary::-webkit-details-marker { display: none; }
+    .any-class-picker summary::after { content: "+"; float: right; }
+    .any-class-picker[open] summary::after { content: "–"; }
+    .any-class-tools { padding: 0 14px 12px; }
+    .any-class-options { display: grid; gap: 9px; padding: 0 14px 16px; max-height: 360px; overflow: auto; }
+    .any-class-option {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: white;
+    }
+    .any-class-option strong { display: block; color: var(--ink); }
+    .any-class-option span { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
+    .any-class-option button { padding: 8px 11px; font-size: 13px; }
+
+    .semester-grid.two-column-terms { grid-template-columns: repeat(2, minmax(280px, 1fr)); }
+    .semester-course-groups { display: grid; grid-template-rows: minmax(0,1fr) minmax(0,1fr); flex: 1; }
+    .semester-course-bucket { min-height: 104px; padding: 10px; display: grid; align-content: start; gap: 8px; }
+    .semester-course-bucket + .semester-course-bucket { border-top: 1px solid var(--line); }
+    .semester-course-bucket-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 560;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+    .semester-course-bucket.core-bucket { background: #fcfbff; }
+    .semester-course-bucket.program-bucket { background: #fff; }
+    .semester-course-bucket .empty { padding: 12px 8px; }
+    .semester-course-bucket.over { outline: 2px dashed #8a78df; outline-offset: -5px; }
+
+    .history-single-course {
+      align-self: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fbfafc;
+    }
+
+    @media (max-width: 760px) {
+      .semester-grid.two-column-terms { grid-template-columns: 1fr; }
+      .semester-schedule-meta { justify-content: flex-start; }
+      .course-change-actions { display: grid; grid-template-columns: 1fr; }
+      .course-change-actions button { width: 100%; }
+      .any-class-option { grid-template-columns: 1fr; }
+      .any-class-option button { width: 100%; }
+    }
+
+    @media print {
+      body.print-semester .semester-print-summary { display: block !important; }
+      body.print-semester .semester-screen-conflicts { display: none !important; }
+      body.print-semester .semester-schedule-only { display: grid !important; grid-template-columns: 1.62fr .9fr; gap: 10px; }
+      body.print-semester .semester-review-note,
+      body.print-semester .course-change-dialog { display: none !important; }
+      body.print-plan .semester-grid.two-column-terms { grid-template-columns: repeat(2, 1fr) !important; }
+      body.print-plan .semester-course-bucket { min-height: 0; padding: 3px; gap: 2px; }
+      body.print-plan .semester-course-bucket-head { font-size: 6pt; }
+    }
+
   </style>
 </head>
 <body>
@@ -1986,75 +2160,58 @@
         <h2 id="semesterPlanTitle">Plan the upcoming semester</h2>
         <div class="profile-summary" id="semesterProfileSummary"></div>
       </div>
-      <div class="semester-toolbar-actions">
-        <button type="button" id="semesterChangeSetupBtn">Change setup</button>
+      <div class="semester-toolbar-actions" id="semesterToolbarActions">
+        <button type="button" class="primary" id="semesterHappyBtn">I'm happy with my schedule</button>
+        <div class="semester-toolbar-actions hidden" id="semesterReviewActions">
+          <button type="button" id="semesterBackToEditBtn">Go back and edit</button>
+          <button type="button" class="primary" id="semesterPrintBtn">Print schedule</button>
+        </div>
       </div>
     </section>
 
     <div class="semester-status-strip" id="semesterStatusStrip"></div>
+    <div class="semester-review-note hidden" id="semesterReviewNote">Your schedule is ready to print. Go back to editing to change a class or section.</div>
 
-    <main class="semester-planning-layout">
-      <aside class="semester-catalog-panel recommended-courses-panel">
+    <main class="semester-schedule-only">
+      <section class="weekly-schedule-panel">
+        <div class="weekly-panel-toolbar">
+          <div>
+            <span class="panel-kicker">Your schedule</span>
+            <h2>Weekly schedule</h2>
+            <p class="panel-intro">Click a class to change the class or section. Unavailable routine blocks remain visible.</p>
+          </div>
+          <div class="semester-schedule-meta">
+            <div class="semester-credit-pill"><strong id="semesterCreditTotal">0</strong><span>credits</span></div>
+            <button type="button" id="editRoutineBtn">Edit unavailable times</button>
+          </div>
+        </div>
+        <div class="semester-conflict-list semester-screen-conflicts" id="semesterConflictList"></div>
+        <div class="weekly-schedule-wrap">
+          <div class="weekly-day-heads" aria-hidden="true"><span></span><span>Monday</span><span>Tuesday</span><span>Wednesday</span><span>Thursday</span><span>Friday</span></div>
+          <div class="weekly-board" id="weeklyScheduleBoard" aria-label="Weekly class schedule"></div>
+        </div>
+      </section>
+
+      <aside class="semester-selection-panel semester-print-summary" aria-label="Selected course schedule for printing">
         <div class="semester-panel-head">
-          <span class="panel-kicker">Suggested next choices</span>
-          <h2>Recommended courses</h2>
-          <p class="panel-intro" id="semesterCatalogIntro">Degreefy recommends the required PTH course, major courses from the lowest prerequisite level upward, and then the remaining Core priorities.</p>
+          <div class="semester-selection-summary">
+            <div><span class="panel-kicker">Your plan</span><h3>Scheduled courses</h3></div>
+          </div>
         </div>
         <div class="semester-panel-body">
-          <button type="button" class="browse-all-courses-button" id="openAvailableCoursesBtn">Browse all available courses</button>
-          <div class="semester-section-list" id="semesterSectionList"></div>
+          <table class="semester-final-table" aria-label="Selected course schedule">
+            <thead><tr><th>Course code</th><th>Days and times</th><th>Credit hours</th><th>Type</th></tr></thead>
+            <tbody id="semesterFinalTableBody"></tbody>
+          </table>
         </div>
       </aside>
-
-      <section class="semester-schedule-workspace">
-        <section class="weekly-schedule-panel">
-          <div class="weekly-panel-toolbar">
-            <div>
-              <span class="panel-kicker">Conflict-aware view</span>
-              <h2>Weekly schedule</h2>
-              <p class="panel-intro">Classes and unavailable routine blocks appear together. Conflicts are highlighted immediately.</p>
-            </div>
-            <div class="weekly-panel-actions">
-              <button type="button" id="editRoutineBtn">Edit unavailable times</button>
-              <button type="button" id="clearSemesterPlanBtn">Clear courses</button>
-            </div>
-          </div>
-          <div class="weekly-schedule-wrap">
-            <div class="weekly-day-heads" aria-hidden="true"><span></span><span>Monday</span><span>Tuesday</span><span>Wednesday</span><span>Thursday</span><span>Friday</span></div>
-            <div class="weekly-board" id="weeklyScheduleBoard" aria-label="Weekly class schedule"></div>
-          </div>
-        </section>
-
-        <aside class="semester-selection-panel">
-          <div class="semester-panel-head">
-            <div class="semester-selection-summary">
-              <div>
-                <span class="panel-kicker">Your plan</span>
-                <h3>Scheduled courses</h3>
-              </div>
-              <div><span class="semester-credit-total" id="semesterCreditTotal">0</span><span class="small"> credits</span></div>
-            </div>
-          </div>
-          <div class="semester-panel-body">
-            <div class="semester-conflict-list" id="semesterConflictList"></div>
-            <table class="semester-final-table" aria-label="Selected course schedule">
-              <thead><tr><th>Course code</th><th>Days and times</th><th>Credit hours</th><th>Type</th></tr></thead>
-              <tbody id="semesterFinalTableBody"></tbody>
-            </table>
-            <div class="semester-next-step" id="semesterNextStep">
-              <p>When the schedule looks right, save a clean copy for registration or advising.</p>
-              <button type="button" class="primary" id="semesterPrintBtn">Print PDF</button>
-            </div>
-          </div>
-        </aside>
-      </section>
     </main>
   </div>
 
   <div class="semester-drawer-overlay hidden" id="semesterDrawerOverlay"></div>
   <aside class="semester-available-drawer" id="semesterAvailableDrawer" aria-hidden="true" aria-label="All available courses">
     <div class="semester-available-drawer-head">
-      <div><span class="panel-kicker">Published schedule</span><h2>All available courses</h2></div>
+      <div><span class="panel-kicker">Built-in schedule</span><h2>All available courses</h2></div>
       <button type="button" id="closeAvailableCoursesBtn">Close</button>
     </div>
     <div class="semester-available-tools"><input type="search" id="semesterAvailableSearch" placeholder="Search course code, title, section, or instructor" /></div>
@@ -2064,6 +2221,13 @@
     <div class="routine-dialog-head"><h2>Weekly routine</h2><button type="button" id="closeRoutineDialogBtn">Done</button></div>
     <div class="routine-dialog-body" id="routineDialogBody"></div>
   </dialog>
+  <dialog class="course-change-dialog" id="courseChangeDialog">
+    <div class="course-change-head">
+      <div><span class="panel-kicker">Schedule change</span><h2 id="courseChangeTitle">Change a class</h2></div>
+      <button type="button" id="closeCourseChangeDialogBtn">Close</button>
+    </div>
+    <div class="course-change-body" id="courseChangeBody"></div>
+  </dialog>
 
 <script>
 let START_TERM = { term: "Fall", year: 2026 };
@@ -2072,7 +2236,7 @@ const DEGREE_MIN_CREDITS = 120;
 const TERM_LIMITS = { Fall: 18, Spring: 18, Summer: 12 };
 let CURRENT_OFFERINGS = {};
 let SEMESTER_SECTIONS = [];
-let DATA_SOURCE_KIND = "embedded";
+let DATA_SOURCE_KIND = "internal";
 
 let OFFERINGS = {
   PTH: {
@@ -2489,7 +2653,7 @@ function defaultState() {
     githubBaseUrl: "./data", dataStatus: "",
     checked: {}, checkedCore: {}, checkedCourses: {}, planned: {}, satisfied: {}, satisfiedCore: {},
     courseSources: {}, acadeumApprovals: {},
-    routineBlocks: [], semesterSelections: [], semesterCourseTypes: {}, semesterCourseView: "needed"
+    routineBlocks: [], semesterSelections: [], semesterCourseTypes: {}, semesterCourseView: "needed", semesterReviewMode: false
   };
 }
 
@@ -2523,6 +2687,7 @@ function loadState() {
     state.semesterSelections = Array.isArray(state.semesterSelections) ? state.semesterSelections : [];
     state.semesterCourseTypes = state.semesterCourseTypes || {};
     state.semesterCourseView = state.semesterCourseView || "needed";
+    state.semesterReviewMode = !!state.semesterReviewMode;
     state.programPickerTab = ["majors", "minors"].includes(state.programPickerTab) ? state.programPickerTab : "majors";
     state.programPickerSearch = String(state.programPickerSearch || "");
     state.programPickerArea = String(state.programPickerArea || "all");
@@ -2536,7 +2701,7 @@ function loadState() {
     state.gradYear = Number(state.gradYear || parseTerm(state.grad || "Spring 2030").year || 2030);
     state.gradTerm = state.gradTerm || parseTerm(state.grad || "Spring 2030").term || "Spring";
     state.profileRole = state.profileRole || "";
-    state.studentType = state.studentType || "";
+    state.studentType = ["current", "transfer"].includes(state.studentType) ? "continuing" : (state.studentType || "");
     state.setupStep = Number(state.setupStep || 1);
     state.setupComplete = !!state.setupComplete;
     state.githubBaseUrl = state.githubBaseUrl || "./data";
@@ -4225,8 +4390,18 @@ function setPrintMode(mode) {
 function printChecklist() { setPrintMode("checklist"); }
 function printPlan() { setPrintMode("plan"); }
 
+function fullJourneyCourseBucket(id, item) {
+  const offered = item || getAllCourseById().get(id) || { id, code: id, title: id };
+  const programMatch = Array.from(getRequirementMap().values()).some(req => canSatisfyRequirement(offered, req));
+  const coreMatch = CORE.map(makeCoreItem).some(req => canSatisfyRequirement(offered, req));
+  if (programMatch) return "program";
+  if (coreMatch) return "core";
+  return "program";
+}
+
 function renderPlanner() {
   const grid = $("semesterGrid"); grid.innerHTML = "";
+  grid.classList.toggle("two-column-terms", !showSummerTerms);
   const all = getAllCourseById();
   const activeTerms = generateTerms(state.grad);
   Object.keys(state.planned).forEach(k => { if (!activeTerms.includes(k)) delete state.planned[k]; });
@@ -4235,12 +4410,18 @@ function renderPlanner() {
   $("populateBtn")?.classList.toggle("hidden", !hasScheduledPlan);
   $("printBtn")?.classList.toggle("hidden", !hasScheduledPlan);
   $("clearPlanBtn")?.classList.toggle("hidden", !hasScheduledPlan);
-  if ($("toggleSummerBtn")) $("toggleSummerBtn").textContent = showSummerTerms ? "Hide empty summers" : "Show summer terms";
+  if ($("toggleSummerBtn")) $("toggleSummerBtn").textContent = showSummerTerms ? "Hide summer terms" : "Show summer terms";
+
+  const courseSort = (a, b) => {
+    const aItem = all.get(a) || { code: a, title: a };
+    const bItem = all.get(b) || { code: b, title: b };
+    return String(aItem.code).localeCompare(String(bItem.code)) || String(aItem.title).localeCompare(String(bItem.title));
+  };
 
   activeTerms.forEach(key => {
     if (!state.planned[key]) state.planned[key] = [];
     const termInfo = parseTerm(key);
-    if (termInfo.term === "Summer" && !showSummerTerms && state.planned[key].length === 0) return;
+    if (termInfo.term === "Summer" && !showSummerTerms) return;
     const credits = state.planned[key].reduce((sum, id) => sum + (all.get(id)?.credits || 0), 0);
     const limit = semesterLimit(key);
     const term = termInfo.term;
@@ -4251,11 +4432,19 @@ function renderPlanner() {
     sem.className = `semester term-${termClass}`;
     sem.dataset.semester = key;
     const creditWarning = overload ? ` ⚠ max ${limit}` : (underScholarshipMinimum ? " ⚠ min 12" : "");
-    sem.innerHTML = `<div class="semester-header"><strong>${key}</strong><span class="credits ${overload || underScholarshipMinimum ? "warn" : ""}">${credits} credits${creditWarning}</span></div><div class="drop-zone"></div>`;
-    const zone = sem.querySelector(".drop-zone");
-    if (!state.planned[key].length) { const empty = document.createElement("div"); empty.className = "empty"; empty.textContent = "Drop courses here"; zone.appendChild(empty); }
+    sem.innerHTML = `<div class="semester-header"><strong>${key}</strong><span class="credits ${overload || underScholarshipMinimum ? "warn" : ""}">${credits} credits${creditWarning}</span></div><div class="semester-course-groups"><section class="semester-course-bucket core-bucket" data-semester-bucket="core"><div class="semester-course-bucket-head"><span>Core courses</span></div><div class="bucket-course-list"></div></section><section class="semester-course-bucket program-bucket" data-semester-bucket="program"><div class="semester-course-bucket-head"><span>Program courses</span></div><div class="bucket-course-list"></div></section></div>`;
 
-    state.planned[key].forEach(id => {
+    const bucketLists = {
+      core: sem.querySelector('[data-semester-bucket="core"] .bucket-course-list'),
+      program: sem.querySelector('[data-semester-bucket="program"] .bucket-course-list')
+    };
+    const grouped = { core: [], program: [] };
+    [...state.planned[key]].sort(courseSort).forEach(id => {
+      const item = all.get(id) || { code: id, title: "Unknown course", credits: 0 };
+      grouped[fullJourneyCourseBucket(id, item)].push(id);
+    });
+
+    const appendCourse = (id, zone) => {
       const item = all.get(id) || { code: id, title: "Unknown course", credits: 0 };
       const planned = document.createElement("div");
       const reqWarnings = prereqCoreqWarningsForPlanned(id, key);
@@ -4272,38 +4461,33 @@ function renderPlanner() {
       const warningBadge = offcycle ? `<span class="warn-sign" title="This course is typically offered ${terms.join("/")}">!</span>` : "";
       const reqWarningBadge = reqWarnings.length ? `<span class="warn-sign req-warn-sign" title="Prerequisite/corequisite warning">!</span>` : "";
       const reqWarningNote = reqWarnings.length ? `<div class="small course-alert">${reqWarnings.join(" ")}</div>` : "";
-      const matchedReqs = Object.entries(state.satisfied || {}).filter(([reqId, matchedCourseId]) => matchedCourseId === id);
-      const matchedCoreReqs = Object.entries(state.satisfiedCore || {}).filter(([reqId, matchedCourseId]) => matchedCourseId === id);
+      const matchedReqs = Object.entries(state.satisfied || {}).filter(([, matchedCourseId]) => matchedCourseId === id);
+      const matchedCoreReqs = Object.entries(state.satisfiedCore || {}).filter(([, matchedCourseId]) => matchedCourseId === id);
       const satisfiesProgram = matchedReqs.map(([reqId]) => getRequirementMap().get(reqId)?.title || "a program requirement");
       const satisfiesCore = matchedCoreReqs.map(([reqId]) => makeCoreItem(CORE.find(c => c[0] === reqId))?.title || "a core requirement");
       const satisfiesNote = [...satisfiesProgram, ...satisfiesCore].length ? `<div class="small">fills ${[...satisfiesProgram, ...satisfiesCore].join("; ")}</div>` : "";
       const source = planSource(id);
       const approved = isAcadeumApproved(id);
-      const sourceControls = `<div class="plan-source-controls">
-        <select class="plan-source-select" aria-label="Course source for ${item.code}">
-          <option value="shc" ${source === "shc" ? "selected" : ""}>Spring Hill</option>
-          <option value="acadeum" ${source === "acadeum" ? "selected" : ""}>Acadeum online</option>
-        </select>
-        ${source === "acadeum" ? `<label class="approval-check"><input type="checkbox" class="approval-checkbox" ${approved ? "checked" : ""}> Department approved</label>` : ""}
-      </div>`;
+      const sourceControls = `<div class="plan-source-controls"><select class="plan-source-select" aria-label="Course source for ${item.code}"><option value="shc" ${source === "shc" ? "selected" : ""}>Spring Hill</option><option value="acadeum" ${source === "acadeum" ? "selected" : ""}>Acadeum online</option></select>${source === "acadeum" ? `<label class="approval-check"><input type="checkbox" class="approval-checkbox" ${approved ? "checked" : ""}> Department approved</label>` : ""}</div>`;
       const printSource = `<span class="print-source"> · ${source === "acadeum" ? "Acadeum online" : "Spring Hill"}${source === "acadeum" && approved ? " (approved)" : ""}</span>`;
       planned.innerHTML = `<div><strong>${item.code}</strong><span class="print-credits"> (${item.credits})</span>${printSource}${warningBadge}${reqWarningBadge}<span class="planned-title">: ${item.title}</span><div class="small">${item.credits} credit${item.credits === 1 ? "" : "s"}</div>${satisfiesNote}${offcycleNote}${reqWarningNote}${sourceControls}</div><button class="x" title="Remove ${item.code}" aria-label="Remove ${item.code}">×</button>`;
       planned.querySelector(".x").addEventListener("click", () => removeCourseFromSemester(id, key));
       const sourceSelect = planned.querySelector(".plan-source-select");
       sourceSelect?.addEventListener("mousedown", e => e.stopPropagation());
-      sourceSelect?.addEventListener("change", e => {
-        state.courseSources[id] = e.target.value;
-        if (e.target.value !== "acadeum") delete state.acadeumApprovals[id];
-        saveState(); renderAll(false);
-      });
-      const approvalCheckbox = planned.querySelector(".approval-checkbox");
-      approvalCheckbox?.addEventListener("change", e => { state.acadeumApprovals[id] = e.target.checked; saveState(); renderAll(false); });
+      sourceSelect?.addEventListener("change", e => { state.courseSources[id] = e.target.value; if (e.target.value !== "acadeum") delete state.acadeumApprovals[id]; saveState(); renderAll(false); });
+      planned.querySelector(".approval-checkbox")?.addEventListener("change", e => { state.acadeumApprovals[id] = e.target.checked; saveState(); renderAll(false); });
       zone.appendChild(planned);
-    });
+    };
 
-    sem.addEventListener("dragover", e => { e.preventDefault(); sem.classList.add("over"); });
-    sem.addEventListener("dragleave", () => sem.classList.remove("over"));
-    sem.addEventListener("drop", e => { e.preventDefault(); sem.classList.remove("over"); addCourseToSemester(e.dataTransfer.getData("text/plain"), key); });
+    ["core", "program"].forEach(bucket => {
+      const zone = bucketLists[bucket];
+      if (!grouped[bucket].length) zone.innerHTML = `<div class="empty">No ${bucket} courses in this semester</div>`;
+      else grouped[bucket].forEach(id => appendCourse(id, zone));
+      const bucketElement = sem.querySelector(`[data-semester-bucket="${bucket}"]`);
+      bucketElement.addEventListener("dragover", e => { e.preventDefault(); bucketElement.classList.add("over"); });
+      bucketElement.addEventListener("dragleave", () => bucketElement.classList.remove("over"));
+      bucketElement.addEventListener("drop", e => { e.preventDefault(); bucketElement.classList.remove("over"); addCourseToSemester(e.dataTransfer.getData("text/plain"), key); });
+    });
     grid.appendChild(sem);
   });
 }
@@ -4594,7 +4778,7 @@ const ROLE_OPTIONS = [
 ];
 
 const PLANNING_SCOPE_OPTIONS = [
-  { value: "semester", title: "Plan the upcoming semester", description: "Use the published class schedule, section times, preferences, and a weekly conflict checker." },
+  { value: "semester", title: "Plan the upcoming semester", description: "Use the built-in class schedule, section times, preferences, and a weekly conflict checker." },
   { value: "degree", title: "Plan the full degree path", description: "Build a semester-by-semester path through graduation." }
 ];
 const MATH_TEST_OPTIONS = [
@@ -4635,10 +4819,9 @@ let ATHLETIC_SPORTS = [
 ];
 
 const STUDENT_TYPE_OPTIONS = [
-  { value: "incoming", icon: "🌱", title: "Prospective or incoming student", description: "Exploring Spring Hill or starting college with no completed or transferred courses." },
-  { value: "transfer", icon: "🔁", title: "Transfer student", description: "Bringing completed coursework from another institution." },
-  { value: "current", icon: "📚", title: "Current student", description: "Already enrolled and continuing toward a degree." },
-  { value: "returning", icon: "↩️", title: "Returning student", description: "Coming back after time away from Spring Hill." }
+  { value: "incoming", icon: "🌱", title: "Prospective or incoming student", description: "Exploring Spring Hill or starting college without completed or transferred college courses." },
+  { value: "continuing", icon: "📚", title: "Current or transfer student", description: "Already enrolled or bringing completed coursework from another institution. Completed and transferred courses can be checked in the same steps." },
+  { value: "returning", icon: "↩️", title: "Returning student", description: "Coming back after time away and reviewing courses already completed or transferred." }
 ];
 
 function parseCSV(text) {
@@ -4679,11 +4862,10 @@ function criteriaFromRow(row) {
   return criteria;
 }
 function dataUrl(base, file) { return `${String(base || "./data").replace(/\/$/, "")}/${file}`; }
-async function fetchCSV(base, file) {
-  const response = await fetch(dataUrl(base, file), { cache: "no-store" });
-  if (!response.ok) throw new Error(`${file}: HTTP ${response.status}`);
-  return parseCSV(await response.text());
+async function fetchCSV() {
+  throw new Error("External data loading is disabled. Degreefy uses its built-in course data.");
 }
+
 function refreshDerivedCollections() {
   const offered = Object.values(OFFERINGS).flatMap(terms => [...(terms.Fall || []), ...(terms.Spring || []), ...(terms.Summer || [])]);
   const current = Object.values(CURRENT_OFFERINGS).flat();
@@ -4791,68 +4973,96 @@ function normalizeScheduleSection(row) {
   };
 }
 
-async function loadDegreeData(base = state.githubBaseUrl || "./data", manual = false) {
-  const status = $("dataSourceStatus");
-  if (status) { status.className = "data-status"; status.textContent = "Loading CSV files…"; }
-  try {
-    const programs = await fetchCSV(base, DATA_FILES.programs);
-    const [courses, offerings, core, schedule, apPolicy, sports] = await Promise.all([
-      fetchCSV(base, DATA_FILES.courses),
-      fetchCSV(base, DATA_FILES.offerings),
-      fetchCSV(base, DATA_FILES.core),
-      fetchCSV(base, DATA_FILES.schedule).catch(() => []),
-      fetchCSV(base, DATA_FILES.apCredits).catch(() => []),
-      fetchCSV(base, DATA_FILES.sports).catch(() => [])
-    ]);
-    const programFiles = Array.from(new Set(programs.map(row => row.requirements_file).filter(Boolean)));
-    let requirements = [];
-    if (programFiles.length) {
-      const byFile = await Promise.all(programFiles.map(file => fetchCSV(base, file)));
-      requirements = byFile.flatMap((rows, index) => {
-        const file = programFiles[index];
-        const owner = programs.find(row => row.requirements_file === file)?.program_id || "";
-        return rows.map(row => ({ ...row, program_id: row.program_id || owner }));
-      });
-    } else requirements = await fetchCSV(base, DATA_FILES.requirements);
-    if (!programs.length || !courses.length) throw new Error("Programs or courses CSV is empty.");
-    const built = buildDataFromCSV({ programs, requirements, courses, offerings, core });
-    COURSE_CATALOG = built.courses;
-    BUNDLES = built.bundles;
-    REQUIREMENTS = built.programs;
-    CORE = built.core;
-    OFFERINGS = built.offerings;
-    CURRENT_OFFERINGS = built.current;
-    if (apPolicy.length) AP_CREDIT_POLICY = apPolicy.map(row => ({ ...row, minimum_score: Number(row.minimum_score || 0), credits: Number(row.credits || 0) }));
-    if (sports.length) ATHLETIC_SPORTS = sports.filter(row => row.category && row.sport);
-    SEMESTER_SECTIONS = schedule.map(normalizeScheduleSection).filter(section => section.course_code);
-    const primaryScheduleTerm = SEMESTER_SECTIONS.find(section => section.term_code === "FA")?.term || SEMESTER_SECTIONS[0]?.term;
-    if (primaryScheduleTerm) {
-      const scheduledCodes = Array.from(new Set(SEMESTER_SECTIONS.filter(section => section.term === primaryScheduleTerm).map(section => section.course_code)));
-      CURRENT_OFFERINGS[primaryScheduleTerm] = Array.from(new Set([...(CURRENT_OFFERINGS[primaryScheduleTerm] || []), ...scheduledCodes])).sort();
-    }
-    DATA_SOURCE_KIND = "csv";
-    state.githubBaseUrl = base;
-    state.dataStatus = `Loaded ${programs.length} programs, ${courses.length} courses, ${SEMESTER_SECTIONS.length} published sections, ${AP_CREDIT_POLICY.length} AP policy rows, and ${ATHLETIC_SPORTS.length} sports from CSV.`;
-    state.majors = (state.majors || []).filter(key => REQUIREMENTS.majors[key]);
-    state.minors = (state.minors || []).filter(key => REQUIREMENTS.minors[key]);
-    refreshDerivedCollections();
-    renderCourseFilterButtons();
-    saveState();
-    renderAll(true);
-    renderWizard();
-    renderProfileBar();
-    renderSemesterPlanner();
-    if (status) { status.className = "data-status good"; status.textContent = state.dataStatus; }
-    return true;
-  } catch (error) {
-    DATA_SOURCE_KIND = "embedded";
-    state.dataStatus = `Using embedded sample data. CSV load failed: ${error.message}`;
-    refreshDerivedCollections();
-    if (status) { status.className = `data-status ${manual ? "bad" : ""}`; status.textContent = state.dataStatus; }
-    if (manual) console.warn(error);
-    return false;
-  }
+
+function internalSectionPatterns() {
+  return [
+    ["MWF", "08:00 AM", "08:50 AM"], ["TR", "08:15 AM", "09:30 AM"],
+    ["MWF", "09:00 AM", "09:50 AM"], ["TR", "09:45 AM", "11:00 AM"],
+    ["MWF", "10:00 AM", "10:50 AM"], ["TR", "11:15 AM", "12:30 PM"],
+    ["MWF", "11:00 AM", "11:50 AM"], ["TR", "12:45 PM", "02:00 PM"],
+    ["MWF", "12:15 PM", "01:05 PM"], ["TR", "02:15 PM", "03:30 PM"],
+    ["MW", "01:45 PM", "03:00 PM"], ["TR", "03:45 PM", "05:00 PM"],
+    ["MW", "03:15 PM", "04:30 PM"], ["TR", "05:15 PM", "06:30 PM"],
+    ["WF", "12:15 PM", "01:30 PM"], ["MW", "05:00 PM", "06:15 PM"],
+    ["T", "06:00 PM", "08:30 PM"], ["R", "06:00 PM", "08:30 PM"]
+  ];
 }
+
+function buildInternalSemesterSections() {
+  const termSpecs = [
+    { term: "Fall 2026", termCode: "FA", sourceTerm: "Fall", start: "2026-08-24", end: "2026-12-11" },
+    { term: "Spring 2027", termCode: "SP", sourceTerm: "Spring", start: "2027-01-11", end: "2027-05-07" },
+    { term: "Summer 2027", termCode: "SU", sourceTerm: "Summer", start: "2027-05-17", end: "2027-07-30" }
+  ];
+  const patterns = internalSectionPatterns();
+  const multipleSectionCodes = new Set([
+    "PTH 101", "PTH 102", "ENG 105", "ENG 121", "ENG 123", "PHL 101", "PHL 190", "THL 101", "THL 190",
+    "MTH 100", "MTH 111", "MTH 121", "MTH 122", "MTH 163", "CSC 100", "CSC 101", "BIO 101", "CHM 111", "PHY 221"
+  ]);
+  const supplementalByTerm = {
+    Fall: ["ENG 105"], Spring: ["ENG 105"], Summer: []
+  };
+  const sections = [];
+  CURRENT_OFFERINGS = {};
+  termSpecs.forEach((spec, termIndex) => {
+    const codes = Array.from(new Set([
+      ...Object.values(OFFERINGS).flatMap(terms => terms[spec.sourceTerm] || []),
+      ...(supplementalByTerm[spec.sourceTerm] || [])
+    ])).filter(code => COURSE_CATALOG[code]).sort((a, b) => a.localeCompare(b));
+    CURRENT_OFFERINGS[spec.term] = codes;
+    codes.forEach((code, index) => {
+      const sectionCount = multipleSectionCodes.has(code) ? 2 : 1;
+      for (let sectionIndex = 0; sectionIndex < sectionCount; sectionIndex++) {
+        const pattern = patterns[(index * 2 + sectionIndex * 5 + termIndex * 3) % patterns.length];
+        const sectionNumber = String(sectionIndex + 1).padStart(2, "0");
+        const prefix = getPrefix(code);
+        const building = ["CSC", "DSC", "MTH", "PHY", "CHM", "BIO"].includes(prefix) ? "BL" : "LEH";
+        const roomNumber = String(100 + ((index * 7 + sectionIndex * 13) % 28)).padStart(3, "0");
+        sections.push(normalizeScheduleSection({
+          term: spec.term,
+          term_code: spec.termCode,
+          start_date: spec.start,
+          end_date: spec.end,
+          section_id: `${spec.termCode}27-${code.replace(/\s/g, "")}-${sectionNumber}`,
+          course_code: code,
+          section: sectionNumber,
+          course_title: COURSE_CATALOG[code]?.title || code,
+          credit_hours: COURSE_CATALOG[code]?.credits || 3,
+          days: pattern[0],
+          begin_time: pattern[1],
+          end_time: pattern[2],
+          modality: "In person",
+          building,
+          room: roomNumber,
+          location: `${building} ${roomNumber}`,
+          instructor: "Staff",
+          comments: sectionIndex === 0 ? "Recommended section pattern" : "Alternate section",
+          capacity: 30
+        }));
+      }
+    });
+  });
+  return sections;
+}
+
+function initializeInternalDegreeData() {
+  SEMESTER_SECTIONS = buildInternalSemesterSections();
+  DATA_SOURCE_KIND = "internal";
+  state.dataStatus = `Using built-in degree data and ${SEMESTER_SECTIONS.length} in-file class sections. No external files are required.`;
+  refreshDerivedCollections();
+}
+
+async function loadDegreeData() {
+  initializeInternalDegreeData();
+  renderCourseFilterButtons();
+  saveState();
+  renderAll(true);
+  renderWizard();
+  renderProfileBar();
+  renderSemesterPlanner();
+  return true;
+}
+
 function isCurrentlyOffered(rawCode) {
   return Object.values(CURRENT_OFFERINGS || {}).some(codes => codes.includes(rawCode));
 }
@@ -5015,19 +5225,23 @@ function eligibleCodesForHistory(item) {
   return OFFERED_CODES.filter(code => canSatisfyRequirement(makeOfferedItem(code), item)).slice(0, 120);
 }
 function renderHistoryRows(items, coreMode = false) {
-  return `<div class="history-list">${items.map(item => {
+  const sortedItems = [...items].sort((a, b) => String(a.code || a.title).localeCompare(String(b.code || b.title)) || String(a.title).localeCompare(String(b.title)));
+  return `<div class="history-list">${sortedItems.map(item => {
     const checked = coreMode ? isCoreRequirementChecked(item) : isRequirementChecked(item);
     const satisfiedMap = coreMode ? state.satisfiedCore : state.satisfied;
     const matchedId = satisfiedMap[item.id] || "";
     const matchedCode = isOfferedCourseId(matchedId) ? offeredCodeFromId(matchedId) : matchedId;
-    const options = eligibleCodesForHistory(item);
+    const options = Array.from(new Set(eligibleCodesForHistory(item))).sort((a, b) => plainCode(a).localeCompare(plainCode(b)));
+    const chooser = options.length > 1
+      ? `<select class="history-course-select" data-history-id="${item.id}" data-history-core="${coreMode}"><option value="">Choose completed course</option>${options.map(code => `<option value="${code}" ${matchedCode === code ? "selected" : ""}>${plainCode(code)} — ${courseInfo(code).title || code}</option>`).join("")}</select>`
+      : options.length === 1
+        ? `<div class="history-single-course">${plainCode(options[0])} — ${courseInfo(options[0]).title || options[0]}</div>`
+        : `<div class="history-single-course">No course choice is required.</div>`;
+    const singleCode = options.length === 1 ? options[0] : "";
     return `<div class="history-row ${checked ? "completed" : ""}">
       <div class="history-main"><strong>${item.title}</strong><span>${item.code} · ${item.credits} credit${item.credits === 1 ? "" : "s"}</span></div>
-      <select class="history-course-select" data-history-id="${item.id}" data-history-core="${coreMode}">
-        <option value="">Choose completed course (optional)</option>
-        ${options.map(code => `<option value="${code}" ${matchedCode === code ? "selected" : ""}>${plainCode(code)} — ${courseInfo(code).title || code}</option>`).join("")}
-      </select>
-      <label class="history-check"><input type="checkbox" data-history-check="${item.id}" data-history-core="${coreMode}" ${checked ? "checked" : ""}> Completed / transferred</label>
+      ${chooser}
+      <label class="history-check"><input type="checkbox" data-history-check="${item.id}" data-history-core="${coreMode}" data-history-single-code="${singleCode}" ${checked ? "checked" : ""}> Completed / transferred</label>
     </div>`;
   }).join("")}</div>`;
 }
@@ -5259,11 +5473,13 @@ function addSemesterSection(sectionId) {
   if (!state.semesterSelections.includes(sectionId)) state.semesterSelections.push(sectionId);
   if (!state.semesterCourseTypes[sectionId]) state.semesterCourseTypes[sectionId] = old ? state.semesterCourseTypes[old.section_id] : defaultSemesterCourseType(section.course_code);
   if (old && old.section_id !== sectionId) delete state.semesterCourseTypes[old.section_id];
+  state.semesterReviewMode = false;
   saveState(); renderSemesterPlanner();
 }
 function removeSemesterSection(sectionId) {
   state.semesterSelections = (state.semesterSelections || []).filter(id => id !== sectionId);
   delete state.semesterCourseTypes[sectionId];
+  state.semesterReviewMode = false;
   saveState(); renderSemesterPlanner();
 }
 function semesterCreditsTotal(ids = state.semesterSelections || []) {
@@ -5357,7 +5573,7 @@ function renderWeeklySchedule() {
       const top = Math.max(0, (interval.start - startMinute) * pxPerMinute);
       const blockHeight = Math.max(22, (interval.end - interval.start) * pxPerMinute);
       const conflict = (conflicts.get(section.section_id) || []).length;
-      blocks.push(`<div class="weekly-block ${conflict ? "conflict" : ""}" style="top:${top}px;height:${blockHeight}px"><strong>${section.course_code}-${section.section}</strong>${section.begin_time}-${section.end_time}</div>`);
+      blocks.push(`<button type="button" class="weekly-block course ${conflict ? "conflict" : ""}" data-schedule-section="${section.section_id}" style="top:${top}px;height:${blockHeight}px" aria-label="${section.course_code} section ${section.section}. Click to change class or section."><strong>${section.course_code}-${section.section}</strong>${section.begin_time}-${section.end_time}</button>`);
     });
     return `<div class="weekly-day-column" data-weekly-dropzone>${blocks.join("")}</div>`;
   }).join("");
@@ -5366,7 +5582,121 @@ function renderWeeklySchedule() {
     zone.addEventListener("dragover", event => { if (event.dataTransfer.types.includes("text/degreefy-section")) { event.preventDefault(); event.dataTransfer.dropEffect = "copy"; } });
     zone.addEventListener("drop", event => { event.preventDefault(); addSemesterSection(event.dataTransfer.getData("text/degreefy-section")); });
   });
+  board.querySelectorAll("[data-schedule-section]").forEach(block => block.addEventListener("click", () => {
+    if (!state.semesterReviewMode) openCourseChangeDialog(block.dataset.scheduleSection);
+  }));
 }
+
+let activeSemesterSectionId = null;
+
+function replacementConflictCount(candidate, oldSectionId) {
+  const ids = (state.semesterSelections || []).filter(id => id !== oldSectionId && scheduleSectionById(id)?.course_code !== candidate.course_code);
+  return (semesterConflictMap([...ids, candidate.section_id]).get(candidate.section_id) || []).length;
+}
+
+function recommendedSemesterReplacement(current) {
+  if (!current) return null;
+  const sameCourse = scheduleSectionsForPrimaryTerm()
+    .filter(section => section.course_code === current.course_code && section.section_id !== current.section_id)
+    .sort((a, b) => replacementConflictCount(a, current.section_id) - replacementConflictCount(b, current.section_id) || sectionPreferenceScore(a) - sectionPreferenceScore(b) || a.section.localeCompare(b.section));
+  const conflictFreeSame = sameCourse.find(section => replacementConflictCount(section, current.section_id) === 0);
+  if (conflictFreeSame) return conflictFreeSame;
+
+  const selectedCodes = new Set(semesterSelectedSections().filter(section => section.section_id !== current.section_id).map(section => section.course_code));
+  const currentCreditsWithoutOld = semesterCreditsTotal((state.semesterSelections || []).filter(id => id !== current.section_id));
+  const otherCourses = scheduleSectionsForPrimaryTerm()
+    .filter(section => section.course_code !== current.course_code && !selectedCodes.has(section.course_code))
+    .filter(section => currentCreditsWithoutOld + Number(section.credit_hours || 0) <= 18)
+    .sort((a, b) => {
+      const aNeeded = semesterRequirementMatches(a.course_code).length ? 0 : 1;
+      const bNeeded = semesterRequirementMatches(b.course_code).length ? 0 : 1;
+      return aNeeded - bNeeded || replacementConflictCount(a, current.section_id) - replacementConflictCount(b, current.section_id) || semesterPlanningScore(a.course_code) - semesterPlanningScore(b.course_code) || sectionPreferenceScore(a) - sectionPreferenceScore(b) || a.course_code.localeCompare(b.course_code) || a.section.localeCompare(b.section);
+    });
+  return otherCourses.find(section => replacementConflictCount(section, current.section_id) === 0) || sameCourse[0] || otherCourses[0] || null;
+}
+
+function replaceSemesterSection(oldSectionId, newSectionId) {
+  const oldSection = scheduleSectionById(oldSectionId);
+  const nextSection = scheduleSectionById(newSectionId);
+  if (!oldSection || !nextSection) return;
+  const oldType = state.semesterCourseTypes[oldSectionId] || defaultSemesterCourseType(oldSection.course_code);
+  state.semesterSelections = (state.semesterSelections || []).filter(id => {
+    if (id === oldSectionId) return false;
+    const section = scheduleSectionById(id);
+    return section?.course_code !== nextSection.course_code;
+  });
+  state.semesterSelections.push(newSectionId);
+  delete state.semesterCourseTypes[oldSectionId];
+  state.semesterCourseTypes[newSectionId] = oldSection.course_code === nextSection.course_code ? oldType : defaultSemesterCourseType(nextSection.course_code);
+  state.semesterReviewMode = false;
+  saveState();
+  $("courseChangeDialog")?.close();
+  renderSemesterPlanner();
+  showSemesterToast(`${oldSection.course_code}-${oldSection.section} was changed to ${nextSection.course_code}-${nextSection.section}.`);
+}
+
+function renderAnyClassOptions(current, query = "") {
+  const list = $("courseChangeAnyList");
+  if (!list || !current) return;
+  const search = String(query || "").trim().toLowerCase();
+  const selectedCodes = new Set(semesterSelectedSections().filter(section => section.section_id !== current.section_id).map(section => section.course_code));
+  const sections = scheduleSectionsForPrimaryTerm()
+    .filter(section => section.section_id !== current.section_id)
+    .filter(section => !selectedCodes.has(section.course_code))
+    .filter(section => !search || [section.course_code, section.course_title, section.section, section.instructor, displayMeeting(section)].join(" ").toLowerCase().includes(search))
+    .sort((a, b) => a.course_code.localeCompare(b.course_code) || replacementConflictCount(a, current.section_id) - replacementConflictCount(b, current.section_id) || sectionPreferenceScore(a) - sectionPreferenceScore(b) || a.section.localeCompare(b.section));
+  if (!sections.length) {
+    list.innerHTML = '<div class="weekly-empty-message">No classes match this search.</div>';
+    return;
+  }
+  list.innerHTML = sections.map(section => {
+    const conflictCount = replacementConflictCount(section, current.section_id);
+    return `<div class="any-class-option"><div><strong>${section.course_code}-${section.section} · ${section.course_title}</strong><span>${displayMeeting(section)}${section.instructor ? ` · ${section.instructor}` : ""}${conflictCount ? ` · ${conflictCount} conflict${conflictCount === 1 ? "" : "s"}` : " · No conflicts"}</span></div><button type="button" data-use-replacement="${section.section_id}">Choose</button></div>`;
+  }).join("");
+  list.querySelectorAll("[data-use-replacement]").forEach(button => button.addEventListener("click", () => replaceSemesterSection(current.section_id, button.dataset.useReplacement)));
+}
+
+function renderCourseChangeOptions(current) {
+  const body = $("courseChangeBody");
+  if (!body || !current) return;
+  const recommended = recommendedSemesterReplacement(current);
+  const sameCourseCount = scheduleSectionsForPrimaryTerm().filter(section => section.course_code === current.course_code).length;
+  $("courseChangeTitle").textContent = sameCourseCount > 1 ? "Change class or section" : "Change class";
+  body.innerHTML = `<div class="course-change-current"><span class="panel-kicker">Currently scheduled</span><h3>${current.course_code}-${current.section} · ${current.course_title}</h3><p>${displayMeeting(current)}${current.instructor ? ` · ${current.instructor}` : ""}${current.location ? ` · ${current.location}` : ""}</p></div>${recommended ? `<section class="recommended-change-card"><span class="panel-kicker">Recommended change</span><h3>${recommended.course_code}-${recommended.section} · ${recommended.course_title}</h3><p>${displayMeeting(recommended)}${recommended.instructor ? ` · ${recommended.instructor}` : ""}</p><p>${recommended.course_code === current.course_code ? "This keeps the same class and changes only the section." : "This is the strongest available replacement based on requirements, preferences, credits, and conflicts."}</p><button type="button" class="primary" id="useRecommendedReplacementBtn">Use recommended ${recommended.course_code === current.course_code ? "section" : "class"}</button></section>` : '<div class="semester-advising-warning">No recommended alternative is available, but you may still choose any class below.</div>'}<details class="any-class-picker"><summary>Choose any class</summary><div class="any-class-tools"><input type="search" id="courseChangeSearch" placeholder="Search class, section, instructor, or time"></div><div class="any-class-options" id="courseChangeAnyList"></div></details><div class="course-change-actions"><button type="button" id="backToCurrentClassBtn">Back</button></div>`;
+  $("useRecommendedReplacementBtn")?.addEventListener("click", () => replaceSemesterSection(current.section_id, recommended.section_id));
+  $("courseChangeSearch")?.addEventListener("input", event => renderAnyClassOptions(current, event.target.value));
+  $("backToCurrentClassBtn")?.addEventListener("click", () => renderCourseChangeIntro(current));
+  renderAnyClassOptions(current, "");
+}
+
+function renderCourseChangeIntro(current) {
+  const body = $("courseChangeBody");
+  if (!body || !current) return;
+  const sameCourseCount = scheduleSectionsForPrimaryTerm().filter(section => section.course_code === current.course_code).length;
+  const actionLabel = sameCourseCount > 1 ? "Change class or section" : "Change class";
+  $("courseChangeTitle").textContent = current.course_code;
+  body.innerHTML = `<div class="course-change-current"><span class="panel-kicker">Scheduled class</span><h3>${current.course_code}-${current.section} · ${current.course_title}</h3><p>${displayMeeting(current)}${current.instructor ? ` · ${current.instructor}` : ""}${current.location ? ` · ${current.location}` : ""}</p></div><div class="course-change-actions"><button type="button" id="keepCurrentClassBtn">Keep this class</button><button type="button" class="primary" id="showCourseChangeOptionsBtn">${actionLabel}</button></div>`;
+  $("keepCurrentClassBtn")?.addEventListener("click", () => $("courseChangeDialog")?.close());
+  $("showCourseChangeOptionsBtn")?.addEventListener("click", () => renderCourseChangeOptions(current));
+}
+
+function openCourseChangeDialog(sectionId) {
+  const section = scheduleSectionById(sectionId);
+  if (!section) return;
+  activeSemesterSectionId = sectionId;
+  renderCourseChangeIntro(section);
+  $("courseChangeDialog")?.showModal();
+}
+
+function renderSemesterReviewMode() {
+  const reviewing = !!state.semesterReviewMode;
+  $("semesterHappyBtn")?.classList.toggle("hidden", reviewing);
+  $("semesterReviewActions")?.classList.toggle("hidden", !reviewing);
+  $("semesterReviewNote")?.classList.toggle("hidden", !reviewing);
+  $("editRoutineBtn")?.classList.toggle("hidden", reviewing);
+  document.body.classList.toggle("semester-reviewing", reviewing);
+}
+
 function renderSemesterFinalTable() {
   const body = $("semesterFinalTableBody"), conflictList = $("semesterConflictList");
   if (!body || !conflictList) return;
@@ -5411,7 +5741,7 @@ function renderSemesterStatus() {
   const englishText = state.englishPlacement === "clear_all" ? "English: cleared" : state.englishPlacement === "not_taken" ? "English: test not taken → ENG 105" : englishKnown ? `English: ${state.englishPlacement}` : "English result missing";
   strip.classList.toggle("warning-state", !mathKnown || !englishKnown);
   const timePreference = state.preferredClassTime === "morning" ? "Prefers morning classes" : state.preferredClassTime === "afternoon" ? "Prefers afternoon classes" : "No class-time preference";
-  strip.innerHTML = `<span><strong>${term}</strong> · ${sectionCount} published sections loaded</span><span>${timePreference} · ${englishText} · ${mathText}${(state.apExams || []).length ? ` · ${(state.apExams || []).length} AP exam${state.apExams.length === 1 ? "" : "s"}` : ""}</span>`;
+  strip.innerHTML = `<span><strong>${term}</strong> · ${sectionCount} internal sections available</span><span>${semesterCreditsTotal()} credits selected · ${timePreference} · ${englishText} · ${mathText}${(state.apExams || []).length ? ` · ${(state.apExams || []).length} AP exam${state.apExams.length === 1 ? "" : "s"}` : ""}</span>`;
 }
 function renderSemesterProfile() {
   const title = $("semesterPlanTitle"), wrap = $("semesterProfileSummary");
@@ -5422,7 +5752,7 @@ function renderSemesterProfile() {
 function renderSemesterPlanner() {
   if (!$("semesterPlannerApp")) return;
   state.semesterSelections = (state.semesterSelections || []).filter(id => !!scheduleSectionById(id));
-  renderSemesterProfile(); renderSemesterStatus(); renderSemesterSectionList(); renderSemesterAvailableSectionList(); renderWeeklySchedule(); renderSemesterFinalTable();
+  renderSemesterProfile(); renderSemesterStatus(); renderSemesterSectionList(); renderSemesterAvailableSectionList(); renderWeeklySchedule(); renderSemesterFinalTable(); renderSemesterReviewMode();
 }
 function missingSemesterPrerequisites(code) {
   return getPrereqGroups(code).filter(group => !relationGroupAlreadySatisfied(group)).map(group => group.join(" or "));
@@ -5510,6 +5840,7 @@ function planOneSemesterForMe(options = {}) {
   }
   state.semesterSelections = selected.map(section => section.section_id);
   state.semesterCourseTypes = Object.fromEntries(selected.map(section => [section.section_id, defaultSemesterCourseType(section.course_code)]));
+  state.semesterReviewMode = false;
   saveState(); renderSemesterPlanner();
   if (semesterCreditsTotal() < 12) showSemesterToast("Degreefy included the required PTH course, ranked major courses from lower prerequisite levels upward, followed the remaining Core priority list, and then added minor-only courses where possible. Review placement, prerequisites, and routine blocks to reach 12 credits.");
 }
@@ -5547,13 +5878,19 @@ function setupSemesterPlannerEvents() {
   $("closeAvailableCoursesBtn")?.addEventListener("click", closeAvailableCoursesDrawer);
   $("semesterDrawerOverlay")?.addEventListener("click", closeAvailableCoursesDrawer);
   $("semesterPrintBtn")?.addEventListener("click", printSemesterPlan);
+  $("semesterHappyBtn")?.addEventListener("click", () => {
+    if (!(state.semesterSelections || []).length) { showSemesterToast("Add at least one class before confirming the schedule."); return; }
+    state.semesterReviewMode = true; saveState(); renderSemesterPlanner(); window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  $("semesterBackToEditBtn")?.addEventListener("click", () => { state.semesterReviewMode = false; saveState(); renderSemesterPlanner(); });
   $("semesterChangeSetupBtn")?.addEventListener("click", () => showWizard(1));
   $("editRoutineBtn")?.addEventListener("click", openRoutineDialog);
+  $("closeCourseChangeDialogBtn")?.addEventListener("click", () => $("courseChangeDialog")?.close());
   $("closeRoutineDialogBtn")?.addEventListener("click", () => $("routineDialog")?.close());
-  $("clearSemesterPlanBtn")?.addEventListener("click", () => { if (confirm("Clear all selected courses for this semester?")) { state.semesterSelections = []; state.semesterCourseTypes = {}; saveState(); renderSemesterPlanner(); } });
+  $("clearSemesterPlanBtn")?.addEventListener("click", () => { if (confirm("Clear all selected courses for this semester?")) { state.semesterSelections = []; state.semesterCourseTypes = {}; state.semesterReviewMode = false; saveState(); renderSemesterPlanner(); } });
   $("weeklyScheduleBoard")?.addEventListener("dragover", event => { if (event.dataTransfer.types.includes("text/degreefy-section")) event.preventDefault(); });
   $("weeklyScheduleBoard")?.addEventListener("drop", event => { event.preventDefault(); addSemesterSection(event.dataTransfer.getData("text/degreefy-section")); });
-  document.addEventListener("keydown", event => { if (event.key === "Escape") closeAvailableCoursesDrawer(); });
+  document.addEventListener("keydown", event => { if (event.key === "Escape") { closeAvailableCoursesDrawer(); $("courseChangeDialog")?.close(); } });
 }
 
 function escapeHTML(value) {
@@ -5705,9 +6042,8 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Search the catalog, add at least one major, and add any minors under consideration.</p>${renderProgramWizard()}<details class="source-box"><summary>Data source</summary><div class="source-row" style="margin-top:10px"><label class="field-label">GitHub folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Search the internal catalog, add at least one major, and add any minors under consideration.</p>${renderProgramWizard()}<div class="source-box"><strong>Internal data</strong><div class="data-status good">Degree requirements, course offerings, and class sections are built into this HTML file.</div></div><div class="wizard-error" id="wizardError"></div>`;
     attachProgramPickerEvents(content);
-    $("loadDataBtn")?.addEventListener("click", async () => { state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data"; saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard(); });
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
     const items = CORE.map(makeCoreItem);
@@ -5757,8 +6093,20 @@ function attachHistoryEvents(container) {
     const coreMode = e.target.dataset.historyCore === "true";
     const checkedMap = coreMode ? state.checkedCore : state.checked;
     const satisfiedMap = coreMode ? state.satisfiedCore : state.satisfied;
-    if (e.target.checked) checkedMap[id] = true;
-    else { delete checkedMap[id]; const prior = satisfiedMap[id]; if (prior) delete state.checkedCourses[prior]; delete satisfiedMap[id]; }
+    const singleCode = e.target.dataset.historySingleCode || "";
+    if (e.target.checked) {
+      checkedMap[id] = true;
+      if (singleCode) {
+        const offeredId = offeredCourseId(singleCode);
+        state.checkedCourses[offeredId] = true;
+        satisfiedMap[id] = offeredId;
+      }
+    } else {
+      delete checkedMap[id];
+      const prior = satisfiedMap[id];
+      if (prior) delete state.checkedCourses[prior];
+      delete satisfiedMap[id];
+    }
     saveState(); renderAll(false); renderWizard();
   }));
 }
@@ -5946,11 +6294,11 @@ function setupEvents() {
 
 async function initialize() {
   START_TERM = parseTerm(state.startTerm || "Fall 2026");
+  initializeInternalDegreeData();
   generateGradOptions();
   refreshDerivedCollections();
   renderAll(true);
   setupDegreefyEvents();
-  await loadDegreeData(state.githubBaseUrl || "./data", false);
   if (state.setupComplete && (state.majors || []).length) showPlanner();
   else showWizard(state.setupStep || 1);
 }
