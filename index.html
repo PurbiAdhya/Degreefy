@@ -5088,22 +5088,39 @@ function fullJourneyCoreRequirementIds(id, item) {
   return Array.from(ids);
 }
 
+function fullJourneyProgramSupportCodes() {
+  // Include every specifically named program requirement and recursively include
+  // the prerequisites/corequisites needed to reach it. This makes foundation
+  // courses such as MTH 100 part of the Computer Science pathway whenever they
+  // are needed to reach MTH 121, even though MTH 100 is not itself printed as a
+  // direct Computer Science requirement.
+  const roots = [];
+  Array.from(getRequirementMap().values()).forEach(req => {
+    if (isCriteriaRequirement(req)) return;
+    const code = plainCode(req.code);
+    if (COURSE_CATALOG[code] || BUNDLES[code]) roots.push(code);
+  });
+  return planningProgramSupportSet(roots);
+}
+
 function fullJourneyProgramRequirementInfo(id, item) {
   const rawCode = fullJourneyRawCode(id, item);
   const offered = makeOfferedItem(rawCode);
   const requirements = Array.from(getRequirementMap().values()).filter(req => canSatisfyRequirement(offered, req));
   return {
     any: requirements.length > 0,
-    explicit: requirements.some(req => isExplicitProgramRequirementForCourse(req, offered))
+    explicit: requirements.some(req => isExplicitProgramRequirementForCourse(req, offered)),
+    support: fullJourneyProgramSupportCodes().has(rawCode)
   };
 }
 
 function fullJourneyCourseBucket(id, item) {
   const program = fullJourneyProgramRequirementInfo(id, item);
   const coreMatch = fullJourneyCoreRequirementIds(id, item).length > 0;
-  // An explicitly required program course takes precedence over Core. A course
-  // that merely qualifies for a broad program elective remains in Core.
-  if (program.explicit) return "program";
+  // A direct program requirement or a prerequisite/corequisite that supports the
+  // selected program takes precedence over Core. Broad elective matches alone do
+  // not take a Core course out of the Core bucket.
+  if (program.explicit || program.support) return "program";
   if (coreMatch) return "core";
   if (program.any) return "program";
   return "program";
