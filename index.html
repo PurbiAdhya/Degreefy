@@ -763,7 +763,7 @@
     .header-actions button { background: white; color: var(--ink); border-color: var(--line); }
 
     .wizard-shell { max-width: 980px; margin: 24px auto 40px; padding: 0 18px; }
-    .wizard-card { overflow: hidden; }
+    .wizard-card { overflow: visible; }
     .wizard-top {
       padding: 26px 28px 16px;
       border-bottom: 1px solid var(--line);
@@ -775,7 +775,7 @@
     .wizard-progress span { height: 7px; border-radius: 999px; background: #ece7f7; }
     .wizard-progress span.active { background: var(--purple); }
     .wizard-progress span.done { background: var(--degreefy-teal); }
-    .wizard-content { padding: 28px; min-height: 360px; }
+    .wizard-content { padding: 28px; min-height: 360px; overflow: visible; }
     .wizard-content h3 { font-size: 24px; margin: 0 0 8px; font-weight: 520; }
     .wizard-subtitle { color: var(--muted); margin: 0 0 22px; max-width: 760px; font-size: 15px; }
     .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
@@ -793,27 +793,127 @@
     .choice-description { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .choice-card[data-tooltip]::after {
       content: attr(data-tooltip);
-      position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translateX(-50%) translateY(4px);
-      width: max-content; max-width: 280px; padding: 9px 11px; border-radius: 10px;
-      background: #312a52; color: #fff; font-size: 13px; line-height: 1.35; text-align: left;
-      opacity: 0; visibility: hidden; pointer-events: none; z-index: 100;
-      box-shadow: 0 8px 22px rgba(34, 27, 64, .18); transition: opacity .14s ease, transform .14s ease;
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 10px);
+      transform: translateX(-50%) translateY(-4px);
+      width: max-content;
+      max-width: min(300px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 11px;
+      background: #312a52;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.4;
+      text-align: left;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      box-sizing: border-box;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 500;
+      box-shadow: 0 8px 22px rgba(34, 27, 64, .18);
+      transition: opacity .14s ease, transform .14s ease;
     }
-    .choice-card[data-tooltip]:hover::after, .choice-card[data-tooltip]:focus-within::after {
-      opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+    .choice-card[data-tooltip]:hover::after,
+    .choice-card[data-tooltip]:focus-within::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+    .choice-grid > .choice-card:first-child[data-tooltip]::after {
+      left: 0;
+      transform: translateX(0) translateY(-4px);
+    }
+    .choice-grid > .choice-card:first-child[data-tooltip]:hover::after,
+    .choice-grid > .choice-card:first-child[data-tooltip]:focus-within::after {
+      transform: translateX(0) translateY(0);
+    }
+    .choice-grid > .choice-card:last-child[data-tooltip]::after {
+      left: auto;
+      right: 0;
+      transform: translateX(0) translateY(-4px);
+    }
+    .choice-grid > .choice-card:last-child[data-tooltip]:hover::after,
+    .choice-grid > .choice-card:last-child[data-tooltip]:focus-within::after {
+      transform: translateX(0) translateY(0);
     }
     .wizard-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .field-label { display: grid; gap: 8px; font-weight: 500; color: var(--degreefy-navy); font-size: 15px; }
     .field-label select, .field-label input { font-weight: 400; }
-    .program-area { margin-top: 20px; }
-    .program-area h4 { font-size: 16px; margin-bottom: 10px; font-weight: 520; }
-    .program-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
-    .program-chip {
-      display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 14px 15px;
-      border: 1px solid var(--line); border-radius: 16px; background: white;
+    .program-selector { display: grid; gap: 18px; }
+    .selected-programs {
+      border: 1px solid #e3dcf6;
+      background: linear-gradient(180deg, #fcfbff 0%, #f8f6ff 100%);
+      border-radius: 18px;
+      padding: 16px;
     }
-    .program-chip:has(input:checked) { border-color: var(--purple); background: #faf8ff; box-shadow: 0 0 0 3px rgba(109, 91, 208, 0.06); }
-    .program-chip strong { color: var(--degreefy-navy); font-weight: 520; }
+    .program-selection-heading {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 11px;
+    }
+    .program-selection-heading h4 { margin: 0; font-size: 17px; font-weight: 520; }
+    .program-selection-count { color: var(--muted); font-size: 14px; }
+    .selected-program-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .selected-program-empty { color: var(--muted); font-size: 14px; padding: 3px 0; }
+    .selected-program-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 38px; padding: 7px 8px 7px 11px;
+      border: 1px solid #dcd3f5; border-radius: 999px; background: #fff; color: var(--ink);
+    }
+    .selected-program-chip .program-kind {
+      color: var(--purple-dark); background: var(--purple-soft); border-radius: 999px;
+      padding: 3px 7px; font-size: 12px; white-space: nowrap;
+    }
+    .selected-program-chip .program-name { font-size: 14px; }
+    .selected-program-chip button {
+      width: 26px; height: 26px; min-width: 26px; padding: 0; border: 0; border-radius: 999px;
+      color: var(--muted); background: transparent; font-size: 18px; line-height: 1;
+    }
+    .selected-program-chip button:hover { background: #f1edf9; color: var(--purple-dark); }
+
+    .program-browser { border: 1px solid var(--line); border-radius: 18px; background: #fff; overflow: hidden; }
+    .program-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 6px; gap: 6px; background: #f8f6fc; border-bottom: 1px solid var(--line); }
+    .program-tab {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      border: 0; background: transparent; color: var(--muted); box-shadow: none;
+    }
+    .program-tab span { min-width: 28px; padding: 2px 7px; border-radius: 999px; background: #ebe7f4; font-size: 12px; }
+    .program-tab.active { background: #fff; color: var(--purple-dark); box-shadow: 0 1px 4px rgba(45, 35, 86, .08); }
+    .program-tab.active span { background: var(--purple-soft); color: var(--purple-dark); }
+    .program-browser-tools {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .42fr); gap: 10px;
+      padding: 14px; border-bottom: 1px solid var(--line);
+    }
+    .program-browser-tools input, .program-browser-tools select { margin: 0; }
+    .program-pane { padding: 0 14px 14px; }
+    .program-results-meta {
+      display: flex; justify-content: space-between; gap: 10px; align-items: center;
+      color: var(--muted); font-size: 13px; padding: 12px 2px 9px;
+    }
+    .program-results-list {
+      display: grid; gap: 8px; max-height: 410px; overflow-y: auto; padding: 1px 3px 3px 1px;
+      scrollbar-gutter: stable;
+    }
+    .program-option {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center;
+      border: 1px solid var(--line); border-radius: 15px; padding: 13px 13px 13px 15px; background: #fff;
+    }
+    .program-option:hover { border-color: #d3c9f0; background: #fdfcff; }
+    .program-option.selected { border-color: #c9bdf0; background: #faf8ff; }
+    .program-option-title { color: var(--ink); font-size: 15px; font-weight: 520; }
+    .program-option-meta { color: var(--muted); font-size: 13px; margin-top: 3px; }
+    .program-option button { min-width: 78px; padding: 8px 11px; font-size: 14px; }
+    .program-option button.selected { color: #675421; background: var(--gold-soft); border-color: #e4d7ad; box-shadow: none; }
+    .program-no-results { color: var(--muted); text-align: center; padding: 32px 14px; }
+
+    @media (max-width: 680px) {
+      .program-browser-tools { grid-template-columns: 1fr; }
+      .program-option { grid-template-columns: 1fr; }
+      .program-option button { width: 100%; }
+      .selected-program-chip { max-width: 100%; }
+      .selected-program-chip .program-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    }
     .source-box { margin-top: 24px; border: 1px solid var(--line); border-radius: 16px; padding: 16px; background: #fcfbff; }
     .source-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
     .data-status { margin-top: 10px; font-size: 14px; color: var(--muted); }
@@ -2212,6 +2312,7 @@ function defaultState() {
   return {
     majors: [], minors: [], grad: "Spring 2030", gradYear: 2030, gradTerm: "Spring", startTerm: "Fall 2026", mathPlacement: "",
     englishPlacement: "", languagePlacementTaken: "", languageName: "", languagePlacement: "",
+    programPickerTab: "majors", programPickerSearch: "", programPickerArea: "all",
     mathPlacementTaken: "", planningScope: "degree", workflowVersion: 4,
     athleteStatus: "", sports: [], apExams: [],
     profileRole: "", studentType: "", setupStep: 1, setupComplete: false,
@@ -2251,6 +2352,9 @@ function loadState() {
     state.semesterSelections = Array.isArray(state.semesterSelections) ? state.semesterSelections : [];
     state.semesterCourseTypes = state.semesterCourseTypes || {};
     state.semesterCourseView = state.semesterCourseView || "needed";
+    state.programPickerTab = ["majors", "minors"].includes(state.programPickerTab) ? state.programPickerTab : "majors";
+    state.programPickerSearch = String(state.programPickerSearch || "");
+    state.programPickerArea = String(state.programPickerArea || "all");
     const oldWorkflow = Number(state.workflowVersion || 0) < 4;
     state.workflowVersion = 4;
     state.startTerm = state.startTerm || "Fall 2026";
@@ -4486,24 +4590,121 @@ function choiceCards(options, selected, inputName) {
   }).join("")}</div>`;
 }
 function renderProgramWizard() {
-  const groups = new Map();
-  [["majors", "Majors"], ["minors", "Minors"]].forEach(([type, heading]) => {
-    Object.entries(REQUIREMENTS[type] || {}).forEach(([key, program]) => {
-      const area = program.area || "Other programs";
-      if (!groups.has(area)) groups.set(area, { majors: [], minors: [] });
-      groups.get(area)[type].push({ key, program, heading });
-    });
-  });
-  const html = Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([area, types]) => {
-    const sections = ["majors", "minors"].map(type => {
-      if (!types[type].length) return "";
-      const label = type === "majors" ? "Majors" : "Minors";
-      return `<h4>${label}</h4><div class="program-picker">${types[type].map(({ key, program }) => `<label class="program-chip"><input type="checkbox" data-wizard-program="${type}" value="${key}" ${(state[type] || []).includes(key) ? "checked" : ""}><span><strong>${program.label}</strong><span class="small">${program.totalCredits ? ` · ${program.totalCredits} credits` : ""}</span></span></label>`).join("")}</div>`;
+  const entriesFor = type => Object.entries(REQUIREMENTS[type] || {})
+    .map(([key, program]) => ({
+      key,
+      type,
+      label: program.label || key,
+      area: program.area || "Other programs",
+      credits: Number(program.totalCredits || 0),
+      description: program.description || ""
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+  const majors = entriesFor("majors");
+  const minors = entriesFor("minors");
+  const allEntries = [...majors, ...minors];
+  const areas = Array.from(new Set(allEntries.map(item => item.area))).sort((a, b) => a.localeCompare(b));
+  if (state.programPickerArea !== "all" && !areas.includes(state.programPickerArea)) state.programPickerArea = "all";
+
+  const selectedEntries = [
+    ...majors.filter(item => (state.majors || []).includes(item.key)),
+    ...minors.filter(item => (state.minors || []).includes(item.key))
+  ];
+
+  const selectedMarkup = selectedEntries.length
+    ? selectedEntries.map(item => `<span class="selected-program-chip">
+        <span class="program-kind">${item.type === "majors" ? "Major" : "Minor"}</span>
+        <span class="program-name">${escapeHTML(item.label)}</span>
+        <button type="button" data-program-remove="${escapeHTML(item.type)}" data-program-key="${escapeHTML(item.key)}" aria-label="Remove ${escapeHTML(item.label)}">×</button>
+      </span>`).join("")
+    : '<div class="selected-program-empty">No programs selected yet. At least one major is required.</div>';
+
+  const paneMarkup = (type, entries) => {
+    const selectedKeys = new Set(state[type] || []);
+    const noun = type === "majors" ? "major" : "minor";
+    const options = entries.map(item => {
+      const selected = selectedKeys.has(item.key);
+      const searchable = `${item.label} ${item.area}`.toLowerCase();
+      const tooltip = item.description ? ` data-tooltip="${escapeHTML(item.description)}" title="${escapeHTML(item.description)}"` : "";
+      return `<div class="program-option ${selected ? "selected" : ""}" data-program-option data-program-type="${type}" data-program-area="${escapeHTML(item.area)}" data-program-search="${escapeHTML(searchable)}"${tooltip}>
+        <div>
+          <div class="program-option-title">${escapeHTML(item.label)}</div>
+          <div class="program-option-meta">${escapeHTML(item.area)}${item.credits ? ` · ${item.credits} credits` : ""}</div>
+        </div>
+        <button type="button" class="${selected ? "selected" : ""}" data-program-toggle="${type}" data-program-key="${escapeHTML(item.key)}">${selected ? "Remove" : `Add ${noun}`}</button>
+      </div>`;
     }).join("");
-    return `<section class="program-area"><h3>${area}</h3>${sections}</section>`;
-  }).join("");
-  return html || `<div class="warning">No programs were found. Check the CSV data source below.</div>`;
+    return `<section class="program-pane ${state.programPickerTab === type ? "" : "hidden"}" data-program-pane="${type}">
+      <div class="program-results-meta"><span data-program-result-count="${type}">${entries.length} ${type}</span><span>${type === "majors" ? "Choose at least one" : "Optional"}</span></div>
+      <div class="program-results-list">${options}<div class="program-no-results hidden" data-program-no-results="${type}">No ${type} match this search.</div></div>
+    </section>`;
+  };
+
+  return `<div class="program-selector">
+    <section class="selected-programs">
+      <div class="program-selection-heading"><h4>Selected programs</h4><span class="program-selection-count">${(state.majors || []).length} major${(state.majors || []).length === 1 ? "" : "s"} · ${(state.minors || []).length} minor${(state.minors || []).length === 1 ? "" : "s"}</span></div>
+      <div class="selected-program-list">${selectedMarkup}</div>
+    </section>
+    <section class="program-browser">
+      <div class="program-tabs" role="tablist" aria-label="Program type">
+        <button type="button" class="program-tab ${state.programPickerTab === "majors" ? "active" : ""}" data-program-tab="majors" role="tab" aria-selected="${state.programPickerTab === "majors"}">Majors <span>${majors.length}</span></button>
+        <button type="button" class="program-tab ${state.programPickerTab === "minors" ? "active" : ""}" data-program-tab="minors" role="tab" aria-selected="${state.programPickerTab === "minors"}">Minors <span>${minors.length}</span></button>
+      </div>
+      <div class="program-browser-tools">
+        <input type="search" id="programPickerSearch" value="${escapeHTML(state.programPickerSearch)}" placeholder="Search ${state.programPickerTab === "majors" ? "majors" : "minors"}" aria-label="Search programs">
+        <select id="programPickerArea" aria-label="Filter by academic area"><option value="all">All academic areas</option>${areas.map(area => `<option value="${escapeHTML(area)}" ${state.programPickerArea === area ? "selected" : ""}>${escapeHTML(area)}</option>`).join("")}</select>
+      </div>
+      ${paneMarkup("majors", majors)}
+      ${paneMarkup("minors", minors)}
+    </section>
+  </div>`;
 }
+
+function attachProgramPickerEvents(content) {
+  const applyProgramFilters = () => {
+    const query = ($("programPickerSearch")?.value || "").trim().toLowerCase();
+    const area = $("programPickerArea")?.value || "all";
+    state.programPickerSearch = $("programPickerSearch")?.value || "";
+    state.programPickerArea = area;
+    const activeType = state.programPickerTab || "majors";
+    let shown = 0;
+    content.querySelectorAll(`[data-program-option][data-program-type="${activeType}"]`).forEach(row => {
+      const matchesSearch = !query || (row.dataset.programSearch || "").includes(query);
+      const matchesArea = area === "all" || row.dataset.programArea === area;
+      const visible = matchesSearch && matchesArea;
+      row.classList.toggle("hidden", !visible);
+      if (visible) shown += 1;
+    });
+    const count = content.querySelector(`[data-program-result-count="${activeType}"]`);
+    if (count) count.textContent = `${shown} ${activeType}`;
+    const empty = content.querySelector(`[data-program-no-results="${activeType}"]`);
+    if (empty) empty.classList.toggle("hidden", shown !== 0);
+  };
+
+  content.querySelectorAll("[data-program-tab]").forEach(button => button.addEventListener("click", () => {
+    state.programPickerTab = button.dataset.programTab;
+    state.programPickerSearch = "";
+    state.programPickerArea = "all";
+    saveState();
+    renderWizard();
+  }));
+
+  $("programPickerSearch")?.addEventListener("input", () => { applyProgramFilters(); saveState(); });
+  $("programPickerArea")?.addEventListener("change", () => { applyProgramFilters(); saveState(); });
+
+  const toggleProgram = (type, key) => {
+    const selected = new Set(state[type] || []);
+    if (selected.has(key)) selected.delete(key); else selected.add(key);
+    state[type] = Array.from(selected);
+    saveState(); renderAll(true); renderWizard();
+  };
+
+  content.querySelectorAll("[data-program-toggle]").forEach(button => button.addEventListener("click", () => toggleProgram(button.dataset.programToggle, button.dataset.programKey)));
+  content.querySelectorAll("[data-program-remove]").forEach(button => button.addEventListener("click", () => toggleProgram(button.dataset.programRemove, button.dataset.programKey)));
+  applyProgramFilters();
+}
+
 function eligibleCodesForHistory(item) {
   if (!item) return [];
   if (!isCriteriaRequirement(item)) return [item.code].filter(code => COURSE_CATALOG[code] || BUNDLES[code]);
@@ -5031,7 +5232,7 @@ function renderPlacementResultsMarkup() {
   ];
   return `<div class="placement-results-grid">
     <section class="placement-result-card"><h4>English placement</h4><label class="field-label">Result<select id="wizardEnglishPlacement">${englishOptions.map(([value, label]) => `<option value="${value}" ${state.englishPlacement === value ? "selected" : ""}>${label}</option>`).join("")}</select></label>${state.englishPlacement === "ENG 123" ? '<div class="placement-note">ENG 121 will be treated as cleared.</div>' : state.englishPlacement === "clear_all" ? '<div class="placement-note">ENG 121 and ENG 123 will be treated as cleared.</div>' : state.englishPlacement === "not_taken" ? '<div class="placement-note">Degreefy will begin with ENG 105.</div>' : ""}</section>
-    <section class="placement-result-card"><h4>Language placement</h4><label class="field-label">Language<select id="wizardLanguageName"><option value="">Select language</option>${languageNames.map(([value, label]) => `<option value="${value}" ${state.languageName === value ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field-label">Result<select id="wizardLanguagePlacement">${languageOptions.map(([value, label]) => `<option value="${value}" ${state.languagePlacement === value ? "selected" : ""}>${label}</option>`).join("")}</select></label>${state.languagePlacement === "not_taken" ? '<div class="placement-note">Degreefy will begin with the selected language at the 101 level.</div>' : ""}</section>
+    <section class="placement-result-card"><h4>Foreign language</h4><label class="field-label">Language choice<select id="wizardLanguageName" required><option value="">Choose a language</option>${languageNames.map(([value, label]) => `<option value="${value}" ${state.languageName === value ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field-label">Placement result<select id="wizardLanguagePlacement">${languageOptions.map(([value, label]) => `<option value="${value}" ${state.languagePlacement === value ? "selected" : ""}>${label}</option>`).join("")}</select></label><div class="placement-note">Choose the language the student plans to study even when the placement test has not been taken.${state.languagePlacement === "not_taken" ? " Degreefy will begin at the 101 level." : ""}</div></section>
     <section class="placement-result-card"><h4>Math placement</h4><label class="field-label">Result<select id="wizardMathPlacement">${mathOptions.map(([value, label]) => `<option value="${value}" ${state.mathPlacement === value ? "selected" : ""}>${label}</option>`).join("")}</select></label>${state.mathPlacement === "not_taken" ? '<div class="placement-note">Degreefy will begin with MTH 100.</div>' : ""}</section>
   </div><div class="wizard-error" id="wizardError"></div>`;
 }
@@ -5147,8 +5348,8 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Select majors and minors</h3>${renderProgramWizard()}<details class="source-box"><summary>Data source</summary><div class="source-row" style="margin-top:10px"><label class="field-label">GitHub folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
-    content.querySelectorAll('[data-wizard-program]').forEach(input => input.addEventListener("change", () => { const type = input.dataset.wizardProgram; state[type] = Array.from(content.querySelectorAll(`[data-wizard-program="${type}"]:checked`)).map(item => item.value); saveState(); renderAll(true); renderWizard(); }));
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Search the catalog, add at least one major, and add any minors under consideration.</p>${renderProgramWizard()}<details class="source-box"><summary>Data source</summary><div class="source-row" style="margin-top:10px"><label class="field-label">GitHub folder URL<input id="githubBaseUrlInput" type="url" value="${state.githubBaseUrl || "./data"}" placeholder="https://raw.githubusercontent.com/user/repo/main/data"></label><button type="button" id="loadDataBtn">Load CSV files</button></div><div class="data-status ${DATA_SOURCE_KIND === "csv" ? "good" : ""}" id="dataSourceStatus">${state.dataStatus || "Using embedded sample data until CSV files load."}</div></details><div class="wizard-error" id="wizardError"></div>`;
+    attachProgramPickerEvents(content);
     $("loadDataBtn")?.addEventListener("click", async () => { state.githubBaseUrl = $("githubBaseUrlInput").value.trim() || "./data"; saveState(); await loadDegreeData(state.githubBaseUrl, true); renderWizard(); });
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
@@ -5206,8 +5407,8 @@ function validateWizardStep() {
   if (state.setupStep === 3 && !state.planningScope) message = "Choose what you would like to plan.";
   if (state.setupStep === 4 && !state.startTerm) message = "Select a starting semester.";
   if (state.setupStep === 5 && !state.englishPlacement) message = "Select an English placement result.";
-  if (state.setupStep === 5 && !message && !state.languagePlacement) message = "Select a language placement result.";
-  if (state.setupStep === 5 && !message && state.languagePlacement !== "cleared" && !state.languageName) message = "Select the language connected to the placement result.";
+  if (state.setupStep === 5 && !message && !state.languageName) message = "Choose the foreign language the student plans to study.";
+  if (state.setupStep === 5 && !message && !state.languagePlacement) message = "Select a language placement result, including Test not taken when applicable.";
   if (state.setupStep === 5 && !message && !state.mathPlacement) message = "Select a math placement result.";
   if (state.setupStep === 7 && !state.athleteStatus) message = "Answer whether the student is an athlete.";
   if (state.setupStep === 7 && !message && state.athleteStatus === "yes" && !(state.sports || []).length) message = "Select at least one sport.";
