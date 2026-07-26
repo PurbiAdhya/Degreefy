@@ -1314,6 +1314,9 @@
       .planner-secondary-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
       .semester-grid { grid-template-columns: 1fr; padding: 12px; }
       .planner-head { padding: 18px; }
+      .planner-year-strip { padding: 12px 12px 0; }
+      .planner-year-summary { padding: 0 12px 4px; }
+      .planner-year-timeline { grid-template-columns: 1fr; }
     }
 
     @media print {
@@ -2172,6 +2175,16 @@
           </div>
           <button type="button" class="primary" id="planForMeInlineBtn">Plan for me</button>
         </div>
+        <div class="planner-year-strip">
+          <div class="planner-year-copy">
+            <div>
+              <h3>Journey timeline</h3>
+              <p class="small">See one planning year at a time. Start with Year 1 and click ahead as the plan builds forward.</p>
+            </div>
+          </div>
+          <div class="planner-year-timeline" id="plannerYearTimeline"></div>
+        </div>
+        <div class="planner-year-summary" id="plannerYearSummary"></div>
         <div class="semester-grid" id="semesterGrid"></div>
         <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
       </section>
@@ -2744,7 +2757,7 @@ function defaultState() {
     githubBaseUrl: "./data", dataStatus: "",
     checked: {}, checkedCore: {}, checkedCourses: {}, planned: {}, satisfied: {}, satisfiedCore: {},
     courseSources: {}, acadeumApprovals: {},
-    routineBlocks: [], semesterSelections: [], semesterCourseTypes: {}, semesterCourseView: "needed", semesterReviewMode: false
+    routineBlocks: [], semesterSelections: [], semesterCourseTypes: {}, semesterCourseView: "needed", semesterReviewMode: false, plannerYearIndex: 0
   };
 }
 
@@ -5164,6 +5177,56 @@ function compareFullJourneyCoreCourses(aId, bId, all) {
   return rankDifference || compareFullJourneyProgramCourses(aId, bId, all);
 }
 
+function plannerYearGroups(activeTerms) {
+  const visibleTerms = activeTerms.filter(key => showSummerTerms || parseTerm(key).term !== "Summer");
+  const groups = [];
+  let current = [];
+  visibleTerms.forEach((key, index) => {
+    const termInfo = parseTerm(key);
+    if (index > 0 && termInfo.term === "Fall" && current.length) {
+      groups.push(current);
+      current = [];
+    }
+    current.push(key);
+  });
+  if (current.length) groups.push(current);
+  return groups.map((terms, index) => ({
+    index,
+    label: `Year ${index + 1}`,
+    terms,
+    subtitle: terms.length ? `${terms[0]}${terms.length > 1 ? ` – ${terms[terms.length - 1]}` : ""}` : ""
+  }));
+}
+
+function renderPlannerYearTimeline(groups) {
+  const container = $("plannerYearTimeline");
+  const summary = $("plannerYearSummary");
+  if (!container) return;
+  container.innerHTML = "";
+  if (!groups.length) {
+    if (summary) summary.textContent = "";
+    return;
+  }
+  state.plannerYearIndex = Math.max(0, Math.min(Number(state.plannerYearIndex || 0), groups.length - 1));
+  groups.forEach(group => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `planner-year-stop${group.index === state.plannerYearIndex ? " active" : ""}`;
+    const plannedCount = group.terms.reduce((sum, key) => sum + ((state.planned[key] || []).length), 0);
+    btn.innerHTML = `<strong>${group.label}</strong><span>${escapeHTML(group.subtitle)}</span><span>${plannedCount} planned course${plannedCount === 1 ? "" : "s"}</span>`;
+    btn.addEventListener("click", () => {
+      state.plannerYearIndex = group.index;
+      saveState();
+      renderPlanner();
+    });
+    container.appendChild(btn);
+  });
+  const active = groups[state.plannerYearIndex] || groups[0];
+  if (summary && active) {
+    summary.innerHTML = `<strong>${active.label}</strong> · ${escapeHTML(active.subtitle)} · ${active.terms.length} semester${active.terms.length === 1 ? "" : "s"} shown`;
+  }
+}
+
 function renderPlanner() {
   const grid = $("semesterGrid"); grid.innerHTML = "";
   grid.classList.toggle("two-column-terms", !showSummerTerms);
@@ -5177,7 +5240,11 @@ function renderPlanner() {
   $("clearPlanBtn")?.classList.toggle("hidden", !hasScheduledPlan);
   if ($("toggleSummerBtn")) $("toggleSummerBtn").textContent = showSummerTerms ? "Hide summer terms" : "Show summer terms";
 
-  activeTerms.forEach(key => {
+  const yearGroups = plannerYearGroups(activeTerms);
+  renderPlannerYearTimeline(yearGroups);
+  const displayTerms = (yearGroups[state.plannerYearIndex] || yearGroups[0] || { terms: [] }).terms;
+
+  displayTerms.forEach(key => {
     if (!state.planned[key]) state.planned[key] = [];
     const termInfo = parseTerm(key);
     if (termInfo.term === "Summer" && !showSummerTerms) return;
@@ -5589,14 +5656,14 @@ const SUPPORTED_PROGRAMS = [
     name: "AI and Data Science",
     aliases: ["AI and Data Science"],
     major: true,
-    minor: false
+    minor: true
   },
   {
     ids: ["cs", "computerScience", "computer-science"],
     name: "Computer Science",
     aliases: ["Computer Science"],
     major: true,
-    minor: false
+    minor: true
   },
   {
     ids: ["math", "mathMinor", "mathematics", "mathematics-minor"],
@@ -6993,7 +7060,7 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Choose from the programs currently supported by Degreefy: AI and Data Science, Computer Science, Mathematics, and Dual Degree Engineering. Mathematics is available as both a major and a minor; the other programs are majors only. Requirements are loaded automatically from programs.csv and the associated requirement CSV files.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Choose from the programs currently supported by Degreefy: AI and Data Science, Computer Science, Mathematics, and Dual Degree Engineering. AI and Data Science, Computer Science, and Mathematics are available as both majors and minors. Dual Degree Engineering is available as a major only. Requirements are loaded automatically from programs.csv and the associated requirement CSV files.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
     attachProgramPickerEvents(content);
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
