@@ -2522,6 +2522,44 @@
       body.print-plan .planner-track-status { display: none !important; }
     }
 
+  
+    /* Minimal full-journey view: planned courses are the primary content. */
+    .planning-layout {
+      grid-template-columns: minmax(180px, 220px) minmax(0, 1fr) minmax(270px, 320px);
+      gap: 14px;
+    }
+    .planner-year-rail { padding: 16px 12px; }
+    .planner-year-timeline { gap: 8px; }
+    .planner-year-stop { min-height: 72px; padding: 12px 12px 12px 38px; }
+    .planner-year-stop::before { left: 14px; top: 17px; }
+    .planner-year-stop .planner-year-label { padding-left: 0; font-size: 15px; }
+    .planner-year-stop .planner-year-range { font-size: 12px; }
+    .planner-year-meta,
+    .planner-overview-card,
+    .year-rail-heading,
+    .year-credit-card,
+    .planner-track-status { display: none !important; }
+    .planner-wrap { padding-top: 14px; }
+    .semester-grid { padding-top: 0; }
+    .compact-plan-start {
+      margin: 0 18px 14px;
+      min-height: 0;
+      padding: 12px 14px;
+      align-items: center;
+    }
+    .compact-plan-start strong { color: var(--ink); font-weight: 520; }
+    .remaining-courses-panel { padding-top: 16px; }
+    .remaining-courses-panel .panel-heading-row { margin-bottom: 12px; }
+    .plan-title-block > .plan-kicker,
+    .remaining-courses-panel .panel-kicker,
+    .remaining-courses-panel .panel-intro { display: none !important; }
+    @media (max-width: 1080px) {
+      .planning-layout { grid-template-columns: 1fr; }
+      .planner-year-rail { padding: 10px; }
+      .planner-year-timeline { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      .planner-year-stop { min-height: 68px; }
+    }
+
   </style>
 </head>
 <body>
@@ -2594,63 +2632,26 @@
 
     <main class="planning-layout">
       <aside class="panel planner-year-rail" aria-label="Degree journey years">
-        <div class="year-rail-heading">
-          <span class="panel-kicker">Degree journey</span>
-          <h2>Plan by year</h2>
-          <p>Move through the plan one academic year at a time.</p>
-        </div>
         <div class="planner-year-timeline" id="plannerYearTimeline"></div>
-        <div class="year-credit-card">
-          <div class="year-credit-icon" aria-hidden="true">◇</div>
-          <div>
-            <span>120 credits required</span>
-            <strong><span id="yearCreditsRemaining">120</span> remaining</strong>
-          </div>
-          <div class="year-credit-track" aria-hidden="true"><div id="yearCreditProgressBar"></div></div>
-        </div>
       </aside>
 
       <section class="panel planner-wrap">
-        <div class="planner-overview-card">
-          <div class="planner-overview-heading">
-            <div class="planner-overview-icon" aria-hidden="true">▣</div>
-            <div>
-              <h2 id="plannerOverviewTitle">Year 1 overview</h2>
-              <p id="plannerOverviewSubtitle">Review the courses planned for this academic year.</p>
-            </div>
-          </div>
-          <div class="planner-overview-metrics">
-            <div class="overview-metric"><span>Semesters</span><strong id="overviewSemesters">2 of 2</strong></div>
-            <div class="overview-metric"><span>Credits this year</span><strong id="overviewYearCredits">0</strong></div>
-            <div class="overview-metric"><span>Credits scheduled</span><strong id="overviewTotalCredits">0</strong></div>
-            <div class="overview-metric"><span>Credits remaining</span><strong id="overviewCreditsRemaining">120</strong></div>
-          </div>
-        </div>
-
-        <div class="plan-start-prompt" id="planStartPrompt">
-          <div>
-            <span class="panel-kicker">A helpful first draft</span>
-            <h3>Let Degreefy arrange the remaining courses.</h3>
-            <p>It will follow prerequisites, typical course offerings, and semester credit limits. You can move every course afterward.</p>
-          </div>
+        <div class="plan-start-prompt compact-plan-start" id="planStartPrompt">
+          <strong>No courses are planned yet.</strong>
           <button type="button" class="primary" id="planForMeInlineBtn">Plan for me</button>
         </div>
 
         <div class="semester-grid" id="semesterGrid"></div>
 
-        <div id="successMessage" class="success planner-track-status hidden">
-          <div><strong>You’re on track to complete the degree.</strong><span> All requirements are planned and the credit total is complete.</span></div>
-          <button type="button" id="successReviewRequirementsBtn">Review all requirements</button>
+        <div id="successMessage" class="planner-track-status hidden" title="All requirements are planned." aria-label="All requirements are planned.">
+          <button type="button" id="successReviewRequirementsBtn" aria-label="Review all requirements"></button>
         </div>
         <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
       </section>
 
       <aside class="panel courses-panel remaining-courses-panel">
         <div class="panel-heading-row">
-          <div>
-            <span class="panel-kicker">Course bank</span>
-            <h2>Unplaced courses</h2>
-          </div>
+          <div><h2>Unplaced courses</h2></div>
           <span class="remaining-count" id="remainingCourseCount"></span>
         </div>
         <p class="panel-intro">Courses still needed appear here until they are placed in a semester.</p>
@@ -3153,6 +3154,11 @@ let REQUIREMENTS = {
     }
   }
 };
+
+const BUILTIN_SUPPORTED_MINOR_REQUIREMENTS = JSON.parse(JSON.stringify({
+  aiMinor: REQUIREMENTS.minors.aiMinor,
+  csMinor: REQUIREMENTS.minors.csMinor
+}));
 
 let CORE = [
   ["CORE PTH 101", "PTH 101", "Community and Well-Being", 1],
@@ -5610,15 +5616,35 @@ function fullJourneyProgramRequirementInfo(id, item) {
   };
 }
 
+function fullJourneyDirectProgramPrefixes() {
+  const prefixes = new Set();
+  Array.from(getRequirementMap().values()).forEach(req => {
+    if (isCriteriaRequirement(req)) return;
+    const code = plainCode(req.code);
+    if (COURSE_CATALOG[code] || BUNDLES[code]) prefixes.add(fullJourneyCoursePrefix(code));
+  });
+  return prefixes;
+}
+
 function fullJourneyCourseBucket(id, item) {
+  const rawCode = fullJourneyRawCode(id, item);
   const program = fullJourneyProgramRequirementInfo(id, item);
   const coreMatch = fullJourneyCoreRequirementIds(id, item).length > 0;
-  // A direct program requirement or a prerequisite/corequisite that supports the
-  // selected program takes precedence over Core. Broad elective matches alone do
-  // not take a Core course out of the Core bucket.
-  if (program.explicit || program.support) return "program";
-  if (coreMatch) return "core";
-  if (program.any) return "program";
+
+  // Courses printed directly in the selected program always belong to Program.
+  if (program.explicit) return "program";
+
+  // A Core course remains in Core even when it is an indirect prerequisite for a
+  // program course. The exception is a same-subject foundation chain leading to
+  // a direct program requirement, such as MTH 100/MTH 101/MTH 111 leading to
+  // MTH 121 for Computer Science.
+  if (coreMatch) {
+    const sameSubjectFoundation = program.support &&
+      fullJourneyDirectProgramPrefixes().has(fullJourneyCoursePrefix(rawCode));
+    return sameSubjectFoundation ? "program" : "core";
+  }
+
+  if (program.support || program.any) return "program";
   return "program";
 }
 
@@ -5696,7 +5722,8 @@ function renderPlannerYearTimeline(groups) {
     btn.type = "button";
     btn.className = `planner-year-stop${group.index === state.plannerYearIndex ? " active" : ""}`;
     const plannedCount = group.terms.reduce((sum, key) => sum + ((state.planned[key] || []).length), 0);
-    btn.innerHTML = `<span class="planner-year-label">${group.label}</span><span class="planner-year-range">${escapeHTML(group.subtitle)}</span><span class="planner-year-meta">${plannedCount} planned course${plannedCount === 1 ? "" : "s"}</span>`;
+    btn.title = `${group.label}: ${group.subtitle}. ${plannedCount} planned course${plannedCount === 1 ? "" : "s"}.`;
+    btn.innerHTML = `<span class="planner-year-label">${group.label}</span><span class="planner-year-range">${escapeHTML(group.subtitle)}</span>`;
     btn.addEventListener("click", () => {
       state.plannerYearIndex = group.index;
       saveState();
@@ -5708,18 +5735,6 @@ function renderPlannerYearTimeline(groups) {
   if (summary && active) {
     summary.innerHTML = `<strong>${active.label}</strong> · ${escapeHTML(active.subtitle)} · Showing ${active.terms.length} semester${active.terms.length === 1 ? "" : "s"}`;
   }
-  const all = getAllCourseById();
-  const yearCredits = active ? active.terms.reduce((sum, key) => sum + (state.planned[key] || []).reduce((termSum, id) => termSum + (all.get(id)?.credits || 0), 0), 0) : 0;
-  const scheduledCredits = completedCreditTotal();
-  const remainingCredits = Math.max(0, DEGREE_MIN_CREDITS - scheduledCredits);
-  if ($("plannerOverviewTitle") && active) $("plannerOverviewTitle").textContent = `${active.label} overview`;
-  if ($("plannerOverviewSubtitle") && active) $("plannerOverviewSubtitle").textContent = `Review the plan for ${active.subtitle}.`;
-  if ($("overviewSemesters")) $("overviewSemesters").textContent = `${active?.terms.length || 0} of ${active?.terms.length || 0}`;
-  if ($("overviewYearCredits")) $("overviewYearCredits").textContent = yearCredits;
-  if ($("overviewTotalCredits")) $("overviewTotalCredits").textContent = scheduledCredits;
-  if ($("overviewCreditsRemaining")) $("overviewCreditsRemaining").textContent = remainingCredits;
-  if ($("yearCreditsRemaining")) $("yearCreditsRemaining").textContent = remainingCredits;
-  if ($("yearCreditProgressBar")) $("yearCreditProgressBar").style.width = `${Math.min(100, (scheduledCredits / DEGREE_MIN_CREDITS) * 100)}%`;
 }
 
 function renderPlanner() {
@@ -5790,7 +5805,8 @@ function renderPlanner() {
         "Planned at Spring Hill College"
       ].filter(Boolean).join("\n");
       planned.title = details;
-      planned.innerHTML = `<div class="planned-course-label"><strong>${escapeHTML(item.code)}</strong><span>${escapeHTML(item.title)}</span><span class="print-credits"> (${item.credits})</span></div><button class="x" title="Remove ${escapeHTML(item.code)}" aria-label="Remove ${escapeHTML(item.code)}">×</button>`;
+      const visibleTitle = normalizedCourseKey(item.title) === normalizedCourseKey(item.code) ? "" : item.title;
+      planned.innerHTML = `<div class="planned-course-label"><strong>${escapeHTML(item.code)}</strong>${visibleTitle ? `<span>${escapeHTML(visibleTitle)}</span>` : ""}<span class="print-credits"> (${item.credits})</span></div><button class="x" title="Remove ${escapeHTML(item.code)}" aria-label="Remove ${escapeHTML(item.code)}">×</button>`;
       planned.querySelector(".x").addEventListener("click", () => removeCourseFromSemester(id, key));
       zone.appendChild(planned);
     };
@@ -6147,14 +6163,14 @@ const STUDENT_TYPE_OPTIONS = [
 
 const SUPPORTED_PROGRAMS = [
   {
-    ids: ["ai", "aiDataScience", "ai-data-science"],
+    ids: ["ai", "aiDataScience", "ai-data-science", "aiMinor", "ai-data-science-minor"],
     name: "AI and Data Science",
     aliases: ["AI and Data Science"],
     major: true,
     minor: true
   },
   {
-    ids: ["cs", "computerScience", "computer-science"],
+    ids: ["cs", "computerScience", "computer-science", "csMinor", "computer-science-minor"],
     name: "Computer Science",
     aliases: ["Computer Science"],
     major: true,
@@ -6405,6 +6421,14 @@ async function loadDegreeData(base = DATA_BASE_URL) {
       courses,
       offerings,
       core
+    });
+
+    ["aiMinor", "csMinor"].forEach(key => {
+      const fallback = BUILTIN_SUPPORTED_MINOR_REQUIREMENTS[key];
+      const loaded = built.programs.minors[key];
+      if (fallback && (!loaded || !(loaded.courses || []).length)) {
+        built.programs.minors[key] = JSON.parse(JSON.stringify(fallback));
+      }
     });
 
     COURSE_CATALOG = built.courses;
@@ -7555,7 +7579,7 @@ function renderWizard() {
     ["wizardGradYear", "wizardGradTerm"].forEach(id => $(id).addEventListener("change", sync));
   } else if (state.setupStep === 9) {
     $("wizardHeading").textContent = "Majors and minors";
-    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Choose from the programs currently supported by Degreefy: AI and Data Science, Computer Science, Mathematics, and Dual Degree Engineering. AI and Data Science, Computer Science, and Mathematics are available as both majors and minors. Dual Degree Engineering is available as a major only. Requirements are loaded automatically from programs.csv and the associated requirement CSV files.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
+    content.innerHTML = `<h3>Choose the student’s programs</h3><p class="wizard-subtitle">Select at least one major. Add a minor if needed.</p>${renderProgramWizard()}<div class="wizard-error" id="wizardError"></div>`;
     attachProgramPickerEvents(content);
   } else if (state.setupStep === 10) {
     $("wizardHeading").textContent = "Completed core courses";
