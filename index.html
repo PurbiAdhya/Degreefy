@@ -3650,7 +3650,15 @@ function courseBelongsToRemainingPlan(item) {
 
 function courseShouldStayOutOfBank(item) {
   const raw = item.rawCode || item.code;
+
+  // Always keep courses that are already completed or placed out of the
+  // unplaced-course bank. In the All courses view, however, do not hide a
+  // course merely because another course or a manually completed choice
+  // requirement can stand in for it. This keeps courses such as THL 101
+  // searchable when the Intro Theology choice has been marked complete.
   if (isOfferedSelected(item.id) || isCourseDone(raw)) return true;
+  if (courseViewMode === "all") return false;
+
   return getDoneCourseCodes().some(done => doneCodeSatisfiesNeeded(done, raw));
 }
 
