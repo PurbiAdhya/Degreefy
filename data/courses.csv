@@ -1,113 +1,1140 @@
 code,display_code,title,credits,area,prerequisites,corequisites,is_bundle
-MTH 100,MTH 100,Intermediate Algebra,3,Mathematics,,MTH 101,false
-MTH 101,MTH 101,Intermediate Algebra Recitation,0,Mathematics,,MTH 100,false
-MTH 111,MTH 111,Precalculus with Trigonometry,3,Mathematics,MTH 100,,false
-MTH 121,MTH 121,Calculus I,4,Mathematics,MTH 111,,false
-MTH 122,MTH 122,Calculus II,4,Mathematics,MTH 121,,false
-MTH 163,MTH 163,Basic Statistics for the Sciences,3,Mathematics,MTH 100,,false
-MTH 221,MTH 221,Linear Algebra,3,Mathematics,MTH 121,,false
-MTH 223,MTH 223,Calculus III,4,Mathematics,MTH 122,,false
-MTH 261,MTH 261,Differential Equations,3,Mathematics,MTH 122,,false
-MTH 301,MTH 301,Introduction to Abstract Mathematics,3,Mathematics,MTH 121;PHL 101,,false
-MTH 322,MTH 322,Discrete Mathematics,3,Mathematics,MTH 121,,false
-MTH 365,MTH 365,Probability and Statistics,3,Mathematics,MTH 122,,false
-MTH 423,MTH 423,Cryptography,3,Mathematics,MTH 121,,false
-MTH 451,MTH 451,Basic Real Analysis,3,Mathematics,MTH 301;MTH 223,,false
-MTH 464,MTH 464,Complex Variables,3,Mathematics,MTH 301;MTH 223,,false
-MTH 482,MTH 482,Abstract Algebra,3,Mathematics,MTH 301,,false
-MTH 491,MTH 491,Seminar,1,Mathematics,MTH 451;MTH 464;MTH 482,,false
+ACC 201,ACC 201,Principles of Accounting I,3,Accounting,,,false
+ACC 202,ACC 202,Principles of Accounting II,3,Accounting,ACC 201,,false
+ACC 301,ACC 301,Intermediate Accounting I,3,Accounting,ACC 201;ACC 202,,false
+ACC 302,ACC 302,Intermediate Accounting II,3,Accounting,ACC 201;ACC 202,,false
+ACC 331,ACC 331,Management Cost Analysis,3,Accounting,ACC 202,,false
+ACC 351,ACC 351,Federal Income Tax,3,Accounting,ACC 201;ACC 202,,false
+ACC 381,ACC 381,Information Systems,3,Accounting,ACC 201;ACC 202,,false
+ACC 401,ACC 401,Advanced Financial Accounting,3,Accounting,ACC 201;ACC 202;ACC 301;ACC 302,,false
+ACC 402,ACC 402,International Accounting,3,Accounting,ACC 201;ACC 202;ACC 301;ACC 401,,false
+ACC 481,ACC 481,Auditing,3,Accounting,ACC 201;ACC 202;ACC 301;ACC 302,,false
+ACC 490,ACC 490,Independent Study,1-6,Accounting,,,false
+ACC 496,ACC 496,Accounting Internship,1-3,Accounting,BUS 210,,false
+AFS 101,AFS 101,Foundations of the United States Air Force I,1,Air Force Studies,,,false
+AFS 102,AFS 102,Foundations of the United States Air Force II,1,Air Force Studies,,,false
+AFS 201,AFS 201,The Evolution of USAF Air and Space Power I,1,Air Force Studies,,,false
+AFS 202,AFS 202,The Evolution of USAF Air and Space Power II,1,Air Force Studies,,,false
+AFS 301,AFS 301,Air Force Leadership Studies I,3,Air Force Studies,,,false
+AFS 302,AFS 302,Air Force Leadership Studies II,3,Air Force Studies,,,false
+AFS 401,AFS 401,National Security Affairs and Preparation for Active Duty I,3,Air Force Studies,,,false
+AFS 402,AFS 402,National Security Affairs and Preparation for Active Duty II,3,Air Force Studies,,,false
+AFS 494,AFS 494,Directed Study,1-3,Air Force Studies,,,false
+ART 101,ART 101,Two-Dimensional Design,3,Art,,,false
+ART 102,ART 102,Drawing I,3,Art,,,false
+ART 103,ART 103,Ceramics I,3,Art,,,false
+ART 202,ART 202,Drawing II,3,Art,ART 102,,false
+ART 206,ART 206,Painting I,3,Art,ART 101;ART 102,,false
+ART 207,ART 207,Printmaking I,3,Art,ART 102,,false
+ART 208,ART 208,Introduction to Digital Design,3,Art,,,false
+ART 209,ART 209,Three-Dimensional Design,3,Art,,,false
+ART 220,ART 220,Graphic Design I,3,Art,ART 101;ART 102;ART 208,,false
+ART 230,ART 230,Color Theory,3,Art,ART 101,,false
+ART 240,ART 240,Typography I,3,Art,ART 208,,false
+ART 253,ART 253,Introduction to Digital Video Production,3,Art,,,false
+ART 254,ART 254,Introduction to Photography,3,Art,,,false
+ART 299,ART 299,Special Topics,1-3,Art,,,false
+ART 301,ART 301,Advanced Drawing,3,Art,ART 202,,false
+ART 302,ART 302,Illustration,3,Art,ART 102;ART 208,,false
+ART 303,ART 303,Ceramics II,3,Art,ART 103,,false
+ART 306,ART 306,Painting II,3,Art,ART 206,,false
+ART 307,ART 307,Printmaking II,3,Art,ART 207,,false
+ART 310,ART 310,Mixed Media,3,Art,ART 101;ART 102,,false
+ART 320,ART 320,Graphic Design II,3,Art,ART 208;ART 220,,false
+ART 338,ART 338,Advanced Photography,3,Art,CMM 254;ART 254,,false
+ART 341,ART 341,Typography II,3,Art,ART 240;ART 320,,false
+ART 371,ART 371,UX/UI Design,3,Art,,,false
+ART 403,ART 403,Ceramics III,3,Art,ART 303,,false
+ART 406,ART 406,Painting Concepts,3,Art,ART 306,,false
+ART 408,ART 408,Ceramics IV,3,Art,ART 403,,false
+ART 410,ART 410,Advanced Printmaking I,3,Art,ART 307,,false
+ART 411,ART 411,Advanced Printmaking II,3,Art,ART 410,,false
+ART 416,ART 416,Painting Concepts II,3,Art,ART 406,,false
+ART 417,ART 417,Painting Studio I,3,Art,ART 416,,false
+ART 418,ART 418,Painting Studio II,3,Art,ART 417,,false
+ART 430,ART 430,Branding,3,Art,ART 320,,false
+ART 435,ART 435,Motion Graphics,3,Art,CMM 253,,false
+ART 490,ART 490,Visual Arts Internship,1-6,Art,,,false
+ART 491,ART 491,Graphic Design Senior Seminar,3,Art,,,false
+ART 493,ART 493,Senior Studio I,3,Art,,,false
+ART 494,ART 494,Senior Studio II,3,Art,ART 493,,false
+ART 495,ART 495,Studio Senior Seminar I,2,Art,,,false
+ART 496,ART 496,Studio Senior Seminar II,2,Art,,,false
+ART 497,ART 497,Art Education Senior Seminar,2,Art,,,false
+ART 499,ART 499,Special Topics,1-3,Art,,,false
+ART 501,ART 501,Studies in Art,3,Art,,,false
+ART 502,ART 502,Painting,3,Art,,,false
+ART 503,ART 503,Ceramics,3,Art,,,false
+ARH 100,ARH 100,Art Appreciation,3,Art History,,,false
+ARH 200,ARH 200,The Great Artists,3,Art History,,,false
+ARH 299,ARH 299,Special Topics,3,Art History,,,false
+ARH 310,ARH 310,Prehistoric to Renaissance Art,3,Art History,,,false
+ARH 311,ARH 311,Renaissance to Modern Art,3,Art History,,,false
+ARH 312,ARH 312,Modern to Contemporary Art,3,Art History,,,false
+ARH 313,ARH 313,Contemporary Art,3,Art History,,,false
+ARH 315,ARH 315,History of Graphic Design,3,Art History,,,false
+ARH 499,ARH 499,Special Topics,1-3,Art History,,,false
+ARH 501,ARH 501,Studies in Art History,3,Art History,,,false
+BIO 100,BIO 100,Human Biology,3,Biology,,,false
+BIO 101,BIO 101,Principles of Biology,3,Biology,,BIO 103;MTH 111;MTH 121,false
+BIO 102,BIO 102,Botany,3,Biology,BIO 101;BIO 103,BIO 104,false
+BIO 103,BIO 103,Principles of Biology Laboratory,1,Biology,,BIO 101,false
+BIO 104,BIO 104,Botany Laboratory,1,Biology,,BIO 102,false
+BIO 105,BIO 105,Introduction to Marine Science,3,Biology,BIO 101,,false
+BIO 110,BIO 110,Environmental Biology,3,Biology,,,false
+BIO 115,BIO 115,Biology of Sex,3,Biology,,,false
+BIO 116,BIO 116,Microbes and Society,3,Biology,,,false
+BIO 117,BIO 117,Forensic Biology,3,Biology,,,false
+BIO 120,BIO 120,Farms to Pharmaceuticals: The Botany of Everyday Things,3,Biology,,,false
+BIO 125,BIO 125,Pandemics,3,Biology,,,false
+BIO 140,BIO 140,STEM Community Service Seminar,1-2,Biology,,BIO 101;BIO 103,false
+BIO 201,BIO 201,Flora of the Gulf Coast,3,Biology,,,false
+BIO 202,BIO 202,Pre-Health Shadowing I,1,Biology,,,false
+BIO 203,BIO 203,Pre-Health Shadowing II,1,Biology,BIO 202,,false
+BIO 205,BIO 205,Invertebrate Zoology,3,Biology,BIO 101;CHM 112,BIO 207,false
+BIO 207,BIO 207,Invertebrate Zoology Laboratory,1,Biology,,BIO 205,false
+BIO 220,BIO 220,Biology of Women,3,Biology,ENG 123;ENG 290,,false
+BIO 225,BIO 225,Foundations of Epidemiology,3,Biology,,,false
+BIO 236,BIO 236,Microbial Biology,3,Biology,BIO 101,,false
+BIO 238,BIO 238,Microbial Biology Laboratory,1,Biology,,BIO 236,false
+BIO 240,BIO 240,Biomedical Anatomy and Physiology I,3,Biology,BIO 101,BIO 243;BIO 244,false
+BIO 241,BIO 241,Biomedical Anatomy and Physiology II,3,Biology,BIO 101,BIO 243;BIO 244,false
+BIO 243,BIO 243,Biomedical Anatomy and Physiology Laboratory I,1,Biology,,BIO 240;BIO 241,false
+BIO 244,BIO 244,Biomedical Anatomy and Physiology Laboratory II,1,Biology,,BIO 240;BIO 241,false
+BIO 254,BIO 254,Vertebrate Zoology,2,Biology,BIO 205;BIO 207,BIO 256,false
+BIO 256,BIO 256,Vertebrate Zoology Laboratory,2,Biology,,BIO 254,false
+BIO 301,BIO 301,Genetics,3,Biology,BIO 101;BIO 241;BIO 254,BIO 302,false
+BIO 302,BIO 302,Genetics Laboratory,1,Biology,,BIO 301,false
+BIO 310,BIO 310,Animal Behavior,3,Biology,BIO 301,,false
+BIO 322,BIO 322,Developmental Biology,3,Biology,BIO 101;BIO 241;BIO 254;BIO 301,BIO 324,false
+BIO 324,BIO 324,Developmental Biology Laboratory,1,Biology,,BIO 322,false
+BIO 330,BIO 330,Entomology,3,Biology,BIO 101,BIO 331,false
+BIO 331,BIO 331,Entomology Laboratory,1,Biology,,BIO 330,false
+BIO 334,BIO 334,Introductory Biophysics,3,Biology,PHY 222;MTH 122,,false
+BIO 340,BIO 340,History and Literature of Biology,3,Biology,BIO 101,,false
+BIO 351,BIO 351,Parasitology,3,Biology,BIO 254;BIO 241,BIO 353,false
+BIO 353,BIO 353,Parasitology Laboratory,1,Biology,,BIO 351,false
+BIO 355,BIO 355,Ecology,2,Biology,BIO 301,BIO 357,false
+BIO 357,BIO 357,Ecology Laboratory,2,Biology,,BIO 355,false
+BIO 360,BIO 360,Cell Biology,3,Biology,BIO 205;BIO 207;BIO 241;CHM 231;CHM 234,BIO 362,false
+BIO 362,BIO 362,Cell and Molecular Biology Laboratory,1,Biology,,BIO 360,false
+BIO 410,BIO 410,Immunology,3,Biology,,BIO 301,false
+BIO 412,BIO 412,Emerging Pathogens,3,Biology,,,false
+BIO 421,BIO 421,Histology,2,Biology,BIO 360,BIO 423,false
+BIO 423,BIO 423,Histology Laboratory,2,Biology,,BIO 421,false
+BIO 440,BIO 440,Basic and Clinical Endocrinology,3,Biology,BIO 241,,false
+BIO 450,BIO 450,Molecular Biology,3,Biology,BIO 301;BIO 360,,false
+BIO 460,BIO 460,Evolution,3,Biology,,,false
+BIO 462,BIO 462,General Physiology,3,Biology,BIO 241;BIO 360,BIO 464,false
+BIO 464,BIO 464,General Physiology Laboratory,1,Biology,,BIO 462,false
+BIO 466,BIO 466,Biology of Cancer,3,Biology,BIO 301;BIO 302;BIO 360,,false
+BIO 470,BIO 470,Mechanisms of Disease,3,Biology,BIO 301,,false
+BIO 480,BIO 480,Neurobiology,3,Biology,BIO 360;CHM 232,,false
+BIO 499,BIO 499,Special Topics,1-4,Biology,BIO 301,,false
+BUS 201,BUS 201,Personal Financial Literacy,3,Business,,,false
+BUS 210,BUS 210,Business Communication,3,Business,ENG 123,,false
+BUS 220,BUS 220,"Business, Society, and Sustainability",3,Business,,,false
+BUS 263,BUS 263,Business Statistics,3,Business,,,false
+BUS 264,BUS 264,Management Science,3,Business,BUS 263,,false
+BUS 301,BUS 301,Business Law I,3,Business,,,false
+BUS 302,BUS 302,Business Law II,3,Business,BUS 301,,false
+BUS 320,BUS 320,International Business,3,Business,,,false
+BUS 376,BUS 376,Intercultural Communication,3,Business,,,false
+BUS 395,BUS 395,Pre-Professional Development,1,Business,,,false
+BUS 490,BUS 490,Independent Study in Business Administration,variable,Business,,,false
+BUS 496,BUS 496,Business Internship,1-3,Business,BUS 210,,false
+BUS 499,BUS 499,Business Strategy and Policy,3,Business,,,false
+BUS 520,BUS 520,Organizational Behavior and Ethical Decision Making,3,Business,,,false
+BUS 525,BUS 525,Leadership,3,Business,,,false
+BUS 530,BUS 530,Business Ethics and Social Responsibility,3,Business,,,false
+BUS 535,BUS 535,Cost Accounting and Financial Analysis,3,Business,,,false
+BUS 550,BUS 550,Managerial Economics and Corporate Profitability,3,Business,,,false
+BUS 565,BUS 565,Logistics and Supply Chain Management,3,Business,,,false
+BUS 571,BUS 571,Procurement and Material Management,3,Business,,,false
+BUS 572,BUS 572,Logistics Information Systems,3,Business,,,false
+BUS 573,BUS 573,Case Studies in Logistics and Supply Chain Management,3,Business,,,false
+BUS 574,BUS 574,Management and Distribution of Inventory,3,Business,,,false
+BUS 580,BUS 580,International Business,3,Business,,,false
+BUS 592,BUS 592,Conflict Management,3,Business,,,false
+BUS 595,BUS 595,Special Topics,3,Business,,,false
+BUS 599,BUS 599,"Business Strategy, Policy, and Sustainability",3,Business,,,false
+BUS 671,BUS 671,Project Management I,3,Business,,,false
+BUS 672,BUS 672,Project Management II,3,Business,,,false
+BUS 673,BUS 673,Project Management Software,3,Business,,,false
+BUS 674,BUS 674,Project Management Capstone,3,Business,,,false
+BAN 363,BAN 363,Essentials of Business Analytics,3,Business Analytics,,,false
+BAN 463,BAN 463,Advanced Business Analytics,3,Business Analytics,BAN 363,,false
+BAN 570,BAN 570,Introduction to Data Analytics,3,Business Analytics,,,false
+BAN 571,BAN 571,Introduction to Management Science,3,Business Analytics,BAN 570,,false
+BAN 572,BAN 572,Introduction to Business Analytics,3,Business Analytics,BAN 570,,false
+BAN 573,BAN 573,Advanced Business Analytics,3,Business Analytics,BAN 570,,false
+CHM 100,CHM 100,Chemistry in the Modern World,3,Chemistry,,,false
+CHM 101,CHM 101,Chemistry and Life Processes,3,Chemistry,,,false
+CHM 102,CHM 102,Forensic Sciences,3,Chemistry,,,false
+CHM 103,CHM 103,Environmental Sustainability,3,Chemistry,,,false
+CHM 110,CHM 110,Introduction to General Chemistry,3,Chemistry,,,false
+CHM 111,CHM 111,General Chemistry I,3,Chemistry,MTH 111;MTH 121,CHM 113;CHM 115,false
+CHM 112,CHM 112,General Chemistry II,3,Chemistry,CHM 111,CHM 114,false
+CHM 113,CHM 113,General Chemistry I Laboratory,1,Chemistry,,CHM 111,false
+CHM 114,CHM 114,General Chemistry II Laboratory,1,Chemistry,,CHM 112,false
+CHM 115,CHM 115,General Chemistry I Recitation,0,Chemistry,,CHM 111,false
+CHM 193,CHM 193,Honors General Chemistry I Laboratory,1,Chemistry,,,false
+CHM 231,CHM 231,Organic Chemistry I,3,Chemistry,CHM 112,CHM 233;CHM 235,false
+CHM 232,CHM 232,Organic Chemistry II,3,Chemistry,CHM 231,CHM 234,false
+CHM 233,CHM 233,Organic Chemistry Laboratory I,1,Chemistry,,CHM 231,false
+CHM 234,CHM 234,Organic Chemistry Laboratory II,1,Chemistry,,CHM 232,false
+CHM 235,CHM 235,Organic Chemistry Recitation,0,Chemistry,,,false
+CHM 302,CHM 302,Instrumental Analysis,3,Chemistry,CHM 351,CHM 304,false
+CHM 304,CHM 304,Instrumental Analysis Laboratory,2,Chemistry,,CHM 302,false
+CHM 311,CHM 311,Food Chemistry,3,Chemistry,CHM 231,,false
+CHM 313,CHM 313,Food Chemistry Laboratory,1,Chemistry,,CHM 311,false
+CHM 351,CHM 351,Analytical Chemistry,3,Chemistry,CHM 112,CHM 353,false
+CHM 353,CHM 353,Analytical Chemistry Laboratory,1,Chemistry,,CHM 351,false
+CHM 381,CHM 381,Environmental Chemistry,3,Chemistry,CHM 112;CHM 114,,false
+CHM 392,CHM 392,Junior Seminar,1,Chemistry,,,false
+CHM 395,CHM 395,Junior Chemistry Research,1-2,Chemistry,,,false
+CHM 396,CHM 396,Junior Chemistry Research,1-2,Chemistry,,,false
+CHM 422,CHM 422,Biophysical Chemistry,3,Chemistry,CHM 461,CHM 424,false
+CHM 424,CHM 424,Biophysical Chemistry Laboratory,1,Chemistry,CHM 461,CHM 422,false
+CHM 441,CHM 441,Physical Chemistry I,3,Chemistry,,PHY 222;MTH 122,false
+CHM 442,CHM 442,Physical Chemistry II,3,Chemistry,,PHY 222;MTH 323,false
+CHM 443,CHM 443,Physical Chemistry Laboratory I,1,Chemistry,,CHM 441,false
+CHM 444,CHM 444,Physical Chemistry Laboratory II,1,Chemistry,,CHM 442,false
+CHM 451,CHM 451,Advanced Inorganic Chemistry,3,Chemistry,CHM 231,CHM 453,false
+CHM 453,CHM 453,Advanced Inorganic Chemistry Laboratory,1,Chemistry,,CHM 451,false
+CHM 461,CHM 461,Biochemistry I,3,Chemistry,CHM 231;BIO 360,,false
+CHM 462,CHM 462,Biochemistry II,3,Chemistry,CHM 232,,false
+CHM 464,CHM 464,Biochemistry Laboratory,1,Chemistry,,CHM 461;CHM 462,false
+CHM 466,CHM 466,Drug Discovery,3,Chemistry,CHM 461,,false
+CHM 481,CHM 481,Spectrometric Methods of Structure Determination,3,Chemistry,CHM 232,,false
+CHM 485,CHM 485,Special Studies in Chemistry,1-3,Chemistry,,,false
+CHM 487,CHM 487,Chemistry Internship,1-3,Chemistry,,,false
+CHM 488,CHM 488,Chemistry Internship,1-3,Chemistry,,,false
+CHM 492,CHM 492,Senior Seminar,1,Chemistry,,,false
+CHM 495,CHM 495,Senior Chemistry Research,1-3,Chemistry,,,false
+CHM 496,CHM 496,Senior Chemistry Research,1-3,Chemistry,,,false
+CMM 145,CMM 145,Introduction to Media Studies,3,Communication Arts,,,false
+CMM 150,CMM 150,Introduction to Public Speaking,3,Communication Arts,,,false
+CMM 215,CMM 215,Podcasting,3,Communication Arts,,,false
+CMM 220,CMM 220,Principles of Strategic Communication,3,Communication Arts,,,false
+CMM 225,CMM 225,Communication for Non-Profits,3,Communication Arts,,,false
+CMM 251,CMM 251,Introduction to Media Writing,3,Communication Arts,ENG 123,,false
+CMM 252,CMM 252,Introduction to Media Production Lab,3,Communication Arts,,CMM 251,false
+CMM 253,CMM 253,Introduction to Digital Video Production,3,Communication Arts,,,false
+CMM 254,CMM 254,Introduction to Photography,3,Communication Arts,,,false
+CMM 260,CMM 260,Visual Communication,3,Communication Arts,,,false
+CMM 261,CMM 261,Features and Commentaries,3,Communication Arts,,,false
+CMM 290,CMM 290,Pre-Professional Development,1,Communication Arts,,,false
+CMM 299,CMM 299,Tech Tools,1-3,Communication Arts,,,false
+CMM 315,CMM 315,Crisis Communication,3,Communication Arts,CMM 220;BUS 210,,false
+CMM 321,CMM 321,Multimedia Storytelling,3,Communication Arts,CMM 251;CMM 252,,false
+CMM 324,CMM 324,Media Law and Professional Ethics,3,Communication Arts,,,false
+CMM 327,CMM 327,History of Film and TV,3,Communication Arts,,,false
+CMM 329,CMM 329,Digital Cinema Production,3,Communication Arts,CMM 253,,false
+CMM 331,CMM 331,Scriptwriting for Film and TV,3,Communication Arts,ENG 123,,false
+CMM 335,CMM 335,Communication Research,3,Communication Arts,CMM 220;CMM 221,,false
+CMM 338,CMM 338,Advanced Photography,3,Communication Arts,CMM 254;ART 254,,false
+CMM 343,CMM 343,Advanced Newsgathering,3,Communication Arts,CMM 251,,false
+CMM 364,CMM 364,Media Planning and Measurement,3,Communication Arts,MKT 311;CMM 220,,false
+CMM 365,CMM 365,Strategic Writing,3,Communication Arts,CMM 251,,false
+CMM 366,CMM 366,Strategic Planning for PR and Advertising,3,Communication Arts,CMM 220;CMM 221,,false
+CMM 370,CMM 370,Communication Theory,3,Communication Arts,,,false
+CMM 371,CMM 371,Media History,3,Communication Arts,CMM 145,,false
+CMM 373,CMM 373,Student Media Content,3,Communication Arts,,,false
+CMM 375,CMM 375,Gender Communication,3,Communication Arts,,,false
+CMM 376,CMM 376,Intercultural Communication,3,Communication Arts,,,false
+CMM 415,CMM 415,Photojournalism,3,Communication Arts,CMM 254;ART 254,,false
+CMM 429,CMM 429,Advanced Digital Video Production,3,Communication Arts,CMM 253,,false
+CMM 435,CMM 435,Motion Graphics,3,Communication Arts,CMM 253,,false
+CMM 472,CMM 472,Student Agency,3,Communication Arts,CMM 366,,false
+CMM 473,CMM 473,Student Media Management,3,Communication Arts,,,false
+CMM 489,CMM 489,Independent Study,1-3,Communication Arts,,,false
+CMM 490,CMM 490,Communication Arts Internship,1-6,Communication Arts,CMM 290,,false
+CMM 495,CMM 495,Senior Seminar,4,Communication Arts,,,false
+CMM 499,CMM 499,Special Studies,3,Communication Arts,,,false
+CMM 501,CMM 501,Studies in Communication Arts,1-3,Communication Arts,,,false
+CMM 502,CMM 502,Gender Communication,3,Communication Arts,,,false
+CMM 503,CMM 503,Intercultural Communication,3,Communication Arts,,,false
+CMM 510,CMM 510,Classical Rhetoric,3,Communication Arts,,,false
+SAS 302,SAS 302,Foley Center Career-Related Internship,2,Community Service,,,false
+SAS 303,SAS 303,Pre-Law Internship,3,Community Service,,,false
+CIS 371,CIS 371,Website Development,3,Computer Information Systems,,,false
+CIS 381,CIS 381,Information Systems,3,Computer Information Systems,,,false
+CIS 382,CIS 382,Database Management Systems,3,Computer Information Systems,CIS 381,,false
+CIS 470,CIS 470,e-Commerce,3,Computer Information Systems,CIS 381,,false
+CIS 495,CIS 495,Special Topics in Computer Information Systems,3,Computer Information Systems,,,false
 CSC 100,CSC 100,Computer Science 0: Foundations,4,Computer Science,,MTH 111,false
 CSC 101,CSC 101,Computer Science 1: Principles,4,Computer Science,,MTH 111,false
 CSC 202,CSC 202,Computer Science 2: Data Structures,4,Computer Science,CSC 101,,false
 CSC 203,CSC 203,Computer Science 3: Algorithms,4,Computer Science,CSC 101,,false
 CSC 210,CSC 210,Computer Architecture,4,Computer Science,CSC 101,,false
-CSC 311,CSC 311,Operating Systems: Design and Implementation,4,Computer Science,CSC 210,,false
+CSC 311,CSC 311,Operating System: Design and Implementation,4,Computer Science,CSC 210,,false
 CSC 312,CSC 312,Database Systems and Theory,3,Computer Science,CSC 202,,false
 CSC 313,CSC 313,Systems and Software Security,3,Computer Science,CSC 210,,false
 CSC 315,CSC 315,Cloud Computing and Development Operations,3,Computer Science,CSC 210,,false
 CSC 320,CSC 320,Automata,3,Computer Science,MTH 301;CSC 203,,false
 CSC 321,CSC 321,Programming Language Theory,3,Computer Science,CSC 203,,false
 CSC 330,CSC 330,Junior Software Engineering Seminar,2,Computer Science,CSC 203;CSC 210,,false
+CSC 340,CSC 340,Numerical Methods,3,Computer Science,MTH 122;CSC 101,,false
 CSC 341,CSC 341,Data Science 1,3,Computer Science,CSC 100;CSC 101;MTH 163,,false
+CSC 399,CSC 399,Topics in Computer Science,1-3,Computer Science,MTH 322,,false
 CSC 414,CSC 414,Networking and Network Security,3,Computer Science,CSC 210,,false
-CSC 431,CSC 431,Senior Software Architecture Seminar,1,Computer Science,CSC 330,,false
-DSC 240,DSC 240,Data Visualization,3,Data Science,CSC 100;CSC 101,,false
+CSC 422,CSC 422,Parallel Computing,3,Computer Science,CSC 210,,false
+CSC 423,CSC 423,Performance Modeling,3,Computer Science,MTH 365,,false
+CSC 431,CSC 431,Senior Software Architecture Seminar,1,Computer Science,,,false
+CSC 443,CSC 443,Cryptography,3,Computer Science,MTH 121,,false
+DSC 240,DSC 240,Data Visualization,4,Data Science,CSC 100;CSC 101,,false
 DSC 442,DSC 442,Data Analysis,3,Data Science,DSC 240,,false
-DSC 443,DSC 443,"AI, Machine Learning, and Deep Learning",3,Data Science,CSC 341;DSC 442,,false
-DSC 499,DSC 499,Senior Seminar in AI and Data Science,1,Data Science,DSC 240;DSC 442;DSC 443,,false
-PHY 201,PHY 201,Algebra-Based Physics I,3,Physics,MTH 111,PHY 213,false
-PHY 202,PHY 202,Algebra-Based Physics II,3,Physics,PHY 201,PHY 214,false
-PHY 221,PHY 221,Physics with Calculus I,3,Physics,MTH 121,PHY 213,false
-PHY 213,PHY 213,Physics Laboratory I,1,Physics,,PHY 201;PHY 221,false
-PHY 222,PHY 222,Physics with Calculus II,3,Physics,PHY 221,PHY 214,false
-PHY 214,PHY 214,Physics Laboratory II,1,Physics,,PHY 202;PHY 222,false
-CHM 111,CHM 111,General Chemistry I,3,Chemistry,MTH 111;MTH 121,CHM 113;CHM 115,false
-CHM 113,CHM 113,General Chemistry I Laboratory,1,Chemistry,,CHM 111,false
-CHM 112,CHM 112,General Chemistry II,3,Chemistry,CHM 111,CHM 114,false
-CHM 114,CHM 114,General Chemistry II Laboratory,1,Chemistry,,CHM 112,false
-PHY 115,PHY 115,Introduction to Astronomy,3,Physics,,,false
-BIO 103,BIO 103,Principles of Biology Lab,1,Biology,,BIO 101,false
-BIO 120,BIO 120,Farms to Pharmaceuticals,3,Biology,,,false
-BIO 125,BIO 125,Pandemics,3,Biology,,,false
-BIO 140,BIO 140,STEM Community Service Seminar,1,Biology,,,false
-CHM 115,CHM 115,General Chemistry I Recitation,0,Chemistry,,CHM 111,false
-PSY 150,PSY 150,Careers in Psychology,1,Psychology,,,false
-SPA 102,SPA 102,Elementary Spanish II,3,Languages and Culture,SPA 101,,false
-FRE 102,FRE 102,Elementary French II,3,Languages and Culture,FRE 101,,false
-ITA 102,ITA 102,Elementary Italian II,3,Languages and Culture,ITA 101,,false
+DSC 443,DSC 443,"AI, Machine Learning, and Deep Learning",3,Data Science,CSC 441;DSC 442,,false
+DSC 499,DSC 499,Senior Seminar in AI and Data Science,1,Data Science,DSC 240;DSC 441;DSC 442,,false
+ECO 101,ECO 101,Principles of Macroeconomics,3,Economics,,,false
 ECO 102,ECO 102,Principles of Microeconomics,3,Economics,,,false
-ENG 240,ENG 240,Introduction to Poetry,3,English and Writing,ENG 123,,false
-ENG 241,ENG 241,Introduction to Fiction,3,English and Writing,ENG 123,,false
-ENG 242,ENG 242,Introduction to Drama and Theatre,3,English and Writing,ENG 123,,false
-ENG 243,ENG 243,Introduction to Non-Fiction Prose,3,English and Writing,ENG 123,,false
-ENG 276,ENG 276,Introduction to Creative Writing,3,English and Writing,ENG 123,,false
+ECO 290,ECO 290,Honors Economics,3,Economics,,,false
+ECO 301,ECO 301,Managerial Economics,3,Economics,ECO 101;ECO 102;BUS 263,,false
+ECO 434,ECO 434,International Trade and Finance,3,Economics,ECO 101;ECO 102;FIN 301;BUS 320,,false
+ECO 501,ECO 501,Studies in Economics,1-3,Economics,,,false
+EDU 131,EDU 131,Human Development,3,Education,,,false
+EDU 150,EDU 150,Oral and Written Language,3,Education,,,false
+EDU 160,EDU 160,Foundations of Teaching,3,Education,,,false
+EDU 201,EDU 201,History and Philosophy of Education,3,Education,,,false
+EDU 230,EDU 230,Classroom Management and Social-Emotional Learning,3,Education,,,false
+EDU 260,EDU 260,Principles of Educational Psychology,3,Education,EDU 131,,false
+EDU 275,EDU 275,Integrated Arts In Elementary Education,3,Education,,,false
+EDU 280,EDU 280,Literature and Creative Drama for Children,3,Education,EDU 131,,false
+EDU 295,EDU 295,"Education, Identity, and Culture: Representations in Film",3,Education,,,false
+EDU 322,EDU 322,Educational Assessment,3,Education,,,false
+EDU 325,EDU 325,Teaching Methods: Literacy I,3,Education,,,false
+EDU 326,EDU 326,Teaching Methods: Literacy II,3,Education,,,false
+EDU 327,EDU 327,Teaching Methods: Literacy III,3,Education,,,false
+EDU 328,EDU 328,Teaching Methods: Literacy IV,3,Education,,,false
+EDU 330,EDU 330,Strategies for Effective Classroom Management,3,Education,,,false
+EDU 331,EDU 331,Educational Technology,3,Education,,,false
+EDU 332,EDU 332,Reading Strategies - History,3,Education,,,false
+EDU 335,EDU 335,Reading Strategies - English Language Arts,3,Education,,,false
+EDU 337,EDU 337,Lab: Reading in the Content Area (Spanish),1,Education,,EDU 329,false
+EDU 338,EDU 338,Reading Strategies - Biology,3,Education,,,false
+EDU 339,EDU 339,Reading Strategies - Visual Art,3,Education,,,false
+EDU 370,EDU 370,Survey of Exceptionality,3,Education,,,false
+EDU 374,EDU 374,"Teaching Methods: Social Studies, Science, and Health",3,Education,,,false
+EDU 375,EDU 375,Teaching Methods: Mathematics I,3,Education,,,false
+EDU 376,EDU 376,Teaching Methods: Mathematics II,3,Education,,,false
+EDU 378,EDU 378,"Foundations of Instruction, Planning, & Learning Environments",3,Education,,,false
+EDU 391,EDU 391,Multicultural Teaching,3,Education,,,false
+EDU 452,EDU 452,Instructional Methods in History,3,Education,,,false
+EDU 453,EDU 453,Instructional Methods in Biology,3,Education,,,false
+EDU 455,EDU 455,Instructional Methods in English Language Arts,3,Education,,,false
+EDU 457,EDU 457,Lab: Instructional Strategies and Methodology in Teaching Spanish,1,Education,,EDU 450,false
+EDU 458,EDU 458,Instructional Methods in Visual Arts,3,Education,,,false
+EDU 490,EDU 490,Internship: Candidate Performance Assessment in Elementary Education,3,Education,,,false
+EDU 491,EDU 491,Internship: Candidate Performance Assessment in Visual Arts,3,Education,,,false
+EDU 493,EDU 493,Internship in Visual Arts,9,Education,,,false
+EDU 495,EDU 495,Internship: Candidate Performance Assessment in the High School,3,Education,,,false
+EDU 497,EDU 497,Internship in the High School,9,Education,,,false
+EDU 498,EDU 498,Special Studies,1-3,Education,,,false
+EDU 499,EDU 499,Internship in Elementary Education,9,Education,,,false
+PEN 101,PEN 101,Pre-Engineering Seminar,0,Engineering,,,false
+PEN 201,PEN 201,Dual-enrollment Engineering,3,Engineering,,,false
+PEN 301,PEN 301,Dual-enrollment Engineering,3,Engineering,,,false
+PEN 401,PEN 401,Dual-enrollment Engineering,3,Engineering,,,false
+ENG 105,ENG 105,College Composition,3,English,,,false
+ENG 121,ENG 121,Composition I,3,English,,,false
+ENG 123,ENG 123,Composition II (Writing with Research),3,English,ENG 121,,false
+ENG 190,ENG 190,Honors Composition and Literature,3,English,,,false
+ENG 240,ENG 240,Introduction to Poetry,3,English,,,false
+ENG 241,ENG 241,Introduction to Fiction,3,English,,,false
+ENG 242,ENG 242,Introduction to Drama and Theatre,3,English,,,false
+ENG 243,ENG 243,Introduction to Non-Fiction Prose,3,English,,,false
+ENG 244,ENG 244,Asian Literature,3,English,,,false
+ENG 245,ENG 245,Introduction to African American Literature,3,English,,,false
+ENG 246,ENG 246,Introduction to Hispanic American Literature,3,English,,,false
+ENG 248,ENG 248,Introduction to American Indian Literature,3,English,,,false
+ENG 276,ENG 276,Introduction to Creative Writing,3,English,ENG 123,,false
+ENG 285,ENG 285,Special Topics,3,English,,,false
+ENG 287,ENG 287,Special Topics in World Literature,3,English,,,false
+ENG 290,ENG 290,Honors Composition and Literature,3,English,ENG 121;ENG 190,,false
+ENG 300,ENG 300,Critical Approaches to Literature,3,English,,,false
+ENG 301,ENG 301,Integrations,3,English,,,false
+ENG 308,ENG 308,British Literature,3,English,,,false
+ENG 318,ENG 318,American Literature,3,English,,,false
+ENG 320,ENG 320,Literary Movement or Period,3,English,,,false
+ENG 321,ENG 321,Major Authors,3,English,,,false
+ENG 402,ENG 402,Literary Theory and Criticism,3,English,,,false
+ENG 440,ENG 440,The American Novel,3,English,,,false
+ENG 445,ENG 445,American Drama,3,English,,,false
+ENG 450,ENG 450,The British Novel before 1900,3,English,,,false
+ENG 460,ENG 460,Irish Literature,3,English,,,false
+ENG 465,ENG 465,Modern Drama,3,English,,,false
+ENG 485,ENG 485,Shakespeare,3,English,,,false
+ENG 491,ENG 491,The English Language,3,English,,,false
+ENG 492,ENG 492,Special Topics in American Literature,1-3,English,,,false
+ENG 493,ENG 493,Special Topics in British Literature,1-3,English,,,false
+ENG 494,ENG 494,Special Topics in World Literature,1-3,English,,,false
+ENG 495,ENG 495,Special Studies,1-3,English,,,false
+ENG 496,ENG 496,Special Studies in Diversity,1-3,English,,,false
+ENG 497,ENG 497,Internship,3-6,English,,,false
+ENG 498,ENG 498,Senior Synthesis Seminar,3,English,,,false
+ENG 520,ENG 520,Studies in Literature,1-3,English,,,false
+ENG 526,ENG 526,Modern European Literature,3,English,,,false
+ENG 545,ENG 545,African-American Literature,3,English,,,false
+ENT 101,ENT 101,Foundations in Entrepreneurship,3,Entrepreneurship,,,false
+ENT 201,ENT 201,Entrepreneurial Markets and Opportunities,3,Entrepreneurship,,,false
+ENT 301,ENT 301,Entrepreneurial Strategy,3,Entrepreneurship,,,false
+FIN 301,FIN 301,Financial Management,3,Financial Economics,ECO 101;ECO 102;ACC 202;BUS 263,,false
+FIN 310,FIN 310,Financial Planning,3,Financial Economics,,,false
+FIN 321,FIN 321,Money and Capital Markets,3,Financial Economics,ECO 101;ECO 102,,false
+FIN 410,FIN 410,Investments,3,Financial Economics,FIN 301,,false
+FIN 495,FIN 495,Special Topics in Financial Economics,3,Financial Economics,FIN 301,,false
+CFE 450,CFE 450,Market Definition,3,Free Enterprise,,,false
+CFE 455,CFE 455,Enterprise Development,3,Free Enterprise,CFE 450,,false
+CFE 490,CFE 490,Honors Market Definition,3,Free Enterprise,,,false
+CFE 491,CFE 491,Honors Enterprise Development,3,Free Enterprise,CFE 490,,false
+FRE 101,FRE 101,Elementary French I,3,French,,,false
+FRE 102,FRE 102,Elementary French II,3,French,,,false
+FRE 201,FRE 201,Intermediate French I,3,French,FRE 101;FRE 102,,false
+FRE 202,FRE 202,Intermediate French II,3,French,FRE 101;FRE 102,,false
+FRE 205,FRE 205,Readings in French,1-3,French,FRE 101;FRE 102,,false
+FRE 301,FRE 301,Advanced French Grammar and Composition,3,French,FRE 201;FRE 202,,false
+FRE 303,FRE 303,Advanced French Conversation,3,French,FRE 201;FRE 202,,false
+FRE 310,FRE 310,Survey of French Literature I,3,French,FRE 201;FRE 202,,false
+FRE 311,FRE 311,Survey of French Literature II,3,French,FRE 201;FRE 202,,false
+FRE 315,FRE 315,Survey of French Cinema,3,French,FRE 201;FRE 202,,false
+FRE 381,FRE 381,Selected Studies,3,French,FRE 201;FRE 202,,false
+FRE 401,FRE 401,Independent Study,1-3,French,FRE 201;FRE 202,,false
+FRE 402,FRE 402,Independent Study,1-3,French,FRE 201;FRE 202,,false
+GDR 301,GDR 301,Women and Gender in Transnational Context: Transnational Feminisms,3,Gender Studies,,,false
+GDR 397,GDR 397,Topics in Gender Studies,3,Gender Studies,,,false
+HCM 301,HCM 301,Foundations of Health Care Management,3,Health Care Management,MGT 301,,false
+HCM 311,HCM 311,Health Care Legal and Regulatory Environment,3,Health Care Management,BUS 301,,false
+HCM 450,HCM 450,The Business of Health Care: Strategy and Management,3,Health Care Management,MGT 301;MKT 311;FIN 301,,false
+HCM 495,HCM 495,Special Topics in Health Care Management,3,Health Care Management,HCM 301,,false
+HCM 550,HCM 550,Business of Healthcare,3,Health Care Management,,,false
+HCM 563,HCM 563,Foundations of Health Care Management,3,Health Care Management,,,false
+HSC 105,HSC 105,Introduction to Kinesiology,3,Health Science,,,false
+HSC 108,HSC 108,Medical Terminology,3,Health Science,,,false
+HSC 131,HSC 131,Human Anatomy and Physiology Recitation I,0,Health Science,,HSC 231,false
+HSC 136,HSC 136,Medical Microbiology,3,Health Science,BIO 101;CHM 101;CHM 111,HSC 138,false
+HSC 138,HSC 138,Medical Microbiology Laboratory,1,Health Science,,HSC 136,false
+HSC 165,HSC 165,Emergency Medical Responder,1,Health Science,,,false
+HSC 201,HSC 201,Normal and Therapeutic Nutrition,2,Health Science,,,false
+HSC 204,HSC 204,Developmental Psychology,3,Health Science,PSY 101,,false
+HSC 205,HSC 205,Health Science Shadowing,1,Health Science,,,false
+HSC 225,HSC 225,Psychopathology,3,Health Science,PSY 101,,false
+HSC 231,HSC 231,Human Anatomy and Physiology I,3,Health Science,BIO 101;CHM 101;CHM 111,HSC 233;HSC 131,false
+HSC 232,HSC 232,Human Anatomy and Physiology II,3,Health Science,HSC 231,HSC 234,false
+HSC 233,HSC 233,Human Anatomy and Physiology Laboratory I,1,Health Science,,HSC 231;HSC 232,false
+HSC 234,HSC 234,Human Anatomy and Physiology Laboratory II,1,Health Science,,HSC 231;HSC 232,false
+HSC 256,HSC 256,Cultural Anthropology,3,Health Science,,,false
+HSC 301,HSC 301,Introduction to Global Health,3,Health Science,,,false
+HSC 420,HSC 420,Community as Client,3,Health Science,,,false
+HIS 110,HIS 110,Introduction to Global Historical Studies,3,History,,,false
+HIS 120,HIS 120,Introduction to American Historical Studies,3,History,,,false
+HIS 203,HIS 203,Historical Methods,3,History,,,false
+HIS 211,HIS 211,Western Civilization to 1648,3,History,,,false
+HIS 212,HIS 212,Western Civilization Since 1648,3,History,,,false
+HIS 213,HIS 213,America to 1876,3,History,,,false
+HIS 214,HIS 214,The United States Since 1876,3,History,,,false
+HIS 220,HIS 220,Introduction to Colonial Latin America,3,History,,,false
+HIS 221,HIS 221,Introduction to Modern Latin America,3,History,,,false
+HIS 290,HIS 290,Honors History,3,History,,,false
+HIS 297,HIS 297,Special Topics in History,3,History,,,false
+HIS 312,HIS 312,Medieval Civilization,3,History,HIS 110;HIS 120,,false
+HIS 314,HIS 314,The Renaissance and the Reformation,3,History,HIS 110;HIS 120,,false
+HIS 317,HIS 317,The Age of Absolutism and the Enlightenment,3,History,HIS 110;HIS 120,,false
+HIS 318,HIS 318,French Revolution and Napoleon,3,History,HIS 110;HIS 120,,false
+HIS 319,HIS 319,Europe: 1815-1900,3,History,HIS 110;HIS 120,,false
+HIS 320,HIS 320,Europe in the Era of the World Wars,3,History,HIS 110;HIS 120,,false
+HIS 321,HIS 321,The History of the Holocaust,3,History,HIS 110;HIS 120,,false
+HIS 322,HIS 322,Europe Since 1945,3,History,HIS 110;HIS 120,,false
+HIS 323,HIS 323,Women in European History,3,History,HIS 110;HIS 120,,false
+HIS 324,HIS 324,Women in American History,3,History,HIS 110;HIS 120,,false
+HIS 325,HIS 325,Women’s History,3,History,HIS 110;HIS 120,,false
+HIS 326,HIS 326,African-American History,3,History,HIS 110;HIS 120,,false
+HIS 327,HIS 327,History of Film and TV,3,History,,,false
+HIS 330,HIS 330,World Cultures,3,History,HIS 110;HIS 120,,false
+HIS 332,HIS 332,Modern Mexico,3,History,HIS 110;HIS 120,,false
+HIS 333,HIS 333,Native Histories of the Americas,3,History,HIS 110;HIS 120,,false
+HIS 341,HIS 341,Colonial America,3,History,HIS 110;HIS 120,,false
+HIS 342,HIS 342,"The American Revolution, 1763-1788",3,History,HIS 110;HIS 120,,false
+HIS 343,HIS 343,"The Age of Jefferson and Jackson, 1789-1848",3,History,HIS 110;HIS 120,,false
+HIS 344,HIS 344,The Civil War and Reconstruction,3,History,HIS 110;HIS 120,,false
+HIS 350,HIS 350,The Making of Modern America,3,History,HIS 110;HIS 120,,false
+HIS 351,HIS 351,US: World Wars and Great Depression,3,History,HIS 110;HIS 120,,false
+HIS 352,HIS 352,The United States Since 1945,3,History,HIS 110;HIS 120,,false
+HIS 355,HIS 355,"The Vietnam Wars, 1945-1975",3,History,HIS 110;HIS 120,,false
+HIS 360,HIS 360,The South,3,History,HIS 110;HIS 120,,false
+HIS 361,HIS 361,The American West,3,History,HIS 110;HIS 120,,false
+HIS 362,HIS 362,American Presidents,3,History,,,false
+HIS 364,HIS 364,American Environmental History,3,History,,,false
+HIS 365,HIS 365,American Immigration Studies,3,History,HIS 110;HIS 120,,false
+HIS 390,HIS 390,Honors Historical Studies,3,History,HIS 110;HIS 120,,false
+HIS 495,HIS 495,Seminar Topic,3,History,,,false
+HIS 496,HIS 496,Readings in History,3,History,,,false
+HIS 497,HIS 497,Topics in History,3,History,HIS 110;HIS 120,,false
+HIS 498,HIS 498,Historical Internship,3-6,History,,,false
+HIS 499,HIS 499,Seminar,3,History,HIS 495,,false
+HIS 501,HIS 501,Studies in History,1-3,History,,,false
+HIS 525,HIS 525,Women's History,3,History,,,false
+HIS 526,HIS 526,African-American History,3,History,,,false
+HIS 530,HIS 530,World Cultures,3,History,,,false
+HIS 542,HIS 542,American Revolution and the Early Republic,3,History,,,false
+HIS 544,HIS 544,The Civil War and Reconstruction,3,History,,,false
+HIS 550,HIS 550,The Making of Modern America,3,History,,,false
+HIS 552,HIS 552,The United States Since 1945,3,History,,,false
+HIS 560,HIS 560,The South,3,History,,,false
+HON 490,HON 490,Honors Senior Seminar,0,Honors,,,false
+HON 495,HON 495,Honors Thesis Research,3,Honors,,,false
+HON 499,HON 499,Honors Special Topics,1-3,Honors,,,false
+IDS 290,IDS 290,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 291,IDS 291,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 292,IDS 292,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 390,IDS 390,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 391,IDS 391,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 392,IDS 392,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 394,IDS 394,Special Topics,1-3,Interdisciplinary Studies,,,false
+IDS 397,IDS 397,Topics in Gender Studies,3,Interdisciplinary Studies,,,false
+IDS 490,IDS 490,Interdisciplinary Internship,3-6,Interdisciplinary Studies,,,false
+IDS 495,IDS 495,Interdisciplinary Synthesis Paper,3,Interdisciplinary Studies,,,false
+IDS 496,IDS 496,Interdisciplinary Synthesis Project,3,Interdisciplinary Studies,,,false
+IDS 499,IDS 499,Interdisciplinary Studies Seminar,3,Interdisciplinary Studies,,,false
+LAN 301,LAN 301,The French Heritage I,3,Languages and Culture,,,false
+LAN 302,LAN 302,The French Heritage II,3,Languages and Culture,,,false
+LAN 303,LAN 303,The Spanish Heritage I,3,Languages and Culture,,,false
+LAN 304,LAN 304,The Spanish Heritage II,3,Languages and Culture,,,false
+LAN 305,LAN 305,The Latin American Heritage,3,Languages and Culture,,,false
+LAN 306,LAN 306,The Italian Heritage I,3,Languages and Culture,,,false
+LAN 307,LAN 307,The Italian Heritage II,3,Languages and Culture,,,false
+LAS 255,LAS 255,Introduction to Latin American Studies,3,Latin American Studies,SPA 202,,false
+LSR 100,LSR 100,Recreational Tennis,1,Leisure Sports and Recreation,,,false
+LSR 110,LSR 110,Recreational Golf,1,Leisure Sports and Recreation,,,false
+LSR 115,LSR 115,Advanced Golf,1,Leisure Sports and Recreation,,,false
+LSR 120,LSR 120,Weight Training,1,Leisure Sports and Recreation,,,false
+LSR 130,LSR 130,Recreational Saltwater Fishing,1,Leisure Sports and Recreation,,,false
+LSR 140,LSR 140,Walking and Jogging,1,Leisure Sports and Recreation,,,false
+LSR 150,LSR 150,Aerobics,1,Leisure Sports and Recreation,,,false
+LSR 160,LSR 160,Basic RAD (Rape Aggression Defense) System for Women,1,Leisure Sports and Recreation,,,false
+LSR 170,LSR 170,Soccer,1,Leisure Sports and Recreation,,,false
+LSR 180,LSR 180,Racquetball,1,Leisure Sports and Recreation,,,false
+LSR 190,LSR 190,Recreational Sport,1,Leisure Sports and Recreation,,,false
+LIS 501,LIS 501,Classical Antiquity,3,Library and Information Science,,,false
+LIS 502,LIS 502,The Medieval World,3,Library and Information Science,,,false
+LIS 503,LIS 503,Modernity,3,Library and Information Science,,,false
+LIS 504,LIS 504,Non-Western Culture,3,Library and Information Science,,,false
+LIS 505,LIS 505,The Scientific Revolution,3,Library and Information Science,,,false
+LIS 506,LIS 506,Engaging Global Problems,3,Library and Information Science,,,false
+LIS 507,LIS 507,Culture and Digital Communications,3,Library and Information Science,,,false
+LIS 530,LIS 530,Studies in Philosophy and Religion,3,Library and Information Science,,,false
+LIS 540,LIS 540,Studies in Science and Society,3,Library and Information Science,,,false
+LIS 570,LIS 570,Studies in Leadership and Ethics,3,Library and Information Science,,,false
+LIS 571,LIS 571,Organizational Behavior,3,Library and Information Science,,,false
+LIS 572,LIS 572,Leadership,3,Library and Information Science,,,false
+LIS 573,LIS 573,Business Ethics and Social Responsibility,3,Library and Information Science,,,false
+LIS 574,LIS 574,Conflict Management,3,Library and Information Science,,,false
+LIS 580,LIS 580,Women's Studies,3,Library and Information Science,,,false
+LIS 585,LIS 585,Studies in Cultural Diversity,3,Library and Information Science,,,false
+LIS 590,LIS 590,Independent Study,3,Library and Information Science,,,false
+LIS 592,LIS 592,Capstone Project,3,Library and Information Science,,,false
+LIS 599,LIS 599,Special Topics,1-3,Library and Information Science,,,false
+MGT 301,MGT 301,Management Principles,3,Management,ECO 101;ECO 102;ACC 201,,false
+MGT 320,MGT 320,Organizational Behavior,3,Management,MGT 301,,false
+MGT 330,MGT 330,Industrial/Organizational Psychology,3,Management,PSY 101,,false
+MGT 351,MGT 351,Entrepreneurship and Small Business Management,3,Management,MGT 301,,false
+MGT 495,MGT 495,Special Topics in Management,3,Management,MGT 301,,false
+MRN 125,MRN 125,Oceanology of the Gulf of Mexico,2,Marine Biology,,,false
+MRN 127,MRN 127,Commercial Marine Fisheries of Alabama,2,Marine Biology,,,false
+MRN 129,MRN 129,Coastal Climatology,2,Marine Biology,,,false
+MRN 140,MRN 140,GIS Basics,2,Marine Biology,,,false
+MRN 142,MRN 142,GIS Applications,2,Marine Biology,MRN 140,,false
+MRN 301,MRN 301,Marine Botany,4,Marine Biology,BIO 102,,false
+MRN 302,MRN 302,Marine Vertebrate Zoology,4,Marine Biology,BIO 254,,false
+MRN 304,MRN 304,Marine Protozoology,2,Marine Biology,BIO 205,,false
+MRN 306,MRN 306,Marine Biology,4,Marine Biology,BIO 101,,false
+MRN 307,MRN 307,Introduction to Oceanography,4,Marine Biology,BIO 101;CHM 111;PHY 221,,false
+MRN 310,MRN 310,Ecology of the Florida Everglades,2,Marine Biology,BIO 101;BIO 103,,false
+MRN 312,MRN 312,Marine Ecology,4,Marine Biology,BIO 254,,false
+MRN 314,MRN 314,Coastal Birds of Alabama,2,Marine Biology,BIO 254,,false
+MRN 315,MRN 315,Marine Geology,4,Marine Biology,,,false
+MRN 316,MRN 316,Recent Marine Sedimentation,4,Marine Biology,,,false
+MRN 318,MRN 318,Coastal Geomorphology,2,Marine Biology,,,false
+MRN 323,MRN 323,Marine Technical Methods,2,Marine Biology,BIO 101,,false
+MRN 325,MRN 325,Identification of Vascular Flora of Dauphin Island and Coastal Alabama,2,Marine Biology,BIO 102,,false
+MRN 327,MRN 327,Biodiversity of Coastal Ecosystems,4,Marine Biology,BIO 101,,false
+MRN 401,MRN 401,Marine Mammals,4,Marine Biology,BIO 254,,false
+MRN 403,MRN 403,Marine Invertebrate Zoology,4,Marine Biology,BIO 205,,false
+MRN 410,MRN 410,Shark and Ray Biology,2,Marine Biology,BIO 254,,false
+MRN 412,MRN 412,Marine Parasitology,2,Marine Biology,BIO 205,,false
+MRN 414,MRN 414,Marsh Ecology,4,Marine Biology,BIO 355,,false
+MRN 416,MRN 416,Coral Reef Ecology,4,Marine Biology,BIO 355;MRN 312,,false
+MRN 418,MRN 418,Marine Behavioral Ecology,4,Marine Biology,BIO 254;MTH 121,,false
+MRN 420,MRN 420,Marine Conservation Biology,4,Marine Biology,BIO 355;MRN 312,,false
+MRN 422,MRN 422,Marine Fish Diseases,2,Marine Biology,BIO 101,,false
+MRN 424,MRN 424,Marine Aquaculture,2,Marine Biology,BIO 102;CHM 111,,false
+MRN 426,MRN 426,Coastal Zone Management,2,Marine Biology,,,false
+MRN 430,MRN 430,Special Topics,1-4,Marine Biology,,,false
+MRN 431,MRN 431,Dolphins and Whales,2,Marine Biology,BIO 254;BIO 241,,false
+MRN 433,MRN 433,Marine Toxicology,4,Marine Biology,BIO 360;CHM 231,,false
+MRN 435,MRN 435,Tropical Marine Ecosystems,4,Marine Biology,BIO 355,,false
+MRN 440,MRN 440,Directed Research,1-6,Marine Biology,,,false
+MRN 450,MRN 450,Introduction to Neurobiology,4,Marine Biology,BIO 360,,false
+MRN 501,MRN 501,Marine Botany,4,Marine Biology,,,false
+MRN 503,MRN 503,Marine Invertebrate Zoology,4,Marine Biology,,,false
+MRN 512,MRN 512,Marine Ecology,4,Marine Biology,,,false
+MKT 220,MKT 220,Integrated Marketing Communications,3,Marketing,,,false
+MKT 311,MKT 311,Marketing Principles,3,Marketing,ECO 101;ECO 102;ACC 201,,false
+MKT 315,MKT 315,Crisis Communication,3,Marketing,CMM 220;BUS 210,,false
+MKT 364,MKT 364,Media Planning and Measurement,3,Marketing,MKT 311;CMM 220,,false
+MKT 365,MKT 365,Strategic Writing,3,Marketing,CMM 251;BUS 210,,false
+MKT 366,MKT 366,Strategic Planning for PR and Advertising,3,Marketing,CMM 220;CMM 221,,false
+MKT 371,MKT 371,UX/UI Design,3,Marketing,,,false
+MKT 422,MKT 422,Marketing Research,3,Marketing,MKT 311;BUS 263,,false
+MKT 443,MKT 443,Promotional Strategy,3,Marketing,MKT 311,,false
+MKT 450,MKT 450,Marketing Management,3,Marketing,MKT 311,,false
+MKT 472,MKT 472,Student Agency,3,Marketing,CMM 366,,false
+MKT 475,MKT 475,Digital Marketing Certifications,3,Marketing,,,false
+MKT 495,MKT 495,Special Topics in Marketing,3,Marketing,MKT 311,,false
+MTH 100,MTH 100,Intermediate Algebra,3,Mathematics,,MTH 101,false
+MTH 101,MTH 101,Intermediate Algebra Recitation,0,Mathematics,,MTH 100,false
+MTH 103,MTH 103,Contemporary Mathematics,3,Mathematics,,,false
+MTH 104,MTH 104,Social Justice Mathematics,3,Mathematics,,,false
+MTH 111,MTH 111,Precalculus with Trigonometry,3,Mathematics,MTH 100,,false
+MTH 112,MTH 112,Trigonometry,3,Mathematics,MTH 111,,false
+MTH 121,MTH 121,Calculus I,4,Mathematics,MTH 111,,false
+MTH 122,MTH 122,Calculus II,4,Mathematics,MTH 121,,false
+MTH 140,MTH 140,Calculus with Business Applications,3,Mathematics,MTH 111,,false
+MTH 163,MTH 163,Basic Statistics for the Sciences,3,Mathematics,MTH 100,,false
+MTH 190,MTH 190,Mathematics for Elementary Teachers,3,Mathematics,,,false
+MTH 192,MTH 192,Mathematics for Elementary Teachers II,3,Mathematics,,,false
+MTH 221,MTH 221,Linear Algebra,3,Mathematics,MTH 121,,false
+MTH 223,MTH 223,Calculus III,4,Mathematics,MTH 122,,false
+MTH 261,MTH 261,Differential Equations,3,Mathematics,MTH 122,,false
+MTH 301,MTH 301,Introduction to Abstract Mathematics,3,Mathematics,MTH 121;PHL 101,,false
+MTH 303,MTH 303,Mathematical Logic,3,Mathematics,PHL 101,,false
+MTH 311,MTH 311,Numerical Methods,3,Mathematics,MTH 122;CIS 221,,false
+MTH 315,MTH 315,Applied Mathematics I,3,Mathematics,MTH 223,,false
+MTH 316,MTH 316,Applied Mathematics II,3,Mathematics,MTH 315,,false
+MTH 322,MTH 322,Discrete Mathematics,3,Mathematics,MTH 121,,false
+MTH 331,MTH 331,Foundations of Geometry,3,Mathematics,MTH 122,,false
+MTH 365,MTH 365,Probability and Statistics,3,Mathematics,MTH 122,,false
+MTH 399,MTH 399,Topics in Mathematics,1-3,Mathematics,MTH 122,,false
+MTH 423,MTH 423,Cryptography,3,Mathematics,MTH 121,,false
+MTH 451,MTH 451,Basic Real Analysis,3,Mathematics,MTH 301;MTH 223,,false
+MTH 462,MTH 462,Vector Calculus,3,Mathematics,MTH 223,,false
+MTH 464,MTH 464,Complex Variables,3,Mathematics,MTH 301;MTH 223,,false
+MTH 465,MTH 465,Problem Solving in Actuarial Science,1-3,Mathematics,MTH 122,,false
+MTH 468,MTH 468,Operations Research,3,Mathematics,MTH 365,,false
+MTH 470,MTH 470,Mathematical Modeling,3,Mathematics,,,false
+MTH 471,MTH 471,Computational Science Laboratory,0-3,Mathematics,MTH 122,,false
+MTH 481,MTH 481,Introduction to Topology,3,Mathematics,MTH 301,,false
+MTH 482,MTH 482,Abstract Algebra,3,Mathematics,MTH 301,,false
+MTH 483,MTH 483,Number Theory,3,Mathematics,MTH 301,,false
+MTH 491,MTH 491,Seminar,1,Mathematics,MTH 451;MTH 464;MTH 482,,false
+MTH 499,MTH 499,Advanced Topics in Mathematics,1-3,Mathematics,MTH 301,,false
+MSC 101,MSC 101,Basic Leadership Skills I,1,Military Science,,,false
+MSC 102,MSC 102,Basic Leadership Skills II,1,Military Science,,,false
+MSC 201,MSC 201,Intermediate Military Skills I,3,Military Science,,,false
+MSC 202,MSC 202,Intermediate Military Skills II,3,Military Science,,,false
+MSC 301,MSC 301,Adaptive Team Leadership,3,Military Science,MSC 101;MSC 102;MSC 201;MSC 202,,false
+MSC 302,MSC 302,Applied Team Leadership,3,Military Science,MSC 301,,false
+MSC 401,MSC 401,The Army Profession,3,Military Science,,,false
+MSC 402,MSC 402,Leadership in a Complex World,3,Military Science,,,false
+MSC 494,MSC 494,Directed Studies,1-3,Military Science,,,false
+MIN 390,MIN 390,Ministry Practicum,1-4,Ministry,,,false
+MIN 395,MIN 395,Special Topics in Ministry,1-4,Ministry,,,false
+MIN 590,MIN 590,Field Education,1-4,Ministry,,,false
+MIN 595,MIN 595,Special Topics in Ministry,1-4,Ministry,,,false
+MUS 115,MUS 115,Music Fundamentals,3,Music,,,false
+MUS 130,MUS 130,Applied Piano,1,Music,,,false
+MUS 140,MUS 140,Applied Organ,1,Music,,,false
+MUS 150,MUS 150,Music Theory,3,Music,,,false
+MUS 160,MUS 160,Applied Voice,1,Music,,,false
+MUS 170,MUS 170,Liturgical Chorus,1,Music,,,false
+MUS 180,MUS 180,Applied Guitar,1,Music,,,false
+MUS 190,MUS 190,Chorale,1,Music,,,false
+MUS 221,MUS 221,Music Appreciation,3,Music,,,false
+MUS 222,MUS 222,Music Appreciation,3,Music,,,false
+MUS 250,MUS 250,Music Theory II,3,Music,MUS 150,,false
+MUS 280,MUS 280,Jazz History,3,Music,,,false
+MUS 285,MUS 285,Jazz Band,1,Music,,,false
+MUS 299,MUS 299,Special Topics,1-3,Music,,,false
+MUS 499,MUS 499,Special Topics,1-3,Music,,,false
+NUR 100,NUR 100,Introduction to Professional Nursing and Health,1,Nursing,,,false
+NUR 201,NUR 201,Normal and Therapeutic Nutrition,2,Nursing,,,false
+NUR 202,NUR 202,Med Math,1,Nursing,,,false
+NUR 203,NUR 203,Death and Dying,3,Nursing,,,false
+NUR 300,NUR 300,Foundations of Nursing Care,3,Nursing,HSC 231;HSC 233,NUR 100;NUR 201;NUR 202;HSC 232;HSC 234,false
+NUR 301,NUR 301,Health Assessment,2,Nursing,,NUR 300;NUR 303,false
+NUR 302,NUR 302,Pharmacology,3,Nursing,NUR 300;NUR 301;NUR 303,NUR 320;NUR 340,false
+NUR 303,NUR 303,Human Pathophysiology,3,Nursing,,NUR 300;NUR 301,false
+NUR 310,NUR 310,Community Mental Health,5,Nursing,NUR 302;NUR 320;NUR 340,NUR 401,false
+NUR 320,NUR 320,Childbearing Family,5,Nursing,NUR 300;NUR 301;NUR 303,NUR 302,false
+NUR 330,NUR 330,Adult Health I,5,Nursing,NUR 302;NUR 320;NUR 340,NUR 401,false
+NUR 340,NUR 340,Community as Client,5,Nursing,NUR 300;NUR 301;NUR 303,NUR 302,false
+NUR 401,NUR 401,Scientific Inquiry,3,Nursing,NUR 302;NUR 303;NUR 320;NUR 340;NUR 310;NUR 330,,false
+NUR 410,NUR 410,Adult Health II,5,Nursing,NUR 310;NUR 330;NUR 401,PHL 318,false
+NUR 411,NUR 411,Child and Adolescent Health,5,Nursing,NUR 410;NUR 445,NUR 430,false
+NUR 430,NUR 430,Leadership and Management,3,Nursing,NUR 401;NUR 410;NUR 445,NUR 411;NUR 440;NUR 460,false
+NUR 440,NUR 440,Practicum: Hospital,3,Nursing,,NUR 430;NUR 460,false
+NUR 445,NUR 445,Adult Health III,5,Nursing,NUR 310;NUR 330;NUR 401;NUR 410,PHL 318,false
+NUR 460,NUR 460,Senior Seminar,3,Nursing,NUR 445,NUR 411;NUR 430;NUR 440,false
+NUR 499,NUR 499,Special Topics,1-3,Nursing,,,false
+NUR 510,NUR 510,"Essentials of Advanced Health Assessment, Pathophysiology and Pharmacology",3,Nursing,,,false
+NUR 511,NUR 511,Ethics in Healthcare,3,Nursing,,,false
+NUR 512,NUR 512,Informatics in Healthcare,3,Nursing,,,false
+NUR 513,NUR 513,Theoretical Foundations for Leadership,3,Nursing,,,false
+NUR 514,NUR 514,Applied Research and Evidence-Based Practice,3,Nursing,,,false
+NUR 518,NUR 518,Health Policy,3,Nursing,,,false
+NUR 519,NUR 519,Advanced Statistics for Healthcare,3,Nursing,,,false
+NUR 530,NUR 530,Theoretical Educational Foundations of Nursing Education,3,Nursing,,,false
+NUR 531,NUR 531,Curriculum Development,3,Nursing,,,false
+NUR 532,NUR 532,Course Development,3,Nursing,,,false
+NUR 533,NUR 533,Teaching Strategies,3,Nursing,,,false
+NUR 534,NUR 534,Testing and Evaluation Strategies,3,Nursing,,,false
+NUR 535,NUR 535,Practicum for Nurse Educators,3,Nursing,,,false
+NUR 541,NUR 541,Quality and Safety in the Healthcare Environment,3,Nursing,,,false
+NUR 542,NUR 542,Organizational Behavior,3,Nursing,,,false
+NUR 543,NUR 543,Finance for Healthcare Leaders,3,Nursing,,,false
+NUR 544,NUR 544,Administration in Healthcare Organizations,3,Nursing,,,false
+NUR 545,NUR 545,Practicum – Project Development,3,Nursing,,,false
+LDR 252,LDR 252,Writing,1,Organizational Leadership,,,false
+LDR 301,LDR 301,Communication and Technology Workshop,1,Organizational Leadership,,,false
+LDR 302,LDR 302,Intermediate PowerPoint,1,Organizational Leadership,,,false
+LDR 310,LDR 310,"Work, Motivation and Leadership in the New Workplace",3,Organizational Leadership,,,false
+LDR 352,LDR 352,Microsoft Office Suite,1,Organizational Leadership,,,false
+LDR 353,LDR 353,Authoring Digital Documents with Adobe Acrobat,1,Organizational Leadership,,,false
+LDR 354,LDR 354,Intermediate Microsoft Excel®,1,Organizational Leadership,,,false
+LDR 355,LDR 355,Strategies for Effective Team Building,1,Organizational Leadership,,,false
+LDR 356,LDR 356,Business and Social Etiquette Strategies,1,Organizational Leadership,,,false
+LDR 357,LDR 357,LEAN Strategy Overview,1,Organizational Leadership,,,false
+LDR 358,LDR 358,Introduction to Microsoft Access,1,Organizational Leadership,,,false
+LDR 410,LDR 410,Managing Diversity in the Workplace,3,Organizational Leadership,,,false
+LDR 420,LDR 420,Conflict Management and Resolution,3,Organizational Leadership,,,false
+LDR 452,LDR 452,Decision Making,1,Organizational Leadership,,,false
+LDR 453,LDR 453,Leadership for Learning (Strategies for Effective Training),1,Organizational Leadership,,,false
+LDR 490,LDR 490,Senior Seminar/Capstone,3,Organizational Leadership,,,false
+LDR 491,LDR 491,Special Topics Workshop in Leadership,1,Organizational Leadership,,,false
+PTH 101,PTH 101,Community and Well-Being,1,Pathways,,,false
+PTH 102,PTH 102,Engagement and Outreach,1,Pathways,,,false
+PTH 110,PTH 110,College Success Strategies,2,Pathways,,,false
+PTH 201,PTH 201,Major and Career Exploration,2,Pathways,,,false
+PTH 205,PTH 205,Pre-Professional Development,1,Pathways,,,false
+PTH 210,PTH 210,Peer Tutoring,1,Pathways,,,false
+PTH 215,PTH 215,Reflective Service,1,Pathways,,,false
+PTH 220,PTH 220,Intercultural Experience Preparation,1,Pathways,,,false
+PTH 301,PTH 301,Internship I,1-3,Pathways,,,false
+PTH 302,PTH 302,Internship II,1-3,Pathways,,,false
+PTH 303,PTH 303,Pre-law Internship,3,Pathways,,,false
+PTH 401,PTH 401,Senior Job Search Seminar,3,Pathways,,,false
+PTH 410,PTH 410,Introduction to Peer Leadership,1,Pathways,,,false
+PTH 411,PTH 411,Peer Mentoring I,1,Pathways,,,false
+PTH 412,PTH 412,Intermediate Peer Leadership,1,Pathways,,,false
+PTH 413,PTH 413,Peer Mentoring II,1,Pathways,,,false
+PTH 414,PTH 414,Advanced Peer Leadership,1,Pathways,,,false
+PTH 415,PTH 415,Peer Mentoring III,1,Pathways,,,false
+PHL 101,PHL 101,Introductory Logic,3,Philosophy,,,false
+PHL 190,PHL 190,Honors Logic,3,Philosophy,,,false
 PHL 210,PHL 210,Ethics,3,Philosophy,PHL 101,,false
 PHL 214,PHL 214,Environmental Ethics,3,Philosophy,PHL 101,BIO 110,false
-PHL 292,PHL 292,Honors Philosophy of Human Nature,3,Philosophy,PHL 190,,false
+PHL 220,PHL 220,Philosophy of Human Nature,3,Philosophy,PHL 101,,false
+PHL 221,PHL 221,Existentialism,3,Philosophy,PHL 101,,false
+PHL 222,PHL 222,Philosophy as a Way of Life,3,Philosophy,PHL 101,,false
+PHL 230,PHL 230,Philosophy of Religion,3,Philosophy,PHL 101,,false
+PHL 291,PHL 291,Honors Ethics,3,Philosophy,PHL 190,,false
+PHL 292,PHL 292,Honors Philosophy of Human Nature,3,Philosophy,,,false
+PHL 293,PHL 293,Honors Philosophy of Religion,3,Philosophy,PHL 190,,false
+PHL 294,PHL 294,Honors Philosophy Special Topics,3,Philosophy,PHL 190,,false
+PHL 295,PHL 295,Special Topics,1-3,Philosophy,PHL 101,,false
+PHL 301,PHL 301,Intermediate Logic,1-3,Philosophy,PHL 101;PHL 190,,false
+PHL 310,PHL 310,Advanced Ethics,3,Philosophy,PHL 101;PHL 190,,false
+PHL 311,PHL 311,Bioethics,3,Philosophy,PHL 101;PHL 190,,false
+PHL 312,PHL 312,Philosophical Issues in Death and Dying,3,Philosophy,PHL 101;PHL 190,,false
+PHL 313,PHL 313,Business Ethics,3,Philosophy,PHL 101;PHL 190,,false
+PHL 314,PHL 314,Advanced Environmental Ethics,3,Philosophy,PHL 101;PHL 190;PHL 2XX,,false
+PHL 315,PHL 315,Ethical Theory,3,Philosophy,PHL 101;PHL 190,,false
+PHL 316,PHL 316,Justice,3,Philosophy,PHL 101;PHL 190,,false
+PHL 317,PHL 317,Ethics in Public Health,3,Philosophy,PHL 101;PHL 190,,false
+PHL 318,PHL 318,Christian Medical Ethics,3,Philosophy,PHL 101;PHL 190,,false
+PHL 321,PHL 321,Existentialism,3,Philosophy,PHL 101;PHL 190,,false
+PHL 322,PHL 322,Philosophy and Gender,3,Philosophy,PHL 101;PHL 190,,false
+PHL 335,PHL 335,Advanced Philosophy of Religion,3,Philosophy,PHL 101;PHL 190,,false
+PHL 341,PHL 341,History of Ancient Philosophy,3,Philosophy,PHL 101;PHL 190,,false
+PHL 342,PHL 342,History of Medieval Philosophy,3,Philosophy,PHL 101;PHL 190,,false
+PHL 343,PHL 343,History of Modern Philosophy,3,Philosophy,PHL 101;PHL 190,,false
+PHL 344,PHL 344,History of Contemporary Philosophy,3,Philosophy,PHL 101;PHL 190,,false
+PHL 345,PHL 345,Asian Philosophy,3,Philosophy,PHL 101;PHL 190,,false
+PHL 350,PHL 350,Philosophy of Law,3,Philosophy,PHL 101;PHL 190,,false
+PHL 351,PHL 351,Western Political Philosophy I,3,Philosophy,PHL 101;PHL 190,,false
+PHL 352,PHL 352,Western Political Philosophy II,3,Philosophy,PHL 101;PHL 190,,false
+PHL 355,PHL 355,Markets and Morality,3,Philosophy,,,false
+PHL 356,PHL 356,Responsible Capitalism,3,Philosophy,PHL 101;PHL 190,,false
+PHL 360,PHL 360,Philosophy of Art,3,Philosophy,PHL 101;PHL 190,,false
+PHL 370,PHL 370,Philosophy of Science,3,Philosophy,PHL 101;PHL 190,,false
+PHL 371,PHL 371,Philosophy of Biology,3,Philosophy,PHL 101;PHL 190,,false
+PHL 380,PHL 380,Metaphysics,3,Philosophy,,,false
+PHL 390,PHL 390,Honors Philosophy III,3,Philosophy,,,false
+PHL 395,PHL 395,Special Topics,1-3,Philosophy,PHL 101;PHL 190,,false
+PHL 396,PHL 396,Special Topics,1-3,Philosophy,PHL 101;PHL 190,,false
+PHL 397,PHL 397,Special Topics,1-3,Philosophy,PHL 101;PHL 190,,false
+PHL 398,PHL 398,Special Topics,1-3,Philosophy,PHL 101;PHL 190,,false
+PHL 399,PHL 399,Special Topics,1-3,Philosophy,PHL 101;PHL 190,,false
+PHL 402,PHL 402,Philosophy of Language,3,Philosophy,PHL 101;PHL 190,,false
+PHL 420,PHL 420,Theory of Knowledge,3,Philosophy,PHL 101;PHL 109,,false
+PHL 422,PHL 422,Philosophy of Mind,3,Philosophy,PHL 101;PHL 190,,false
+PHL 440,PHL 440,Major System or Movement,3,Philosophy,PHL 101;PHL 190,,false
+PHL 450,PHL 450,Philosophy of Education,3,Philosophy,PHL 101;PHL 190,,false
+PHL 498,PHL 498,Senior Seminar,1-4,Philosophy,,,false
+PHL 501,PHL 501,Studies in Philosophy,1-3,Philosophy,,,false
+PHY 114,PHY 114,Conceptual Physics,3,Physics,,,false
+PHY 115,PHY 115,Introduction to Astronomy,3,Physics,,,false
+PHY 201,PHY 201,Algebra-Based Physics I,3,Physics,MTH 111,PHY 213,false
+PHY 202,PHY 202,Algebra-Based Physics II,3,Physics,PHY 201,PHY 214,false
+PHY 213,PHY 213,Physics Laboratory I,1,Physics,,PHY 201;PHY 221,false
+PHY 214,PHY 214,Physics Laboratory II,1,Physics,,PHY 202;PHY 222,false
+PHY 221,PHY 221,Physics with Calculus I,3,Physics,MTH 121,,false
+PHY 222,PHY 222,Physics with Calculus II,3,Physics,PHY 221,PHY 214,false
+PHY 301,PHY 301,Thermodynamics and Statistical Mechanics,3,Physics,PHY 221;MTH 122,,false
+PHY 331,PHY 331,Independent Study Courses,3,Physics,PHY 222;MTH 122,,false
+PHY 334,PHY 334,Introductory Biophysics,3,Physics,PHY 222;MTH 122,,false
+PHY 341,PHY 341,Modern Physics,3,Physics,PHY 222;MTH 122,,false
+POL 112,POL 112,Introduction to American Politics,3,Political Science,,,false
+POL 151,POL 151,Introduction to Comparative Politics,3,Political Science,,,false
+POL 161,POL 161,Introduction to International Relations,3,Political Science,,,false
+POL 250,POL 250,Research Methods in Political Science,3,Political Science,,,false
+POL 283,POL 283,American Political Thought,3,Political Science,,,false
+POL 290,POL 290,Honors Political Science,3,Political Science,,,false
+POL 321,POL 321,Political Parties and Interest Groups,3,Political Science,POL 112,,false
+POL 322,POL 322,Congress and the President,3,Political Science,POL 112,,false
+POL 323,POL 323,American Foreign Policy,3,Political Science,POL 112;POL 161,,false
+POL 324,POL 324,Public Policy,3,Political Science,POL 112,,false
+POL 325,POL 325,Public Administration,3,Political Science,POL 112,,false
+POL 340,POL 340,Constitutional Law,3,Political Science,POL 112;POL 283,,false
+POL 341,POL 341,Judicial Process and Procedures,3,Political Science,POL 112,,false
+POL 342,POL 342,Civil Liberties and Civil Rights,3,Political Science,POL 112;POL 283,,false
+POL 364,POL 364,African Politics,3,Political Science,POL 151;POL 161,,false
+POL 365,POL 365,Latin American Politics,3,Political Science,POL 161;HIS 221,,false
+POL 366,POL 366,Russia and Eastern Europe,3,Political Science,POL 151;POL 161,,false
+POL 367,POL 367,Middle Eastern Politics,3,Political Science,POL 151;POL 161,,false
+POL 369,POL 369,China and East Asia,3,Political Science,POL 151;POL 161,,false
+POL 375,POL 375,"Terrorism, Revolution and War",3,Political Science,POL 112;POL 151;POL 161,,false
+POL 376,POL 376,Comparative Foreign Policy,3,Political Science,POL 161,,false
+POL 377,POL 377,Health and Politics,3,Political Science,,,false
+POL 379,POL 379,International Political Economy,3,Political Science,POL 151;POL 161,,false
+POL 381,POL 381,Western Political Philosophy I,3,Political Science,,,false
+POL 382,POL 382,Western Political Philosophy II,3,Political Science,,,false
+POL 383,POL 383,Catholic Social Thought,3,Political Science,THL 101,,false
+POL 385,POL 385,Marxism and Twentieth Century Political Thought,3,Political Science,,,false
+POL 386,POL 386,Political Ideologies and Public Opinion,3,Political Science,,,false
+POL 387,POL 387,Politics and Literature,3,Political Science,,,false
+POL 388,POL 388,Politics and Film,3,Political Science,,,false
+POL 389,POL 389,Foundations of Free Societies,3,Political Science,POL 112;POL 283,,false
+POL 393,POL 393,Internship in Government and Politics,1-3,Political Science,,,false
+POL 395,POL 395,Special Topics in Political Science,1-3,Political Science,POL 112;POL 151;POL 161,,false
+POL 447,POL 447,Problems in International Politics,3,Political Science,POL 151;POL 161,,false
+POL 491,POL 491,Seminar in American Government and Politics,3,Political Science,,,false
+POL 495,POL 495,Study Abroad in Political Science,3-6,Political Science,POL 112;POL 151;POL 161,,false
+POL 499,POL 499,Readings in Political Science,1-3,Political Science,,,false
+POL 501,POL 501,Studies in Political Science,1-3,Political Science,,,false
+POL 503,POL 503,Modernity,3,Political Science,,,false
+POL 504,POL 504,Islam and the Middle East,3,Political Science,,,false
+PSY 101,PSY 101,Introduction to Psychology,3,Psychology,,,false
+PSY 150,PSY 150,Careers in Psychology,1,Psychology,PSY 101,,false
+PSY 200,PSY 200,Social Psychology,3,Psychology,PSY 101,,false
+PSY 204,PSY 204,Developmental Psychology,3,Psychology,PSY 101,,false
+PSY 225,PSY 225,Psychopathology,3,Psychology,PSY 101,,false
+PSY 250,PSY 250,Research Methods,4,Psychology,,PSY 263;PSY 264,false
+PSY 263,PSY 263,Statistics for the Social Sciences,3,Psychology,,PSY 250,false
+PSY 264,PSY 264,Social Statistics Laboratory,1,Psychology,,PSY 263;PSY 250,false
+PSY 290,PSY 290,Honors Introduction to Psychology,3,Psychology,,,false
+PSY 300,PSY 300,Social Psychology,3,Psychology,PSY 101,,false
+PSY 310,PSY 310,Psychology of Gender,3,Psychology,PSY 101,,false
+PSY 315,PSY 315,Sensation and Perception,3,Psychology,PSY 101,,false
+PSY 324,PSY 324,Health Psychology,3,Psychology,PSY 101,,false
+PSY 330,PSY 330,Industrial/Organizational Psychology,3,Psychology,PSY 101,,false
+PSY 333,PSY 333,Positive Psychology,3,Psychology,PSY 101,,false
+PSY 340,PSY 340,Psychology at the Movies,3,Psychology,PSY 101,,false
+PSY 350,PSY 350,Research Experience,1-3,Psychology,PSY 101;PSY 250;PSY 263;PSY 264,,false
+PSY 360,PSY 360,Social Psychology of Social Justice,3,Psychology,PSY 101,,false
+PSY 364,PSY 364,Biological Psychology,3,Psychology,PSY 101;BIO 100,,false
+PSY 374,PSY 374,"Drugs, Brain, and Behavior",3,Psychology,PSY 101,,false
+PSY 375,PSY 375,Cognitive Psychology,3,Psychology,PSY 101,,false
+PSY 380,PSY 380,Learning and Behavior,3,Psychology,PSY 101,,false
+PSY 384,PSY 384,Animal Behavior,3,Psychology,BIO 301,,false
+PSY 385,PSY 385,Special Studies in Psychology,1-3,Psychology,PSY 101,,false
+PSY 394,PSY 394,Human Sexuality,3,Psychology,PSY 101,,false
+PSY 420,PSY 420,Personality Theories,3,Psychology,PSY 101,,false
+PSY 422,PSY 422,Tests and Measures,3,Psychology,PSY 101;PSY 263,,false
+PSY 428,PSY 428,Forensic Psychology,3,Psychology,PSY 101,,false
+PSY 445,PSY 445,Approaches to Psychotherapy,3,Psychology,PSY 101;PSY 225,,false
+PSY 446,PSY 446,Field Experience,1-3,Psychology,PSY 101,,false
+PSY 450,PSY 450,Research Experience,1-3,Psychology,PSY 101;PSY 250;PSY 263;PSY 264;PSY 350,,false
+PSY 488,PSY 488,Independent Study in Psychology,1-3,Psychology,PSY 101;PSY 250;PSY 263;PSY 264,,false
+PSY 499,PSY 499,Capstone in Psychology,3,Psychology,PSY 250,,false
+PSY 501,PSY 501,Studies in Psychology,1-3,Psychology,,,false
+PSY 502,PSY 502,Social Psychology,3,Psychology,,,false
+PSY 510,PSY 510,Psychology of Gender,3,Psychology,,,false
+PSY 560,PSY 560,Social Psychology of Social Justice,3,Psychology,,,false
+MPH 500,MPH 500,Introduction to Public Health,1,Public Health,,,false
+MPH 504,MPH 504,Foundations in Social and Behavioral Health,3,Public Health,,,false
+MPH 510,MPH 510,Health Communications,3,Public Health,,,false
+MPH 512,MPH 512,Emerging Pathogens,3,Public Health,,,false
+MPH 515,MPH 515,Foundations in Environmental Health,3,Public Health,,,false
+MPH 520,MPH 520,Introduction to Women’s Health,3,Public Health,,,false
+MPH 525,MPH 525,Foundations of Epidemiology,3,Public Health,,,false
+MPH 530,MPH 530,Ethics in Public Health,3,Public Health,,,false
+MPH 535,MPH 535,One Health,3,Public Health,,,false
+MPH 540,MPH 540,Introduction to Global Health,3,Public Health,,,false
+MPH 563,MPH 563,Foundations in Biostatistics,3,Public Health,,,false
+MPH 565,MPH 565,Intervention/Program Development and Evaluation,3,Public Health,,,false
+MPH 576,MPH 576,Intercultural Relations and Communications,3,Public Health,,,false
+MPH 577,MPH 577,Global Health Governance,3,Public Health,,,false
+MPH 690,MPH 690,Public Health Internship/Practicum,3,Public Health,,,false
+MPH 699,MPH 699,Special Topics in Public Health,1,Public Health,,,false
+SSC 295,SSC 295,Issues in Social Justice,3,Social Science,,,false
+SSC 301,SSC 301,Social Determinants of Health,3,Social Science,,,false
+SSC 340,SSC 340,Introduction to Global Health,3,Social Science,,,false
+SSC 395,SSC 395,Issues in Social Justice,3,Social Science,,,false
+SSC 501,SSC 501,Social Determinants of Health,3,Social Science,,,false
+SOC 101,SOC 101,Introduction to Sociology,3,Sociology,,,false
+SOC 250,SOC 250,Social Problems,3,Sociology,,,false
+SOC 251,SOC 251,Marriage and Family,3,Sociology,,,false
+SOC 253,SOC 253,Criminology,3,Sociology,,,false
+SOC 256,SOC 256,Cultural Anthropology,3,Sociology,,,false
+SOC 275,SOC 275,Introduction to American Justice Systems,3,Sociology,SOC 101,,false
+SOC 290,SOC 290,Honors Sociology,3,Sociology,,,false
+SOC 295,SOC 295,Issues in Social Justice,3,Sociology,,,false
+SOC 299,SOC 299,Special Topics in Sociology,1-6,Sociology,,,false
+SOC 301,SOC 301,Social Determinants of Health,3,Sociology,,,false
+SOC 305,SOC 305,Social Gerontology,3,Sociology,SOC 101;SOC 250,,false
+SOC 314,SOC 314,Deviant Behavior,3,Sociology,SOC 101,,false
+SOC 315,SOC 315,Elite Deviance,3,Sociology,SOC 101,,false
+SOC 317,SOC 317,Sociology of Popular Culture,3,Sociology,SOC 101,,false
+SOC 345,SOC 345,Sociological Theory,3,Sociology,SOC 101,,false
+SOC 350,SOC 350,Research Methods in Sociology,3,Sociology,SOC 101,,false
+SOC 351,SOC 351,Marriage and Family,3,Sociology,,,false
+SOC 354,SOC 354,Juvenile Delinquency,3,Sociology,SOC 101;SOC 253,,false
+SOC 355,SOC 355,Race and Ethnicity in the United States,3,Sociology,SOC 101,,false
+SOC 375,SOC 375,Gender and Society,3,Sociology,SOC 101,,false
+SOC 385,SOC 385,Sociology of Sport/Leisure,3,Sociology,SOC 101,,false
+SOC 391,SOC 391,Medical Sociology,3,Sociology,SOC 101,,false
+SOC 395,SOC 395,Issues in Social Justice,3,Sociology,,,false
+SOC 475,SOC 475,Affluence and Poverty,3,Sociology,SOC 101,,false
+SOC 480,SOC 480,Senior Experience in Sociology,3,Sociology,SOC 101,,false
+SOC 483,SOC 483,Sociology of Law and Punishment,3,Sociology,SOC 101;SOC 253,,false
+SOC 485,SOC 485,Sociology of Religion,3,Sociology,,,false
+SOC 486,SOC 486,Faith in Action,3,Sociology,,,false
+SOC 499,SOC 499,Selected Topics in Sociology,1-6,Sociology,,,false
+SOC 501,SOC 501,Studies in Sociology,1-3,Sociology,,,false
+SOC 575,SOC 575,Gender and Society,3,Sociology,,,false
+SOC 591,SOC 591,Medical Sociology,3,Sociology,,,false
+SPA 101,SPA 101,Elementary Spanish I,3,Spanish,,,false
+SPA 102,SPA 102,Elementary Spanish II,3,Spanish,,,false
+SPA 107,SPA 107,Spanish for Medical Personnel I,3,Spanish,,,false
+SPA 108,SPA 108,Spanish for Medical Personnel II,3,Spanish,,,false
+SPA 201,SPA 201,Intermediate Spanish I,3,Spanish,SPA 101;SPA 102,,false
+SPA 202,SPA 202,Intermediate Spanish II,3,Spanish,SPA 101;SPA 102,,false
+SPA 205,SPA 205,Readings in Spanish,1-3,Spanish,SPA 101;SPA 102,,false
+SPA 250,SPA 250,Introduction to Latin American Studies,3,Spanish,SPA 202,,false
+SPA 301,SPA 301,Advanced Spanish Grammar and Composition I,3,Spanish,SPA 201;SPA 202,,false
+SPA 302,SPA 302,Advanced Spanish Grammar and Composition II,3,Spanish,SPA 201;SPA 202,,false
+SPA 303,SPA 303,Advanced Spanish Conversation,3,Spanish,SPA 201;SPA 202,,false
+SPA 304,SPA 304,Introduction to Hispanic Literature and Film,3,Spanish,SPA 201;SPA 202,,false
+SPA 305,SPA 305,Hispanic Literature in Translation,3,Spanish,,,false
+SPA 310,SPA 310,Survey of Spanish Literature I,3,Spanish,SPA 201;SPA 202,,false
+SPA 311,SPA 311,Survey of Spanish Literature II,3,Spanish,SPA 201;SPA 202,,false
+SPA 312,SPA 312,Survey of Spanish-American Literature I,3,Spanish,SPA 201;SPA 202,,false
+SPA 313,SPA 313,Survey of Spanish-American Literature II,3,Spanish,SPA 201;SPA 202,,false
+SPA 314,SPA 314,Cervantes,3,Spanish,,,false
+SPA 315,SPA 315,Nineteenth-Century Spanish Literature,3,Spanish,,,false
+SPA 320,SPA 320,Latin American Poetry: Modernism to the 21st Century,3,Spanish,,,false
+SPA 325,SPA 325,Literature and the Environment in Latin American Poetry,3,Spanish,SPA 201;SPA 202,,false
+SPA 381,SPA 381,Selected Studies,3,Spanish,SPA 201;SPA 202,,false
+SPA 401,SPA 401,Independent Study,1-3,Spanish,SPA 201;SPA 202,,false
+SPA 450,SPA 450,Senior Seminar,3,Spanish,,,false
+SPT 521,SPT 521,Liturgical Spirituality,1-3,Spirituality,,,false
+SPT 523,SPT 523,Liberation Spirituality,1-3,Spirituality,,,false
+SPT 524,SPT 524,Contemporary Movements,1-3,Spirituality,,,false
+SPT 525,SPT 525,Prayer & Discernment I,1-3,Spirituality,,,false
+SPT 526,SPT 526,Prayer & Discernment II,1-3,Spirituality,,,false
+SPT 527,SPT 527,Ascetical Traditions,1-3,Spirituality,,,false
+SPT 528,SPT 528,Consecrated Life,1-3,Spirituality,,,false
+SPT 531,SPT 531,Spirituality of the Gospels,1-3,Spirituality,,,false
+SPT 532,SPT 532,New Testament Spirituality,1-3,Spirituality,,,false
+SPT 535,SPT 535,Spirituality of the Prophets,1-3,Spirituality,,,false
+SPT 536,SPT 536,Old Testament Spirituality,1-3,Spirituality,,,false
+SPT 541,SPT 541,Spiritual Classics,1-3,Spirituality,,,false
+SPT 542,SPT 542,Great Masters,1-3,Spirituality,,,false
+SPT 543,SPT 543,Christian Mystics,1-3,Spirituality,,,false
+SPT 551,SPT 551,The Spiritual Exercises of St. Ignatius I,1-3,Spirituality,,,false
+SPT 552,SPT 552,The Spiritual Exercises of St. Ignatius II,1-3,Spirituality,,,false
+SPT 553,SPT 553,Ethics and Holiness,1-3,Spirituality,,,false
+SPT 561,SPT 561,Early Christian Spirituality,1-3,Spirituality,,,false
+SPT 562,SPT 562,Medieval Spirituality,1-3,Spirituality,,,false
+SPT 565,SPT 565,Modern Search for God,1-3,Spirituality,,,false
+SPT 568,SPT 568,Religion in America,1-3,Spirituality,,,false
+SPT 571,SPT 571,Christianity and the World Religions,1-3,Spirituality,,,false
+SPT 581,SPT 581,Religion and Psychology,1-3,Spirituality,,,false
+SPT 582,SPT 582,Religion and Literature,1-3,Spirituality,,,false
+SPT 583,SPT 583,Religion and the Arts,1-3,Spirituality,,,false
+SPT 591,SPT 591,Spiritual Direction Seminar,3,Spirituality,,,false
+SPT 592,SPT 592,Spirituality & Psychology Seminar,3,Spirituality,,,false
+SPT 595,SPT 595,Special Topics in Spirituality,1-4,Spirituality,,,false
+SPT 598,SPT 598,Spiritual Direction Practicum I,2,Spirituality,,,false
+SPT 599,SPT 599,Spiritual Direction Practicum II,2,Spirituality,,,false
+SPT 625,SPT 625,Prayer,1,Spirituality,,,false
+SPT 626,SPT 626,Discernment,1,Spirituality,,,false
+SPT 630,SPT 630,Biblical Spirituality,1,Spirituality,,,false
+SPT 640,SPT 640,Great Spiritual Master,1,Spirituality,,,false
+SPM 401,SPM 401,Sport Law,3,Sport Management,,,false
+SPM 410,SPM 410,Sport Facilities Management,3,Sport Management,,,false
+SPM 420,SPM 420,Sport Marketing and Promotion,3,Sport Management,,,false
+SPM 495,SPM 495,Special Topics in Sports Management,3,Sport Management,,,false
+SCM 301,SCM 301,Principles of Logistics and Supply Chain Management,3,Supply Chain Management,,,false
+SCM 410,SCM 410,Transportation Management,3,Supply Chain Management,,,false
+SCM 420,SCM 420,Warehousing and Inventory Management,3,Supply Chain Management,,,false
+SCM 495,SCM 495,Special Topics,3,Supply Chain Management,SCM 301,,false
+THR 245,THR 245,Theater Production I,1-3,Theatre,,,false
+THR 246,THR 246,Theater Production II,1-3,Theatre,,,false
+THR 250,THR 250,Acting I,3,Theatre,,,false
+THR 251,THR 251,Introduction to Performance Studies,3,Theatre,,,false
+THR 285,THR 285,Special Topics,1-3,Theatre,,,false
+THR 350,THR 350,Acting II,3,Theatre,,,false
+THR 450,THR 450,Acting for the Camera,3,Theatre,THR 350,,false
+THR 465,THR 465,Modern Drama,3,Theatre,,,false
+THR 480,THR 480,Global Performance and Design,3,Theatre,THR 251,,false
+THR 485,THR 485,Shakespeare,3,Theatre,,,false
+THR 490,THR 490,Theory and Practice of Play Directing,3,Theatre,THR 245,,false
+THR 492,THR 492,Playwriting,3,Theatre,,,false
+THR 493,THR 493,Adaption: Text/Theatricality,3,Theatre,,,false
+THR 494,THR 494,Performance Studio,3,Theatre,,,false
+THR 495,THR 495,Special Studies,3,Theatre,,,false
+THR 497,THR 497,Theater Internship,3-6,Theatre,,,false
+THR 498,THR 498,Senior Synthesis Project,3,Theatre,,,false
+THR 501,THR 501,Studies in Theater,1-3,Theatre,,,false
+THL 101,THL 101,Introduction to Christian Theology,3,Theology,,,false
+THL 190,THL 190,Honors Theology I: Introduction to Christian Theology,3,Theology,,,false
+THL 221,THL 221,Ritual & Worship,3,Theology,THL 101;THL 190,,false
+THL 230,THL 230,New Testament Survey,3,Theology,,,false
+THL 231,THL 231,Old Testament Survey,3,Theology,THL 101;THL 190,,false
 THL 232,THL 232,Synoptic Gospels,3,Theology,THL 101;THL 190,,false
 THL 242,THL 242,Catholicism,3,Theology,THL 101;THL 190,,false
 THL 250,THL 250,The Good Life: Christian Ethics,3,Theology,THL 101;THL 190,,false
 THL 261,THL 261,World Religions,3,Theology,THL 101;THL 190,,false
-THR 245,THR 245,Theater Production I,3,Visual and Performing Arts,,,false
-THR 250,THR 250,Acting I,3,Visual and Performing Arts,,,false
-BUS 263,BUS 263,Business Statistics,3,Business,,,false
-PSY 263,PSY 263,Statistics for the Social Sciences,3,Psychology,,,false
-ENG 121,ENG 121,Composition I,3,English and Writing,,,false
-ENG 123,ENG 123,Composition II (Writing with Research),3,English and Writing,ENG 121,,false
-PTH 101,PTH 101,Community and Well-Being,1,Pathways,,,false
-PTH 102,PTH 102,Engagement and Outreach,1,Pathways,,,false
-PHL 101,PHL 101,Introductory Logic,3,Philosophy,,,false
-PHL 190,PHL 190,Honors Logic,3,Philosophy,,,false
-THL 101,THL 101,Intro to Christian Theology,3,Theology,,,false
-THL 190,THL 190,Honors Introduction to Christian Theology,3,Theology,,,false
-LAN 301,LAN 301,Language and Culture,3,Languages and Culture,,,false
-HIS 213,HIS 213,America to 1876,3,History,,,false
-POL 112,POL 112,Intro to American Politics,3,Political Science,,,false
-HIS 211,HIS 211,Western Civilization I,3,History,,,false
-POL 151,POL 151,Intro to Comparative Politics,3,Political Science,,,false
-BIO 101,BIO 101,Principles of Biology,3,Biology,,,false
-PSY 101,PSY 101,Intro to Psychology,3,Psychology,,,false
-ENG 2XX,ENG 2XX,Literature,3,English and Writing,,,false
-ART 100,ART 100,Visual/Performing Arts,3,Visual and Performing Arts,,,false
-ART 101,ART 101,Foundations of Art,3,Visual and Performing Arts,,,false
-ART 102,ART 102,Introduction to Drawing,3,Visual and Performing Arts,,,false
-ART 103,ART 103,Ceramics I,3,Visual and Performing Arts,,,false
-PHL 2XX,PHL 2XX,Philosophy 2XX/3XX,3,Philosophy,PHL 101;PHL 190,,false
-THL 2XX,THL 2XX,Theology 2XX/3XX,3,Theology,THL 101;THL 190,,false
-HIS 120,HIS 120,United States History I,3,History,,,false
-HIS 110,HIS 110,Western Civilization I,3,History,,,false
-HIS 212,HIS 212,Western Civilization II,3,History,,,false
-HIS 214,HIS 214,The United States Since 1876,3,History,,,false
-HIS 290,HIS 290,Global History Topics,3,History,,,false
-POL 161,POL 161,World Politics,3,Political Science,,,false
-SPA 101,SPA 101,Elementary Spanish I,3,Languages and Culture,,,false
-FRE 101,FRE 101,Elementary French I,3,Languages and Culture,,,false
-ITA 101,ITA 101,Elementary Italian I,3,Languages and Culture,,,false
-ECO 101,ECO 101,Principles of Macroeconomics,3,Economics,,,false
-SOC 101,SOC 101,Intro to Sociology,3,Sociology,,,false
-ARH 100,ARH 100,Art Appreciation,3,Visual and Performing Arts,,,false
-MUS 100,MUS 100,Music Appreciation,3,Visual and Performing Arts,,,false
-SCI PHY I,PHY 221 + PHY 213,Physics with Calculus I with Laboratory,4,Science Bundles,MTH 121,PHY 213,true
-SCI PHY II,PHY 222 + PHY 214,Physics with Calculus II with Laboratory,4,Science Bundles,PHY 221,PHY 214,true
-SCI CHM I,CHM 111 + CHM 113,General Chemistry I with Laboratory,4,Science Bundles,MTH 111;MTH 121,CHM 113,true
-SCI CHM II,CHM 112 + CHM 114,General Chemistry II with Laboratory,4,Science Bundles,CHM 111,CHM 114,true
+THL 321,THL 321,Worship as Ethics,3,Theology,THL 101;THL 190,,false
+THL 331,THL 331,Prophets,3,Theology,THL 101;THL 190,,false
+THL 332,THL 332,Gospel & Letters of John,3,Theology,THL 101;THL 190,,false
+THL 333,THL 333,Letters of Paul,3,Theology,THL 101;THL 190,,false
+THL 342,THL 342,Vatican II,3,Theology,THL 101;THL 190,,false
+THL 343,THL 343,Sacraments,3,Theology,THL 101;THL 190,,false
+THL 344,THL 344,Christology,3,Theology,THL 101;THL 190,,false
+THL 345,THL 345,Religion & Culture,3,Theology,THL 101;THL 190,,false
+THL 350,THL 350,Catholic Social Thought,3,Theology,,,false
+THL 352,THL 352,Peace and Justice Issues,3,Theology,THL 101;THL 190,,false
+THL 353,THL 353,Human Sexuality & Marriage,3,Theology,THL 101;THL 190,,false
+THL 354,THL 354,Religion and International Politics,3,Theology,THL 101;THL 190,,false
+THL 363,THL 363,American Religious History,3,Theology,THL 101;THL 190,,false
+THL 365,THL 365,Judaism,3,Theology,THL 101;THL 190,,false
+THL 367,THL 367,The Way of Zen,3,Theology,THL 101;THL 190,,false
+THL 388,THL 388,Special Topics in Theology IV,3,Theology,THL 101;THL 190,,false
+THL 390,THL 390,Honors Theology II: Major Themes,3,Theology,THL 101;THL 190,,false
+THL 420,THL 420,Diaconate Seminar,1,Theology,,,false
+THL 421,THL 421,Religious Education,3,Theology,THL 101;THL 190,,false
+THL 425,THL 425,Special Topics in Pastoral Theology,1-3,Theology,THL 101;THL 190,,false
+THL 428,THL 428,"Liturgy, Art & Architecture",3,Theology,THL 101;THL 190,,false
+THL 430,THL 430,Introduction to Biblical Studies,3,Theology,,,false
+THL 431,THL 431,Old Testament Topics,1-3,Theology,THL 101;THL 190,,false
+THL 432,THL 432,New Testament Topics,1-3,Theology,THL 101;THL 190,,false
+THL 440,THL 440,Reconciliation,3,Theology,THL 101;THL 190,,false
+THL 441,THL 441,Eucharistic Theology,3,Theology,THL 101;THL 190,,false
+THL 451,THL 451,Christian Spirituality,3,Theology,THL 101;THL 190,,false
+THL 452,THL 452,Special Moral Topics,1-3,Theology,THL 101;THL 190,,false
+THL 455,THL 455,History of Spirituality,3,Theology,THL 101;THL 190,,false
+THL 461,THL 461,History of Christian Thought I,3,Theology,THL 101;THL 190,,false
+THL 462,THL 462,History of Christian Thought II,3,Theology,THL 101;THL 190,,false
+THL 469,THL 469,Major Theologian,3,Theology,THL 101;THL 190,,false
+THL 485,THL 485,Sociology of Religion,3,Theology,,,false
+THL 490,THL 490,Intensive Reading Seminar,1-3,Theology,,,false
+THL 495,THL 495,Advanced Topics in Theology,3,Theology,,,false
+THL 496,THL 496,Senior Seminar,3,Theology,,,false
+THL 499,THL 499,Theology Seminar,1-4,Theology,THL 101;THL 190,,false
+THL 502,THL 502,Theology of Sacrament,3,Theology,,,false
+THL 503,THL 503,The Synoptic Gospels,3,Theology,,,false
+THL 504,THL 504,Pentateuch,3,Theology,,,false
+THL 505,THL 505,Prophets,3,Theology,,,false
+THL 506,THL 506,Foundations of Christian Ethics,3,Theology,,,false
+THL 507,THL 507,Christian Social Ethics: Contemporary Issues,3,Theology,,,false
+THL 508,THL 508,American Religious History,3,Theology,,,false
+THL 509,THL 509,Comparative Religions,3,Theology,,,false
+THL 510,THL 510,Introduction to Practical Theology,3,Theology,,,false
+THL 520,THL 520,Theological Research Methods,3,Theology,,,false
+THL 521,THL 521,Eucharist,3,Theology,,,false
+THL 522,THL 522,Christian Initiation,3,Theology,,,false
+THL 523,THL 523,Christian Spirituality,3,Theology,,,false
+THL 525,THL 525,History of Spirituality,1-3,Theology,,,false
+THL 526,THL 526,Reconciliation,3,Theology,,,false
+THL 528,THL 528,Religious Education,3,Theology,,,false
+THL 529,THL 529,Special Topics in Church and Ministry,1-4,Theology,,,false
+THL 532,THL 532,The Johannine Gospel and Epistles,3,Theology,,,false
+THL 533,THL 533,The Pauline Letters and Theology,3,Theology,,,false
+THL 538,THL 538,Wisdom Literature,3,Theology,,,false
+THL 540,THL 540,Philosophy of Religion,3,Theology,,,false
+THL 541,THL 541,Philosophy for Understanding Theology,3,Theology,,,false
+THL 542,THL 542,The Catholic Tradition: History & Development of Doctrine,3,Theology,,,false
+THL 543,THL 543,Christology and Trinity,3,Theology,,,false
+THL 544,THL 544,Theology of Church,3,Theology,,,false
+THL 549,THL 549,Major Theologian,3,Theology,,,false
+THL 552,THL 552,Human Sexuality and Marriage,3,Theology,,,false
+THL 553,THL 553,Religion & International Politics,3,Theology,,,false
+THL 554,THL 554,Catholic Social Thought,3,Theology,,,false
+THL 560,THL 560,Early Christianity: The Church Fathers,3,Theology,,,false
+THL 561,THL 561,Medieval Christianity,3,Theology,,,false
+THL 562,THL 562,Reformation,3,Theology,,,false
+THL 563,THL 563,Christianity in the Modern Era,3,Theology,,,false
+THL 572,THL 572,Pastoral Guided Reading,3,Theology,,,false
+THL 573,THL 573,Biblical Guided Reading,3,Theology,,,false
+THL 574,THL 574,Moral Guided Reading,3,Theology,,,false
+THL 575,THL 575,Historical Guided Reading,3,Theology,,,false
+THL 580,THL 580,Graduate Seminar,1,Theology,,,false
+THL 581,THL 581,Graduate Seminar: MPS Comprehensive,1,Theology,THL 580,,false
+THL 582,THL 582,Graduate Seminar: MTS Comprehensive,1,Theology,THL 580,,false
+THL 589,THL 589,Special Projects in Theological Reflection,1-4,Theology,,,false
+THL 590,THL 590,Intensive Reading Seminar,3,Theology,,,false
+THL 597,THL 597,Thesis Project Extension,0,Theology,,,false
+THL 598,THL 598,Thesis Project I,3,Theology,,,false
+THL 599,THL 599,Thesis Project II,3,Theology,,,false
+THL 621,THL 621,Eucharist,3,Theology,,,false
+THL 631,THL 631,Synoptic Gospels,3,Theology,,,false
+THL 635,THL 635,Prophets,1,Theology,,,false
+THL 636,THL 636,Letters of Paul,1,Theology,,,false
+THL 643,THL 643,Christology and Trinity,3,Theology,,,false
+THL 644,THL 644,Vatican II,3,Theology,,,false
+THL 645,THL 645,Ecclesiology,1,Theology,,,false
+THL 646,THL 646,Augustine,1,Theology,,,false
+THL 647,THL 647,Philosophy for Understanding Theology,1,Theology,,,false
+THL 648,THL 648,Theology of Sacrament,1,Theology,,,false
+THL 651,THL 651,Foundation of Christian Ethics,3,Theology,,,false
+THL 655,THL 655,Catholic Social Teaching,1,Theology,,,false
+THL 660,THL 660,Patristics,3,Theology,,,false
+THL 663,THL 663,New Evangelization,3,Theology,,,false
+THL 665,THL 665,Ecumenism and Interreligious Dialogue,1,Theology,,,false
+WRI 251,WRI 251,Introduction to Media Writing,3,Writing,ENG 123,,false
+WRI 276,WRI 276,Introduction to Creative Writing,3,Writing,,,false
+WRI 295,WRI 295,Introductory Special Studies in Writing,3,Writing,ENG 123,,false
+WRI 300,WRI 300,Critical Approaches to Literature,3,Writing,,,false
+WRI 301,WRI 301,Creative Writing: Fiction and Nonfiction,3,Writing,WRI 276;ENG 2XX,,false
+WRI 302,WRI 302,Creative Writing: Poetry,3,Writing,WRI 276;ENG 2XX,,false
+WRI 310,WRI 310,Introduction to Professional and Technical Writing,3,Writing,WRI 276;ENG 2XX,,false
+WRI 320,WRI 320,Grammar and Style for Professionals,3,Writing,WRI 276;ENG 2XX,,false
+WRI 331,WRI 331,Scriptwriting for Film and TV,3,Writing,ENG 123,,false
+WRI 350,WRI 350,Writing with Research and Data,3,Writing,WRI 276;ENG 2XX,,false
+WRI 355,WRI 355,Writing with Visual and Digital Formats,3,Writing,WRI 276;ENG 2XX,,false
+WRI 365,WRI 365,Strategic Writing,3,Writing,ENG 123;WRI 251,,false
+WRI 395,WRI 395,Special Topics in Professional Writing,3,Writing,WRI 276;ENG 2XX,,false
+WRI 401,WRI 401,Classical Rhetoric,3,Writing,ENG 2XX,,false
+WRI 402,WRI 402,Literary Theory and Criticism,3,Writing,ENG 2XX,,false
+WRI 418,WRI 418,Advanced Writing,3,Writing,WRI 276;ENG 2XX,,false
+WRI 453,WRI 453,Creative Writing: Non-fiction,3,Writing,WRI 276;ENG 2XX,,false
+WRI 475,WRI 475,Writing for Publication,3,Writing,WRI 276;ENG 2XX,,false
+WRI 491,WRI 491,The English Language,3,Writing,ENG 2XX;ENG 491,,false
+WRI 492,WRI 492,Playwriting,3,Writing,THR 492,,false
+WRI 495,WRI 495,Special Studies in Writing,3,Writing,WRI 276;ENG 2XX,,false
+WRI 497,WRI 497,Writing Internship,1-6,Writing,ENG 2XX;WRI 2XX,,false
+WRI 498,WRI 498,Synthesis Seminar,3,Writing,,,false
+WRI 501,WRI 501,Studies in Writing,3,Writing,,,false
