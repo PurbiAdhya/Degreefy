@@ -5499,60 +5499,307 @@ function applyDeadlineAwarePlan(result) {
   reconcileSatisfiedRequirements();
 }
 
-function populateAllUnchecked(options = {}) {
-  // Auto-planning always rebuilds the full draft. A global schedule can only
-  // optimize prerequisite chains and graduation deadlines when earlier greedy
-  // placements are not treated as fixed decisions. Students may edit the new
-  // draft manually after it is generated.
-  resetScheduledPlanForAutoBuild();
+// Deterministic staged degree-plan scheduler.
+//
+// The planner follows the same sequence an advisor would use:
+//   1. Place mandatory first-year PTH courses.
+//   2. Start the student's placement/prerequisite chains immediately.
+//   3. In every semester, place cleared program-chain courses first.
+//   4. Place the remaining cleared major/minor courses.
+//   5. Use the remaining room for Core requirements in published rank order.
+//
+// It never adds arbitrary courses merely to make a semester look full. If the
+// named requirements do not total 120 credits, the remaining free-elective
+// credits are reported rather than filled with unrelated courses.
 
-  const allTerms = generateTerms(state.grad);
-  const fallSpringTerms = allTerms.filter(key => parseTerm(key).term !== "Summer");
-  fallSpringTerms.forEach(key => { if (!state.planned[key]) state.planned[key] = []; });
-
-  reconcileSatisfiedRequirements();
-  const majorNeeded = collectNeededProgramRawCourses("major");
-  const minorNeeded = collectNeededProgramRawCourses("minor");
-  const coreNeeded = collectNeededCoreRawCourses();
-
-  let result = runDeadlineAwareScheduler(fallSpringTerms, majorNeeded, minorNeeded, coreNeeded, false);
-  // Summer remains a fallback rather than the default. It is used only when the
-  // Fall/Spring horizon cannot contain all remaining prerequisite chains.
-  if (result.unscheduled.size && allTerms.length > fallSpringTerms.length) {
-    result = runDeadlineAwareScheduler(allTerms, majorNeeded, minorNeeded, coreNeeded, true);
-  }
-
-  applyDeadlineAwarePlan(result);
-
-  const skipped = new Set(Array.from(result.unscheduled));
-  result.impossible.forEach(code => skipped.add(code));
-
-  // Once every degree requirement is placed, use remaining room to reach the
-  // 120-credit total. Required chains are never displaced by filler courses.
-  const termsUsed = result.metrics.terms;
-  reconcileSatisfiedRequirements();
-  fillRemainingCreditsTo120(termsUsed, skipped);
-  repairUntilWarningsClear(
-    termsUsed.filter(key => parseTerm(key).term !== "Summer"),
-    allTerms,
-    calculateTargetCredits(termsUsed, collectNeededRawCourses()),
-    skipped
-  );
-
-  reconcileSatisfiedRequirements();
-  Array.from(skipped).forEach(code => {
-    if (isRawDone(code) || isRawPlanned(code) || isPlacementSatisfied(code)) skipped.delete(code);
+function deterministicPreferredParentMap(requiredSet) {
+  const parents = new Map();
+  PREFERRED_COURSE_CHAINS.forEach(chain => {
+    for (let i = 1; i < chain.length; i++) {
+      if (requiredSet.has(chain[i]) && requiredSet.has(chain[i - 1])) parents.set(chain[i], chain[i - 1]);
+    }
   });
-  if (completedCreditTotal() >= DEGREE_MIN_CREDITS) skipped.delete(`additional credits to reach ${DEGREE_MIN_CREDITS}`);
+  return parents;
+}
 
-  forceConfettiOnNextSummary = true;
-  saveState();
-  renderAll(false);
-  if (skipped.size) {
-    alert(`The planner could not fit every remaining course by ${state.grad} while preserving prerequisites, course offerings, corequisites, and the 18-credit limit. The unresolved items are: ${Array.from(skipped).join(", ")}. Consider extending the graduation term, allowing an additional summer, or reviewing course substitutions with an advisor.`);
+function deterministicProgramDescendantCounts(requiredSet) {
+  const successors = new Map();
+  requiredSet.forEach(code => successors.set(code, new Set()));
+  requiredSet.forEach(code => {
+    getPrereqCodes(code).forEach(parent => {
+      if (requiredSet.has(parent)) successors.get(parent)?.add(code);
+    });
+  });
+  PREFERRED_COURSE_CHAINS.forEach(chain => {
+    for (let i = 1; i < chain.length; i++) {
+      const parent = chain[i - 1], child = chain[i];
+      if (requiredSet.has(parent) && requiredSet.has(child)) successors.get(parent)?.add(child);
+    }
+  });
+
+  const memo = new Map();
+  const count = code => {
+    if (memo.has(code)) return memo.get(code);
+    const found = new Set();
+    const visit = current => (successors.get(current) || []).forEach(child => {
+      if (found.has(child)) return;
+      found.add(child);
+      visit(child);
+    });
+    visit(code);
+    memo.set(code, found.size);
+    return found.size;
+  };
+  requiredSet.forEach(count);
+  return memo;
+}
+
+function deterministicFutureOfferingCount(rawCode, activeTerms, termIndex) {
+  let count = 0;
+  for (let i = termIndex; i < activeTerms.length; i++) {
+    if (canAutoScheduleRawInTerm(rawCode, parseTerm(activeTerms[i]).term)) count += 1;
+  }
+  return count;
+}
+
+function deterministicCourseOrder(a, b) {
+  return fullJourneyCourseNumber(a) - fullJourneyCourseNumber(b)
+    || fullJourneyCoursePrefix(a).localeCompare(fullJourneyCoursePrefix(b))
+    || String(a).localeCompare(String(b));
+}
+
+function deterministicPreferredParentReady(rawCode, termIndex, scheduledIndexes, preferredParents) {
+  const parent = preferredParents.get(rawCode);
+  if (!parent) return true;
+  const parentIndex = scheduledIndexes.get(parent);
+  return parentIndex !== undefined && parentIndex < termIndex;
+}
+
+function deterministicBundleFits(rawCode, semesterKey) {
+  return rawCanBeAutoPlacedInTerm(rawCode, semesterKey)
+    && projectedCreditsIfRawPlaced(rawCode, semesterKey) <= semesterLimit(semesterKey);
+}
+
+function deterministicPlaceCourse(rawCode, semesterKey, scheduledIndexes, activeTerms) {
+  if (!rawCode || isRawDone(rawCode) || isRawPlanned(rawCode) || isPlacementSatisfied(rawCode)) return false;
+  if (!deterministicBundleFits(rawCode, semesterKey)) return false;
+  addNeededCoreqsInSameTerm(rawCode, semesterKey, scheduledIndexes, activeTerms);
+  const placed = addRawToTermIfPossible(rawCode, semesterKey, scheduledIndexes, activeTerms);
+  addNeededCoreqsInSameTerm(rawCode, semesterKey, scheduledIndexes, activeTerms);
+  if (placed) reconcileSatisfiedRequirements();
+  return placed;
+}
+
+function deterministicCoreQueue() {
+  const queue = [];
+  remainingCoreRequirementIds().forEach((reqId, rank) => {
+    const row = CORE.find(core => core[0] === reqId);
+    if (!row) return;
+    const req = makeCoreItem(row);
+    if (isCoreRequirementChecked(req)) return;
+    const rootCode = chooseCandidateForRequirement(req);
+    if (!rootCode) return;
+    expandWithPrereqs([rootCode]).forEach((code, sequenceIndex) => {
+      if (!code || isRawDone(code) || isRawPlanned(code) || isPlacementSatisfied(code)) return;
+      queue.push({ reqId, rootCode, code, rank, sequenceIndex });
+    });
+  });
+
+  const best = new Map();
+  queue.forEach(item => {
+    const existing = best.get(item.code);
+    if (!existing || item.rank < existing.rank || (item.rank === existing.rank && item.sequenceIndex < existing.sequenceIndex)) {
+      best.set(item.code, item);
+    }
+  });
+  return Array.from(best.values()).sort((a, b) =>
+    a.rank - b.rank
+    || a.sequenceIndex - b.sequenceIndex
+    || coursePrerequisiteLevel(a.code) - coursePrerequisiteLevel(b.code)
+    || deterministicCourseOrder(a.code, b.code)
+  );
+}
+
+function deterministicRemainingRequiredCodes(programRequiredSet) {
+  const remaining = new Set();
+  programRequiredSet.forEach(code => {
+    if (!isRawDone(code) && !isRawPlanned(code) && !isPlacementSatisfied(code)) remaining.add(code);
+  });
+  deterministicCoreQueue().forEach(item => remaining.add(item.code));
+  return remaining;
+}
+
+function deterministicTargetCredits(activeTerms, termIndex, programRequiredSet) {
+  const remainingCodes = deterministicRemainingRequiredCodes(programRequiredSet);
+  const remainingCredits = Array.from(remainingCodes).reduce((sum, code) => sum + (courseInfo(code).credits || 0), 0);
+  const remainingTerms = Math.max(1, activeTerms.length - termIndex);
+  const averageNeeded = Math.ceil(remainingCredits / remainingTerms);
+  const athleteMinimum = studentMinimumCreditsForTerm(activeTerms[termIndex]);
+  return Math.min(18, Math.max(athleteMinimum, averageNeeded));
+}
+
+function deterministicProgramCandidates(programRequiredSet, directMajor, directMinor, termIndex, activeTerms, scheduledIndexes, preferredParents, descendantCounts) {
+  const semesterKey = activeTerms[termIndex];
+  const previousTermCodes = termIndex > 0
+    ? new Set((state.planned[activeTerms[termIndex - 1]] || []).map(rawCodeFromAnyId))
+    : new Set();
+
+  return Array.from(programRequiredSet)
+    .filter(code => !isRawDone(code) && !isRawPlanned(code) && !isPlacementSatisfied(code))
+    .filter(code => deterministicPreferredParentReady(code, termIndex, scheduledIndexes, preferredParents))
+    .filter(code => deterministicBundleFits(code, semesterKey))
+    .sort((a, b) => {
+      const aParent = preferredParents.get(a), bParent = preferredParents.get(b);
+      const aContinues = aParent && previousTermCodes.has(aParent) ? 0 : 1;
+      const bContinues = bParent && previousTermCodes.has(bParent) ? 0 : 1;
+      const aSeminar = SEMINAR_COURSES.includes(a) ? 1 : 0;
+      const bSeminar = SEMINAR_COURSES.includes(b) ? 1 : 0;
+      const aDirect = directMajor.has(a) || directMinor.has(a) ? 1 : 0;
+      const bDirect = directMajor.has(b) || directMinor.has(b) ? 1 : 0;
+      const aScarcity = deterministicFutureOfferingCount(a, activeTerms, termIndex);
+      const bScarcity = deterministicFutureOfferingCount(b, activeTerms, termIndex);
+      return aContinues - bContinues
+        || aSeminar - bSeminar
+        || coursePrerequisiteLevel(a) - coursePrerequisiteLevel(b)
+        || (descendantCounts.get(b) || 0) - (descendantCounts.get(a) || 0)
+        || aScarcity - bScarcity
+        || aDirect - bDirect
+        || deterministicCourseOrder(a, b);
+    });
+}
+
+function deterministicCoreCandidates(termIndex, activeTerms, programRequiredSet) {
+  const semesterKey = activeTerms[termIndex];
+  return deterministicCoreQueue()
+    .filter(item => !programRequiredSet.has(item.code))
+    .filter(item => deterministicBundleFits(item.code, semesterKey))
+    .sort((a, b) => {
+      const aScarcity = deterministicFutureOfferingCount(a.code, activeTerms, termIndex);
+      const bScarcity = deterministicFutureOfferingCount(b.code, activeTerms, termIndex);
+      return a.rank - b.rank
+        || a.sequenceIndex - b.sequenceIndex
+        || aScarcity - bScarcity
+        || deterministicCourseOrder(a.code, b.code);
+    });
+}
+
+function deterministicCourseIsUrgent(rawCode, termIndex, activeTerms) {
+  return deterministicFutureOfferingCount(rawCode, activeTerms, termIndex) <= 1;
+}
+
+function deterministicPlaceFixedFoundations(activeTerms, scheduledIndexes, programRequiredSet, skipped) {
+  placeMandatoryFirstYearPTH(activeTerms, scheduledIndexes, skipped);
+  if (effectiveMathPlacement() === "MTH 100" && programRequiredSet.has("MTH 100") && !isRawDone("MTH 100") && !isPlacementSatisfied("MTH 100")) {
+    const firstTerm = activeTerms[0];
+    if (!firstTerm || !deterministicPlaceCourse("MTH 100", firstTerm, scheduledIndexes, activeTerms)) skipped.add("MTH 100");
   }
 }
 
+function deterministicBuildPlan(activeTerms, allowSummer = false) {
+  resetScheduledPlanForAutoBuild();
+  autoPopulateAllowSummer = allowSummer;
+  activeTerms.forEach(key => { state.planned[key] = []; });
+  reconcileSatisfiedRequirements();
+
+  const majorNeeded = collectNeededProgramRawCourses("major");
+  const minorNeeded = collectNeededProgramRawCourses("minor");
+  const directMajor = new Set(majorNeeded);
+  const directMinor = new Set(minorNeeded);
+  const programRoots = orderedUnique([...placementSupplementalCourses(), ...majorNeeded, ...minorNeeded]);
+  const programRequiredSet = new Set(expandWithPrereqs(programRoots));
+  programRoots.forEach(code => {
+    if (!isRawDone(code) && !isPlacementSatisfied(code)) programRequiredSet.add(code);
+  });
+
+  const preferredParents = deterministicPreferredParentMap(programRequiredSet);
+  const descendantCounts = deterministicProgramDescendantCounts(programRequiredSet);
+  const scheduledIndexes = existingScheduledIndexes(activeTerms);
+  const skipped = new Set();
+  deterministicPlaceFixedFoundations(activeTerms, scheduledIndexes, programRequiredSet, skipped);
+
+  activeTerms.forEach((semesterKey, termIndex) => {
+    const targetCredits = deterministicTargetCredits(activeTerms, termIndex, programRequiredSet);
+    let guard = 0;
+
+    while (semesterCredits(semesterKey) < semesterLimit(semesterKey) && guard++ < 100) {
+      const candidates = deterministicProgramCandidates(
+        programRequiredSet, directMajor, directMinor, termIndex, activeTerms,
+        scheduledIndexes, preferredParents, descendantCounts
+      );
+      if (!candidates.length) break;
+      const candidate = candidates[0];
+      const urgent = deterministicCourseIsUrgent(candidate, termIndex, activeTerms);
+      const parent = preferredParents.get(candidate);
+      const chainContinuation = !!parent && termIndex > 0
+        && (state.planned[activeTerms[termIndex - 1]] || []).map(rawCodeFromAnyId).includes(parent);
+      if (semesterCredits(semesterKey) >= targetCredits && !urgent && !chainContinuation) break;
+      if (!deterministicPlaceCourse(candidate, semesterKey, scheduledIndexes, activeTerms)) break;
+    }
+
+    guard = 0;
+    while (semesterCredits(semesterKey) < targetCredits && semesterCredits(semesterKey) < semesterLimit(semesterKey) && guard++ < 100) {
+      const candidates = deterministicCoreCandidates(termIndex, activeTerms, programRequiredSet);
+      if (!candidates.length) break;
+      if (!deterministicPlaceCourse(candidates[0].code, semesterKey, scheduledIndexes, activeTerms)) break;
+    }
+
+    guard = 0;
+    while (semesterCredits(semesterKey) < semesterLimit(semesterKey) && guard++ < 40) {
+      const urgentProgram = deterministicProgramCandidates(
+        programRequiredSet, directMajor, directMinor, termIndex, activeTerms,
+        scheduledIndexes, preferredParents, descendantCounts
+      ).find(code => deterministicCourseIsUrgent(code, termIndex, activeTerms));
+      if (urgentProgram && deterministicPlaceCourse(urgentProgram, semesterKey, scheduledIndexes, activeTerms)) continue;
+      const urgentCore = deterministicCoreCandidates(termIndex, activeTerms, programRequiredSet)
+        .find(item => deterministicCourseIsUrgent(item.code, termIndex, activeTerms));
+      if (urgentCore && deterministicPlaceCourse(urgentCore.code, semesterKey, scheduledIndexes, activeTerms)) continue;
+      break;
+    }
+  });
+
+  reconcileSatisfiedRequirements();
+  autoPopulateAllowSummer = false;
+  const unresolvedProgram = Array.from(getRequirementMap().values())
+    .filter(req => !isRequirementChecked(req))
+    .map(req => req.title || req.code || req.id);
+  const unresolvedCore = remainingCoreRequirementIds().map(id => {
+    const row = CORE.find(core => core[0] === id);
+    return row ? makeCoreItem(row)?.title || id : id;
+  });
+  const invalid = invalidPlannedEntries(activeTerms).map(entry => `${entry.rawCode} (${entry.key})`);
+  const athleteUnderMinimum = state.athleteStatus === "yes"
+    ? activeTerms.filter(key => parseTerm(key).term !== "Summer" && semesterCredits(key) > 0 && semesterCredits(key) < 12)
+    : [];
+  return { activeTerms, unresolvedProgram, unresolvedCore, invalid, athleteUnderMinimum, skipped };
+}
+
+function deterministicPlanComplete(result) {
+  return !result.unresolvedProgram.length && !result.unresolvedCore.length && !result.invalid.length;
+}
+
+function populateAllUnchecked(options = {}) {
+  const allTerms = generateTerms(state.grad);
+  const fallSpringTerms = allTerms.filter(key => parseTerm(key).term !== "Summer");
+  let result = deterministicBuildPlan(fallSpringTerms, false);
+  if (!deterministicPlanComplete(result) && allTerms.length > fallSpringTerms.length) result = deterministicBuildPlan(allTerms, true);
+
+  reconcileSatisfiedRequirements();
+  const messages = [];
+  if (result.unresolvedProgram.length) messages.push(`Program requirements: ${result.unresolvedProgram.join(", ")}`);
+  if (result.unresolvedCore.length) messages.push(`Core requirements: ${result.unresolvedCore.join(", ")}`);
+  if (result.invalid.length) messages.push(`Placement warnings: ${result.invalid.join(", ")}`);
+  if (result.athleteUnderMinimum.length) messages.push(`Student-athlete semesters below 12 credits: ${result.athleteUnderMinimum.join(", ")}`);
+
+  const creditsRemaining = Math.max(0, DEGREE_MIN_CREDITS - completedCreditTotal());
+  if (!messages.length && creditsRemaining > 0) {
+    messages.push(`${creditsRemaining} additional free-elective credit${creditsRemaining === 1 ? " is" : "s are"} still needed to reach ${DEGREE_MIN_CREDITS}. The planner did not insert unrelated courses automatically.`);
+  }
+
+  forceConfettiOnNextSummary = !messages.length;
+  saveState();
+  renderAll(false);
+  if (messages.length) alert(`The staged plan was created, but the following items still need attention:\n\n${messages.join("\n\n")}`);
+}
 
 function planSource(courseId) { return (state.courseSources || {})[courseId] || "shc"; }
 function isAcadeumCourse(courseId) { return planSource(courseId) === "acadeum"; }
