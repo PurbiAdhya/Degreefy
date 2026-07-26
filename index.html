@@ -2194,6 +2194,334 @@
       .compact-history-row:nth-child(odd) { border-right: 0; }
     }
 
+
+    /* Full-journey dashboard redesign */
+    .planner-shell {
+      width: min(100%, 1760px);
+      padding: 18px 28px 42px;
+      gap: 12px;
+    }
+
+    .planner-toolbar {
+      align-items: center;
+      padding: 8px 4px 12px;
+    }
+
+    .plan-kicker { display: none; }
+    .plan-title-block h2 { font-size: clamp(30px, 3vw, 42px); margin-bottom: 7px; }
+    .profile-summary { font-size: 14px; }
+    .profile-summary .profile-pill { font-size: 14px; }
+
+    .plan-primary-actions { align-items: center; }
+    .plan-primary-actions > button,
+    .plan-more-menu > summary {
+      min-height: 42px;
+      padding: 10px 15px;
+      border-radius: 13px;
+    }
+
+    .plan-more-menu { position: relative; }
+    .plan-more-menu > summary {
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--purple-dark);
+      cursor: pointer;
+      font-weight: 500;
+      user-select: none;
+    }
+    .plan-more-menu > summary::-webkit-details-marker { display: none; }
+    .plan-more-menu[open] > summary { border-color: #cfc4f3; box-shadow: 0 0 0 3px rgba(109,91,208,.08); }
+    .plan-more-menu-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 160;
+      width: 230px;
+      display: grid;
+      gap: 5px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 16px 38px rgba(47,42,69,.16);
+    }
+    .plan-more-menu-panel button {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+      color: var(--ink);
+      padding: 10px 11px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    .plan-more-menu-panel button:hover { background: #f7f4ff; }
+    .plan-more-menu-panel .danger-text { color: var(--red); }
+
+    .planner-summary-data { display: none !important; }
+
+    .planning-layout {
+      display: grid;
+      grid-template-columns: minmax(210px, 245px) minmax(640px, 1fr) minmax(285px, 340px);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .planner-year-rail,
+    .remaining-courses-panel {
+      position: sticky;
+      top: 20px;
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      scrollbar-width: thin;
+    }
+
+    .planner-year-rail {
+      padding: 20px 16px 18px;
+      box-shadow: none;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .year-rail-heading { padding: 0 4px 16px; }
+    .year-rail-heading .panel-kicker { margin-bottom: 4px; }
+    .year-rail-heading h2 { margin: 0 0 6px; color: var(--ink); font-size: 20px; font-weight: 560; }
+    .year-rail-heading p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+    .planner-year-timeline {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      position: relative;
+      padding: 2px 0 12px;
+    }
+    .planner-year-timeline::before {
+      content: "";
+      position: absolute;
+      top: 30px;
+      bottom: 42px;
+      left: 21px;
+      width: 1px;
+      background: #ddd7ed;
+      z-index: 0;
+    }
+    .planner-year-stop {
+      position: relative;
+      z-index: 1;
+      min-height: 92px;
+      display: grid;
+      gap: 4px;
+      align-content: center;
+      padding: 15px 13px 15px 54px;
+      border: 1px solid transparent;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      box-shadow: none;
+    }
+    .planner-year-stop::before {
+      content: "✓";
+      position: absolute;
+      left: 9px;
+      top: 29px;
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid #dcd4f4;
+      background: #f8f6ff;
+      color: var(--purple-dark);
+      font-size: 12px;
+      box-shadow: 0 0 0 5px var(--bg);
+    }
+    .planner-year-stop:hover { background: rgba(255,255,255,.72); border-color: #e6e0f4; transform: none; box-shadow: none; }
+    .planner-year-stop.active {
+      background: white;
+      border-color: #8e77ed;
+      box-shadow: 0 8px 22px rgba(61,48,104,.08);
+    }
+    .planner-year-stop.active::before { content: ""; background: var(--purple); border-color: var(--purple); box-shadow: inset 0 0 0 7px #f1edff, 0 0 0 5px var(--bg); }
+    .planner-year-stop .planner-year-label { padding: 0; font-size: 16px; font-weight: 600; color: var(--ink); }
+    .planner-year-stop.active .planner-year-label { color: var(--purple-dark); }
+    .planner-year-stop .planner-year-range { color: var(--muted); font-size: 12.5px; font-weight: 400; }
+    .planner-year-stop .planner-year-meta { display: none; }
+
+    .year-credit-card {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+    }
+    .year-credit-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--purple-soft);
+      color: var(--purple-dark);
+      font-weight: 700;
+    }
+    .year-credit-card span { display: block; color: var(--muted); font-size: 12px; }
+    .year-credit-card strong { display: block; margin-top: 2px; color: var(--ink); font-size: 15px; font-weight: 560; }
+    .year-credit-track { grid-column: 1 / -1; height: 5px; border-radius: 999px; background: #eeeaf8; overflow: hidden; }
+    .year-credit-track > div { height: 100%; width: 0; border-radius: inherit; background: var(--purple); transition: width .2s ease; }
+
+    .planner-wrap {
+      padding: 20px;
+      border-color: transparent;
+      box-shadow: none;
+      background: transparent;
+      overflow: visible;
+    }
+
+    .planner-overview-card {
+      display: grid;
+      gap: 22px;
+      padding: 22px 24px;
+      border: 1px solid #e5e0f1;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #ffffff 0%, #fbfaff 100%);
+      box-shadow: 0 8px 24px rgba(61,48,104,.05);
+    }
+    .planner-overview-heading { display: flex; gap: 14px; align-items: center; }
+    .planner-overview-icon {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: #eee9ff;
+      color: var(--purple-dark);
+      font-size: 22px;
+    }
+    .planner-overview-heading h2 { margin: 0 0 4px; color: var(--ink); font-size: 23px; font-weight: 560; }
+    .planner-overview-heading p { margin: 0; color: var(--muted); font-size: 14px; }
+    .planner-overview-metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .overview-metric { padding: 1px 20px; border-left: 1px solid var(--line); }
+    .overview-metric:first-child { border-left: 0; padding-left: 0; }
+    .overview-metric span { display: block; color: var(--muted); font-size: 12.5px; }
+    .overview-metric strong { display: block; margin-top: 4px; color: var(--ink); font-size: 21px; font-weight: 600; }
+
+    .plan-start-prompt { margin: 16px 0 0; }
+
+    .semester-grid {
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+      padding: 18px 0 0;
+    }
+    .semester {
+      min-height: 320px;
+      border-radius: 17px;
+      border-color: #e3deed;
+      box-shadow: 0 7px 20px rgba(61,48,104,.045);
+    }
+    .semester-header {
+      padding: 16px 18px;
+      background: white !important;
+      border-bottom: 1px solid var(--line);
+    }
+    .semester-header strong { font-size: 19px; color: var(--ink); }
+    .semester-header .credits { padding: 5px 10px; border-radius: 999px; background: var(--purple-soft); font-size: 12.5px; }
+    .semester-course-groups { padding: 2px 0 4px; }
+    .semester-course-bucket { min-height: 105px; padding: 13px 16px; border: 0; border-radius: 0; background: transparent; }
+    .semester-course-bucket + .semester-course-bucket { border-top: 1px solid #eeeaf4; }
+    .semester-course-bucket-head { color: #6c6581; font-size: 11px; font-weight: 700; letter-spacing: .035em; text-transform: uppercase; }
+    .bucket-course-list { gap: 7px; }
+    .compact-planned-course.planned-course {
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: white;
+      border-color: #e2ddeb;
+      box-shadow: none;
+    }
+    .planned-course-label strong {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: var(--purple-soft);
+      font-size: 11px;
+    }
+
+    .planner-track-status {
+      margin: 18px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border-left-width: 1px;
+      box-shadow: none;
+    }
+    .planner-track-status strong { display: block; margin-bottom: 2px; }
+    .planner-track-status span { font-weight: 400; }
+    .planner-track-status button { flex: 0 0 auto; background: white; }
+
+    .remaining-courses-panel {
+      padding: 18px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(61,48,104,.05);
+    }
+    .remaining-courses-panel .panel-heading-row h2 { font-size: 19px; }
+    .remaining-courses-panel .panel-intro { font-size: 13px; }
+    .remaining-courses-panel .course-card { padding: 9px 10px; }
+    .remaining-courses-panel .course-title { font-size: 13px; }
+    .remaining-courses-panel .course-meta { font-size: 11px; }
+
+    #plannerWarnings,
+    #overlapMessage { margin-left: 4px; margin-right: 4px; }
+
+    @media (max-width: 1320px) {
+      .planning-layout { grid-template-columns: 210px minmax(0,1fr); }
+      .remaining-courses-panel { position: static; grid-column: 1 / -1; max-height: none; }
+    }
+
+    @media (max-width: 980px) {
+      .planning-layout { grid-template-columns: 1fr; }
+      .planner-year-rail { position: static; max-height: none; padding: 10px 0; }
+      .year-rail-heading { display: none; }
+      .planner-year-timeline { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+      .planner-year-timeline::before { display: none; }
+      .planner-year-stop { min-height: 0; padding: 14px; }
+      .planner-year-stop::before { display: none; }
+      .year-credit-card { display: none; }
+      .planner-overview-metrics { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px 0; }
+      .overview-metric:nth-child(3) { border-left: 0; padding-left: 0; }
+      .semester-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .planner-shell { padding: 12px; }
+      .planner-toolbar { align-items: flex-start; }
+      .plan-primary-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr auto; }
+      .plan-primary-actions > button { width: 100%; }
+      .planner-wrap { padding: 0; }
+      .planner-overview-card { padding: 18px; }
+      .planner-overview-metrics { grid-template-columns: 1fr 1fr; }
+      .overview-metric { padding: 0 12px; }
+      .planner-year-timeline { grid-template-columns: 1fr; }
+      .planner-track-status { align-items: flex-start; flex-direction: column; }
+      .planner-track-status button { width: 100%; }
+    }
+
+    @media print {
+      body.print-plan .planner-year-rail,
+      body.print-plan .planner-overview-card,
+      body.print-plan .plan-more-menu,
+      body.print-plan .planner-track-status { display: none !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -2242,30 +2570,90 @@
       <div class="plan-primary-actions">
         <button type="button" class="primary" id="populateBtn">Plan for me</button>
         <button type="button" id="printBtn">Print PDF</button>
-        <button type="button" id="profileEditSetupBtn">Change setup</button>
+        <details class="plan-more-menu">
+          <summary>More <span aria-hidden="true">⌄</span></summary>
+          <div class="plan-more-menu-panel">
+            <button type="button" id="profileEditSetupBtn">Change setup</button>
+            <button type="button" id="drawerRequirementsBtn">Remaining requirements</button>
+            <button type="button" id="drawerAvailabilityBtn">Course availability</button>
+            <button type="button" id="toggleSummerBtn">Show summer terms</button>
+            <button type="button" class="danger-text" id="clearPlanBtn">Clear plan</button>
+          </div>
+        </details>
       </div>
     </section>
 
-    <section class="compact-summary summary" aria-label="Degree planning summary">
+    <section class="compact-summary summary planner-summary-data" aria-label="Degree planning summary" hidden>
       <div class="stat"><strong id="programLeft">0</strong><span>program requirements remaining</span><div class="progress-track"><div class="progress-fill" id="programProgress"></div></div></div>
       <div class="stat"><strong id="coreLeft">0</strong><span>core requirements remaining</span><div class="progress-track"><div class="progress-fill" id="coreProgress"></div></div></div>
       <div class="stat"><strong id="creditsLeft">120</strong><span>credits remaining to 120</span><div class="progress-track"><div class="progress-fill" id="creditProgress"></div></div></div>
     </section>
 
     <div id="plannerWarnings" class="warning top-warning hidden"></div>
-    <div id="successMessage" class="success hidden">The requirements are planned. Review the result with the student’s advisor.</div>
     <div id="overlapMessage" class="warning hidden"></div>
 
     <main class="planning-layout">
+      <aside class="panel planner-year-rail" aria-label="Degree journey years">
+        <div class="year-rail-heading">
+          <span class="panel-kicker">Degree journey</span>
+          <h2>Plan by year</h2>
+          <p>Move through the plan one academic year at a time.</p>
+        </div>
+        <div class="planner-year-timeline" id="plannerYearTimeline"></div>
+        <div class="year-credit-card">
+          <div class="year-credit-icon" aria-hidden="true">◇</div>
+          <div>
+            <span>120 credits required</span>
+            <strong><span id="yearCreditsRemaining">120</span> remaining</strong>
+          </div>
+          <div class="year-credit-track" aria-hidden="true"><div id="yearCreditProgressBar"></div></div>
+        </div>
+      </aside>
+
+      <section class="panel planner-wrap">
+        <div class="planner-overview-card">
+          <div class="planner-overview-heading">
+            <div class="planner-overview-icon" aria-hidden="true">▣</div>
+            <div>
+              <h2 id="plannerOverviewTitle">Year 1 overview</h2>
+              <p id="plannerOverviewSubtitle">Review the courses planned for this academic year.</p>
+            </div>
+          </div>
+          <div class="planner-overview-metrics">
+            <div class="overview-metric"><span>Semesters</span><strong id="overviewSemesters">2 of 2</strong></div>
+            <div class="overview-metric"><span>Credits this year</span><strong id="overviewYearCredits">0</strong></div>
+            <div class="overview-metric"><span>Credits scheduled</span><strong id="overviewTotalCredits">0</strong></div>
+            <div class="overview-metric"><span>Credits remaining</span><strong id="overviewCreditsRemaining">120</strong></div>
+          </div>
+        </div>
+
+        <div class="plan-start-prompt" id="planStartPrompt">
+          <div>
+            <span class="panel-kicker">A helpful first draft</span>
+            <h3>Let Degreefy arrange the remaining courses.</h3>
+            <p>It will follow prerequisites, typical course offerings, and semester credit limits. You can move every course afterward.</p>
+          </div>
+          <button type="button" class="primary" id="planForMeInlineBtn">Plan for me</button>
+        </div>
+
+        <div class="semester-grid" id="semesterGrid"></div>
+
+        <div id="successMessage" class="success planner-track-status hidden">
+          <div><strong>You’re on track to complete the degree.</strong><span> All requirements are planned and the credit total is complete.</span></div>
+          <button type="button" id="successReviewRequirementsBtn">Review all requirements</button>
+        </div>
+        <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
+      </section>
+
       <aside class="panel courses-panel remaining-courses-panel">
         <div class="panel-heading-row">
           <div>
-            <span class="panel-kicker">Drag from here</span>
-            <h2>Courses to place</h2>
+            <span class="panel-kicker">Course bank</span>
+            <h2>Unplaced courses</h2>
           </div>
           <span class="remaining-count" id="remainingCourseCount"></span>
         </div>
-        <p class="panel-intro">Completed courses are hidden. Courses disappear from this list after they are placed in a semester.</p>
+        <p class="panel-intro">Courses still needed appear here until they are placed in a semester.</p>
         <div class="course-view-toggle" role="group" aria-label="Course list view">
           <button type="button" class="active" id="courseViewRequiredBtn">Unplaced</button>
           <button type="button" id="courseViewAllBtn">All courses</button>
@@ -2283,46 +2671,6 @@
         </div>
         <div class="bank-list" id="courseBank"></div>
       </aside>
-
-      <section class="panel planner-wrap">
-        <div class="planner-head">
-          <div>
-            <h2>Semester plan</h2>
-            <p class="planner-guidance">Drag a course into a semester, then move it whenever the plan needs to change.</p>
-            <div class="term-legend" aria-label="Semester color legend">
-              <span class="legend-chip legend-fall">Fall</span>
-              <span class="legend-chip legend-spring">Spring</span>
-              <span class="legend-chip legend-summer">Summer</span>
-            </div>
-          </div>
-          <div class="planner-secondary-actions">
-            <button type="button" id="drawerRequirementsBtn">Remaining requirements</button>
-            <button type="button" id="drawerAvailabilityBtn">Course availability</button>
-            <button type="button" id="toggleSummerBtn">Show summer terms</button>
-            <button type="button" id="clearPlanBtn">Clear plan</button>
-          </div>
-        </div>
-        <div class="plan-start-prompt" id="planStartPrompt">
-          <div>
-            <span class="panel-kicker">A helpful first draft</span>
-            <h3>Let Degreefy arrange the remaining courses.</h3>
-            <p>It will follow prerequisites, typical course offerings, and semester credit limits. You can move every course afterward.</p>
-          </div>
-          <button type="button" class="primary" id="planForMeInlineBtn">Plan for me</button>
-        </div>
-        <div class="planner-year-strip">
-          <div class="planner-year-copy">
-            <div>
-              <h3>Journey timeline</h3>
-              <p class="small">See one planning year at a time. Start with Year 1 and click ahead as the plan builds forward.</p>
-            </div>
-          </div>
-          <div class="planner-year-timeline" id="plannerYearTimeline"></div>
-        </div>
-        <div class="planner-year-summary" id="plannerYearSummary"></div>
-        <div class="semester-grid" id="semesterGrid"></div>
-        <div class="print-footer">Generated with Degreefy. Students should confirm plans with their advisor and the official bulletin of record.</div>
-      </section>
     </main>
 
     <div class="drawer-overlay hidden" id="drawerOverlay"></div>
@@ -5360,6 +5708,18 @@ function renderPlannerYearTimeline(groups) {
   if (summary && active) {
     summary.innerHTML = `<strong>${active.label}</strong> · ${escapeHTML(active.subtitle)} · Showing ${active.terms.length} semester${active.terms.length === 1 ? "" : "s"}`;
   }
+  const all = getAllCourseById();
+  const yearCredits = active ? active.terms.reduce((sum, key) => sum + (state.planned[key] || []).reduce((termSum, id) => termSum + (all.get(id)?.credits || 0), 0), 0) : 0;
+  const scheduledCredits = completedCreditTotal();
+  const remainingCredits = Math.max(0, DEGREE_MIN_CREDITS - scheduledCredits);
+  if ($("plannerOverviewTitle") && active) $("plannerOverviewTitle").textContent = `${active.label} overview`;
+  if ($("plannerOverviewSubtitle") && active) $("plannerOverviewSubtitle").textContent = `Review the plan for ${active.subtitle}.`;
+  if ($("overviewSemesters")) $("overviewSemesters").textContent = `${active?.terms.length || 0} of ${active?.terms.length || 0}`;
+  if ($("overviewYearCredits")) $("overviewYearCredits").textContent = yearCredits;
+  if ($("overviewTotalCredits")) $("overviewTotalCredits").textContent = scheduledCredits;
+  if ($("overviewCreditsRemaining")) $("overviewCreditsRemaining").textContent = remainingCredits;
+  if ($("yearCreditsRemaining")) $("yearCreditsRemaining").textContent = remainingCredits;
+  if ($("yearCreditProgressBar")) $("yearCreditProgressBar").style.width = `${Math.min(100, (scheduledCredits / DEGREE_MIN_CREDITS) * 100)}%`;
 }
 
 function renderPlanner() {
@@ -7402,6 +7762,7 @@ function setupDegreefyEvents() {
   ["headerPrintChecklistBtn", "profilePrintChecklistBtn"].forEach(id => $(id)?.addEventListener("click", printChecklist));
   ["headerPrintPlanBtn", "profilePrintPlanBtn"].forEach(id => $(id)?.addEventListener("click", printPlan));
   $("drawerRequirementsBtn")?.addEventListener("click", () => openPlannerDrawer("requirements"));
+  $("successReviewRequirementsBtn")?.addEventListener("click", () => openPlannerDrawer("requirements"));
   $("drawerAvailabilityBtn")?.addEventListener("click", () => openPlannerDrawer("availability"));
   $("toggleSummerBtn")?.addEventListener("click", () => { showSummerTerms = !showSummerTerms; renderPlanner(); });
   $("drawerRequirementsTab")?.addEventListener("click", () => setPlannerDrawerView("requirements"));
